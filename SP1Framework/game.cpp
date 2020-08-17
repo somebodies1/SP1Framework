@@ -279,6 +279,9 @@ void moveCharacter()
     }
     if (g_skKeyEvent[K_SPACE].keyDown)
     {
+        Beep(1000, 30);
+        Beep(500, 50);
+        Beep(1500,20);
         g_sChar.m_bActive = !g_sChar.m_bActive;        
     }
 
@@ -447,11 +450,11 @@ void renderInputEvents()
             ss << key << " not pressed";
 
         COORD c = { startPos.X, startPos.Y + i };
-        g_Console.writeToBuffer(c, ss.str(), 0x17);
+        //g_Console.writeToBuffer(c, ss.str(), 0x17);
     }
 
     // mouse events    
-    ss.str("");
+    /*ss.str("");
     ss << "Mouse position (" << g_mouseEvent.mousePosition.X << ", " << g_mouseEvent.mousePosition.Y << ")";
     g_Console.writeToBuffer(g_mouseEvent.mousePosition, ss.str(), 0x59);
     ss.str("");
@@ -487,7 +490,7 @@ void renderInputEvents()
         break;
     default:        
         break;
-    }
+    }*/
     
 }
 
