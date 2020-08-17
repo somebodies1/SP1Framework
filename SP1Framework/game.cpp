@@ -65,9 +65,13 @@ void init( void )
     // sets the initial state for the game
     g_eGameState = S_SPLASHSCREEN;
 
-    g_sChar.m_cLocation.X = g_Console.getConsoleSize().X / 2;
-    g_sChar.m_cLocation.Y = g_Console.getConsoleSize().Y / 2;
-    g_sChar.m_bActive = false;
+    //Previous code for the spawning of the character put it in the middle of the console
+    //g_sChar.m_cLocation.X = g_Console.getConsoleSize().X / 2;
+    //g_sChar.m_cLocation.Y = g_Console.getConsoleSize().Y / 2;
+
+    g_sChar.m_cLocation.X = 1;
+    g_sChar.m_cLocation.Y = 22;
+    g_sChar.m_bActive = true;
     // sets the width, height and the font name to use in the console
     g_Console.setConsoleFont(0, 16, L"Consolas");
 
@@ -390,14 +394,14 @@ void renderMap()
         {
             c.X = i;
             c.Y = j;
-            if (j > 22)
+            if (Gamemap[j][i] == '=') // '=' are coloured differently for the floor
             {
                 g_Console.writeToBuffer(c, Gamemap[j][i], 0x0A);
             }
-            else
+            else //Normal colour of black text with blue background
             {
-                g_Console.writeToBuffer(c, Gamemap[j][i], 0x10);
-            }
+                g_Console.writeToBuffer(c, Gamemap[j][i], 0x10); //Btw after the 0x the first number is the background colour and the second is the text colour
+            }//Black is 0, background blue is 1 and a kind of green is A, F is white
         }
     }
 }
@@ -405,10 +409,10 @@ void renderMap()
 void renderCharacter()
 {
     // Draw the location of the character
-    WORD charColor = 0x0C;
+    WORD charColor = 0x10;
     if (g_sChar.m_bActive)
     {
-        charColor = 0x0B;
+        charColor = 0x1F;
     }
     g_Console.writeToBuffer(g_sChar.m_cLocation, (char)1, charColor);
 }
