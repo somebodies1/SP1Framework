@@ -6,6 +6,8 @@
 #include <iostream>
 #include <iomanip>
 #include <sstream>
+#include "player.h"
+#include "bullet.h"
 
 char Gamemap[20][20] = 
 {
@@ -39,6 +41,8 @@ SKeyEvent g_skKeyEvent[K_COUNT];
 SMouseEvent g_mouseEvent;
 
 // Game specific variables here
+player player1;
+bullet bullet1;
 SGameChar   g_sChar;
 EGAMESTATES g_eGameState = S_SPLASHSCREEN; // initial state
 
@@ -54,6 +58,7 @@ Console g_Console(80, 25, "SP1 Framework");
 //--------------------------------------------------------------
 void init( void )
 {
+    player1.spawn_player(200,150,100);
     // Set precision for floating point output
     g_dElapsedTime = 0.0;    
 
@@ -279,7 +284,13 @@ void moveCharacter()
     }
     if (g_skKeyEvent[K_SPACE].keyDown)
     {
-        g_sChar.m_bActive = !g_sChar.m_bActive;        
+        g_sChar.m_bActive = !g_sChar.m_bActive;
+        //Bullet Test
+        //bullet1.spawn_bullet(g_sChar.m_cLocation.X + 1, g_sChar.m_cLocation.Y, 5);
+    }
+    if (g_sChar.m_cLocation.X == 20 && g_sChar.m_cLocation.Y == 20) //Damage test
+    {
+        player1.set_hp(player1.get_hp() - 10);
     }
 
    
