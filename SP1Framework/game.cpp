@@ -273,40 +273,66 @@ void moveCharacter()
     COORD c;
     std::ostringstream ss;;
     ss << iX << "," << iY << "";
-    c.X = 2;
-    c.Y = 23;
+    c.X = 1;
+    c.Y = 1;
     g_Console.writeToBuffer(c, ss.str());
 
-    if (Gamemap[iX][iY] == ' ')
+    if (g_skKeyEvent[K_UP].keyDown && g_sChar.m_cLocation.Y > 0)
     {
-        if (g_skKeyEvent[K_UP].keyDown && g_sChar.m_cLocation.Y > 0)
+        //Beep(1440, 100);
+        if (Gamemap[iY - 1][iX] == ' ')
         {
-            //Beep(1440, 100);
             g_sChar.m_cLocation.Y--;
         }
-        if (g_skKeyEvent[K_LEFT].keyDown && g_sChar.m_cLocation.X > 0)
+        else
         {
-            //Beep(2000, 30);
-            g_sChar.m_cLocation.X--;
-        }
-        if (g_skKeyEvent[K_DOWN].keyDown && g_sChar.m_cLocation.Y < g_Console.getConsoleSize().Y - 1)
-        {
-            //Beep(2440, 30);
-            g_sChar.m_cLocation.Y++;
-        }
-        if (g_skKeyEvent[K_RIGHT].keyDown && g_sChar.m_cLocation.X < g_Console.getConsoleSize().X - 1)
-        {
-            //Beep(1000, 30);
-            g_sChar.m_cLocation.X++;
-        }
-        if (g_skKeyEvent[K_SPACE].keyDown)
-        {
-            Beep(1000, 30);
-            Beep(500, 50);
-            Beep(1500, 20);
-            g_sChar.m_bActive = !g_sChar.m_bActive;
+            Beep(2000, 100);
         }
     }
+    if (g_skKeyEvent[K_LEFT].keyDown && g_sChar.m_cLocation.X > 0)
+    {
+        //Beep(2000, 30);
+        if (Gamemap[iY][iX-1] == ' ')
+        {
+            g_sChar.m_cLocation.X--;
+        }
+        else
+        {
+            Beep(2000, 100);
+        }
+    }
+    if (g_skKeyEvent[K_DOWN].keyDown && g_sChar.m_cLocation.Y < g_Console.getConsoleSize().Y - 1)
+    {
+        //Beep(2440, 30);
+        if (Gamemap[iY+1][iX] == ' ')
+        {
+            g_sChar.m_cLocation.Y++;
+        }
+        else
+        {
+            Beep(2000, 100);
+        }
+    }
+    if (g_skKeyEvent[K_RIGHT].keyDown && g_sChar.m_cLocation.X < g_Console.getConsoleSize().X - 1)
+    {
+        //Beep(1000, 30);
+        if (Gamemap[iY][iX+1] == ' ')
+        {
+            g_sChar.m_cLocation.X++;
+        }
+        else
+        {
+            Beep(2000, 100);
+        }
+    }
+    if (g_skKeyEvent[K_SPACE].keyDown)
+    {
+        Beep(1000, 30);
+        Beep(500, 50);
+        Beep(1500, 20);
+        g_sChar.m_bActive = !g_sChar.m_bActive;
+    }
+
 
    
 }
