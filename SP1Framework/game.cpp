@@ -331,17 +331,26 @@ void renderMap()
     };
 
     COORD c;
-    for (int i = 0; i < 24; ++i)
+    for (int i = 0; i < 12; ++i)
     {
         c.X = 5 * i;
         c.Y = i + 1;
         colour(colors[i]);
         g_Console.writeToBuffer(c, " °±²Û", colors[i]);
-        c.X = i;
-        c.Y = 20;
-        g_Console.writeToBuffer(c, "#", 0x0A);
+        c.X = 10;
+        c.Y = i;
+        g_Console.writeToBuffer(c, "H", 0x0A);
     }
-    COORD Position = { 50,25 };
+    int len = g_Console.getConsoleSize().X;
+    for (int i = 0; i < len; ++i)
+    {
+        c.X = i;
+        c.Y = 25;
+        g_Console.writeToBuffer(c, "=", 0x0B);
+        c.X = i;
+        c.Y = 26;
+        g_Console.writeToBuffer(c, "=", 0x0B);
+    }
 }
 
 void renderCharacter()
