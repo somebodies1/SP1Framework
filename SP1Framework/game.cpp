@@ -260,6 +260,18 @@ void updateGame()       // gameplay logic
     processUserInput(); // checks if you should change states or do something else with the game, e.g. pause, exit
     moveCharacter();    // moves the character, collision detection, physics, etc
                         // sound can be played here too.
+    Charactergravity();
+}
+
+void Charactergravity()
+{
+    int iX = g_sChar.m_cLocation.X;
+    int iY = g_sChar.m_cLocation.Y;
+
+    if (Gamemap[iY + 1][iX] == ' ') //Falls if there is nothing beneath the character
+    {
+        g_sChar.m_cLocation.Y++;
+    }
 }
 
 void moveCharacter()
@@ -268,14 +280,6 @@ void moveCharacter()
     // providing a beep sound whenver we shift the character
     int iX = g_sChar.m_cLocation.X;
     int iY = g_sChar.m_cLocation.Y;
-
-    //Prints for debuging
-    COORD c;
-    std::ostringstream ss;;
-    ss << iX << "," << iY << "";
-    c.X = 1;
-    c.Y = 1;
-    g_Console.writeToBuffer(c, ss.str());
 
     if (g_skKeyEvent[K_UP].keyDown && g_sChar.m_cLocation.Y > 0)
     {
