@@ -280,7 +280,7 @@ void moveCharacter()
     if (g_skKeyEvent[K_UP].keyDown && g_sChar.m_cLocation.Y > 0)
     {
         //Beep(1440, 100);
-        if (Gamemap[iY - 1][iX] == ' ')
+        if (Gamemap[iY][iX] == 'H' && Gamemap[iY - 1][iX] == 'H')
         {
             g_sChar.m_cLocation.Y--;
         }
@@ -292,7 +292,7 @@ void moveCharacter()
     if (g_skKeyEvent[K_LEFT].keyDown && g_sChar.m_cLocation.X > 0)
     {
         //Beep(2000, 30);
-        if (Gamemap[iY][iX-1] == ' ')
+        if (Gamemap[iY][iX-1] == ' ' || Gamemap[iY][iX - 1] == 'H')
         {
             g_sChar.m_cLocation.X--;
         }
@@ -304,7 +304,7 @@ void moveCharacter()
     if (g_skKeyEvent[K_DOWN].keyDown && g_sChar.m_cLocation.Y < g_Console.getConsoleSize().Y - 1)
     {
         //Beep(2440, 30);
-        if (Gamemap[iY+1][iX] == ' ')
+        if (Gamemap[iY][iX] == 'H' && Gamemap[iY+1][iX] == 'H') //For moving up and down the ladder
         {
             g_sChar.m_cLocation.Y++;
         }
@@ -316,7 +316,7 @@ void moveCharacter()
     if (g_skKeyEvent[K_RIGHT].keyDown && g_sChar.m_cLocation.X < g_Console.getConsoleSize().X - 1)
     {
         //Beep(1000, 30);
-        if (Gamemap[iY][iX+1] == ' ')
+        if (Gamemap[iY][iX+1] == ' ' || Gamemap[iY][iX + 1] == 'H')
         {
             g_sChar.m_cLocation.X++;
         }
