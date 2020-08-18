@@ -14,3 +14,5 @@ ipch/
 .vs/SP1Framework/v16/Browse.VC.db-wal
 .vs/SP1Framework/v16/Browse.VC.opendb
 >>>>>>> 0bdfe8acab1fb7be27ab4510dfcd40dd355be471
+*.json
+*.sqlite
