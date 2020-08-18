@@ -45,7 +45,7 @@ SMouseEvent g_mouseEvent;
 
 // Game specific variables here
 SGameChar   g_sChar;
-EGAMESTATES g_eGameState = S_SPLASHSCREEN; // initial state
+EGAMESTATES g_eGameState = S_MAINMENU; // initial state
 
 // Console object
 Console g_Console(80, 25, "SP1 Framework");
@@ -63,7 +63,7 @@ void init( void )
     g_dElapsedTime = 0.0;    
 
     // sets the initial state for the game
-    g_eGameState = S_SPLASHSCREEN;
+    g_eGameState = S_MAINMENU;
 
     //Previous code for the spawning of the character put it in the middle of the console
     //g_sChar.m_cLocation.X = g_Console.getConsoleSize().X / 2;
@@ -219,6 +219,53 @@ void gameplayMouseHandler(const MOUSE_EVENT_RECORD& mouseEvent)
     g_mouseEvent.eventFlags = mouseEvent.dwEventFlags;
 }
 
+//---------------------------Main Menu items----------------------------------------
+
+void renderMainMenu()  // renders the main menu
+{
+    COORD c = g_Console.getConsoleSize(); //Put stuff here to make the main menu visuals
+    c.Y /= 3;
+    c.X = c.X / 2 - 9;
+    g_Console.writeToBuffer(c, "Mask the World", 0x03);
+    c.Y += 1;
+    c.X = g_Console.getConsoleSize().X / 2 - 20;
+    g_Console.writeToBuffer(c, "Press <Space> to start", 0x09);
+    c.Y += 1;
+    c.X = g_Console.getConsoleSize().X / 2 - 9;
+    g_Console.writeToBuffer(c, "Press 'Esc' to quit", 0x09);
+}
+
+void mainmenuKBHandler(const KEY_EVENT_RECORD& keyboardEvent)  //KB inputs when insde main menu
+{
+    EKEYS key = K_COUNT;
+    switch (keyboardEvent.wVirtualKeyCode)
+    {
+    case VK_SPACE: key = K_SPACE; break;
+    case VK_ESCAPE: key = K_ESCAPE; break;
+    }
+    // a key pressed event would be one with bKeyDown == true
+    // a key released event would be one with bKeyDown == false
+    // if no key is pressed, no event would be fired.
+    // so we are tracking if a key is either pressed, or released
+    if (key != K_COUNT)
+    {
+        g_skKeyEvent[key].keyDown = keyboardEvent.bKeyDown;
+        g_skKeyEvent[key].keyReleased = !keyboardEvent.bKeyDown;
+    }
+}
+
+void updateMenu()
+{
+    if (g_skKeyEvent[K_SPACE].keyDown) //Inputs for main menu that makes it work
+    {
+        g_eGameState = S_GAME;
+    }
+    if (g_skKeyEvent[K_ESCAPE].keyReleased) //for quitting  //put it here just in case
+    {
+        g_bQuitGame = true;
+    }
+}
+
 //--------------------------------------------------------------
 // Purpose  : Update function
 //            This is the update function
@@ -241,10 +288,12 @@ void update(double dt)
 
     switch (g_eGameState)
     {
-        case S_SPLASHSCREEN : splashScreenWait(); // game logic for the splash screen
-            break;
-        case S_GAME: updateGame(); // gameplay logic when we are in the game
-            break;
+        //case S_SPLASHSCREEN : splashScreenWait(); // game logic for the splash screen
+        //    break;
+    case S_MAINMENU: updateMenu(); //main menu logic
+        break;
+    case S_GAME: updateGame(); // gameplay logic when we are in the game
+        break;
     }
 }
 
@@ -254,6 +303,8 @@ void splashScreenWait()    // waits for time to pass in splash screen
     if (g_dElapsedTime > 3.0) // wait for 3 seconds to switch to game mode, else do nothing
         g_eGameState = S_GAME;
 }
+
+//----------------------------------------------------------------------------------
 
 void updateGame()       // gameplay logic
 {
