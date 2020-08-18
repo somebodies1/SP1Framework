@@ -44,7 +44,7 @@ SMouseEvent g_mouseEvent;
 player player1;
 bullet bullet1;
 SGameChar   g_sChar;
-EGAMESTATES g_eGameState = S_SPLASHSCREEN; // initial state
+EGAMESTATES g_eGameState = S_MAINMENU; // initial state
 
 // Console object
 Console g_Console(80, 25, "SP1 Framework");
@@ -63,7 +63,7 @@ void init( void )
     g_dElapsedTime = 0.0;    
 
     // sets the initial state for the game
-    g_eGameState = S_SPLASHSCREEN;
+    g_eGameState = S_MAINMENU;
 
     g_sChar.m_cLocation.X = g_Console.getConsoleSize().X / 2;
     g_sChar.m_cLocation.Y = g_Console.getConsoleSize().Y / 2;
@@ -129,7 +129,9 @@ void keyboardHandler(const KEY_EVENT_RECORD& keyboardEvent)
 {    
     switch (g_eGameState)
     {
-    case S_SPLASHSCREEN: // don't handle anything for the splash screen
+    //case S_SPLASHSCREEN: // don't handle anything for the splash screen
+    //    break;
+    case S_MAINMENU: mainmenuKBHandler(keyboardEvent); // handle menu keyboard event
         break;
     case S_GAME: gameplayKBHandler(keyboardEvent); // handle gameplay keyboard event 
         break;
@@ -196,6 +198,25 @@ void gameplayKBHandler(const KEY_EVENT_RECORD& keyboardEvent)
     }    
 }
 
+void mainmenuKBHandler(const KEY_EVENT_RECORD& keyboardEvent)  //KB inputs when insde main menu
+{
+    EKEYS key = K_COUNT;
+    switch (keyboardEvent.wVirtualKeyCode)
+    {
+    case VK_SPACE: key = K_SPACE; break;
+    case VK_ESCAPE: key = K_ESCAPE; break;
+    }
+    // a key pressed event would be one with bKeyDown == true
+    // a key released event would be one with bKeyDown == false
+    // if no key is pressed, no event would be fired.
+    // so we are tracking if a key is either pressed, or released
+    if (key != K_COUNT)
+    {
+        g_skKeyEvent[key].keyDown = keyboardEvent.bKeyDown;
+        g_skKeyEvent[key].keyReleased = !keyboardEvent.bKeyDown;
+    }
+}
+
 //--------------------------------------------------------------
 // Purpose  : This is the mouse handler in the game state. Whenever there is a mouse event in the game state, this function will be called.
 //            
@@ -237,10 +258,12 @@ void update(double dt)
 
     switch (g_eGameState)
     {
-        case S_SPLASHSCREEN : splashScreenWait(); // game logic for the splash screen
-            break;
-        case S_GAME: updateGame(); // gameplay logic when we are in the game
-            break;
+    //case S_SPLASHSCREEN : splashScreenWait(); // game logic for the splash screen
+    //    break;
+    case S_MAINMENU: updateMenu(); //main menu logic
+        break;
+    case S_GAME: updateGame(); // gameplay logic when we are in the game
+        break;
     }
 }
 
@@ -256,6 +279,18 @@ void updateGame()       // gameplay logic
     processUserInput(); // checks if you should change states or do something else with the game, e.g. pause, exit
     moveCharacter();    // moves the character, collision detection, physics, etc
                         // sound can be played here too.
+}
+
+void updateMenu()
+{
+    if (g_skKeyEvent[K_SPACE].keyDown) //Inputs for main menu that makes it work
+    {
+        g_eGameState = S_GAME;
+    }
+    if (g_skKeyEvent[K_ESCAPE].keyReleased) //for quitting  //put it here just in case
+    {
+        g_bQuitGame = true;
+    } 
 }
 
 void moveCharacter()
@@ -315,7 +350,9 @@ void render()
     clearScreen();      // clears the current screen and draw from scratch 
     switch (g_eGameState)
     {
-    case S_SPLASHSCREEN: renderSplashScreen();
+    //case S_SPLASHSCREEN: renderSplashScreen();
+    //    break;
+    case S_MAINMENU: renderMainMenu();
         break;
     case S_GAME: renderGame();
         break;
@@ -346,6 +383,20 @@ void renderSplashScreen()  // renders the splash screen
     c.Y += 1;
     c.X = g_Console.getConsoleSize().X / 2 - 20;
     g_Console.writeToBuffer(c, "Press <Space> to change character colour", 0x09);
+    c.Y += 1;
+    c.X = g_Console.getConsoleSize().X / 2 - 9;
+    g_Console.writeToBuffer(c, "Press 'Esc' to quit", 0x09);
+}
+
+void renderMainMenu()  // renders the main menu
+{
+    COORD c = g_Console.getConsoleSize(); //Put stuff here to make the main menu visuals
+    c.Y /= 3;
+    c.X = c.X / 2 - 9;
+    g_Console.writeToBuffer(c, "Mask the World", 0x03);
+    c.Y += 1;
+    c.X = g_Console.getConsoleSize().X / 2 - 20;
+    g_Console.writeToBuffer(c, "Press <Space> to start", 0x09);
     c.Y += 1;
     c.X = g_Console.getConsoleSize().X / 2 - 9;
     g_Console.writeToBuffer(c, "Press 'Esc' to quit", 0x09);

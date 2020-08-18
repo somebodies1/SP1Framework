@@ -4,5 +4,8 @@ Release/
 *.sdf
 *.suo
 *.user
+*.vs
+*.opendb
+*.opensdf
 ipch/
 .VC
