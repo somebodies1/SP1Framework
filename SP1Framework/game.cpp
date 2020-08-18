@@ -261,7 +261,7 @@ void pausemenuKBHandler(const KEY_EVENT_RECORD& keyboardEvent)  //KB inputs when
     EKEYS key = K_COUNT;
     switch (keyboardEvent.wVirtualKeyCode)
     {
-    case VK_ESCAPE: key = K_ESCAPE; break;
+    case VK_SPACE: key = K_SPACE; break;
     }
     if (key != K_COUNT)
     {
@@ -357,7 +357,7 @@ void updateMainMenu()
 
 void updatePauseMenu()
 {
-    if (g_skKeyEvent[K_ESCAPE].keyReleased)
+    if (g_skKeyEvent[K_SPACE].keyReleased)
     {
         g_eGameState = S_GAME;
     }
@@ -387,155 +387,154 @@ void Charactergravity()
 
 void moveCharacter()
 {
-    if (level1 == true)
+    if (g_eGameState == S_GAME) //Only moves when in game
     {
-        // Updating the location of the character based on the key release
-    // providing a beep sound whenver we shift the character
-        int iX = g_sChar.m_cLocation.X;
-        int iY = g_sChar.m_cLocation.Y;
-
-        if (g_skKeyEvent[K_UP].keyDown && g_sChar.m_cLocation.Y > 0)
+        if (level1 == true)
         {
-            //Beep(1440, 100);
-            if (Gamemap[iY][iX] == 'H' && Gamemap[iY - 1][iX] == 'H')
-            {
-                g_sChar.m_cLocation.Y--;
-            }
-            else
-            {
-                Beep(2000, 100);
-            }
-        }
-        if (g_skKeyEvent[K_LEFT].keyDown && g_sChar.m_cLocation.X > 0)
-        {
-            //Beep(2000, 30);
-            if (Gamemap[iY][iX - 1] == ' ' || Gamemap[iY][iX - 1] == 'H')
-            {
-                g_sChar.m_cLocation.X--;
-            }
-            else
-            {
-                Beep(2000, 100);
-            }
-        }
-        if (g_skKeyEvent[K_DOWN].keyDown && g_sChar.m_cLocation.Y < g_Console.getConsoleSize().Y - 1)
-        {
-            //Beep(2440, 30);
-            if (Gamemap[iY][iX] == 'H' && Gamemap[iY + 1][iX] == 'H') //For moving up and down the ladder
-            {
-                g_sChar.m_cLocation.Y++;
-            }
-            else
-            {
-                Beep(2000, 100);
-            }
-        }
-        if (g_skKeyEvent[K_RIGHT].keyDown && g_sChar.m_cLocation.X < g_Console.getConsoleSize().X - 1)
-        {
-            //Beep(1000, 30);
-            if (Gamemap[iY][iX + 1] == ' ' || Gamemap[iY][iX + 1] == 'H')
-            {
-                g_sChar.m_cLocation.X++;
-            }
-            else if (Gamemap[iY][iX + 1] == '+')
-            {
-                level1 = false;
-                level2 = true;
-                g_sChar.m_cLocation.X = 1;
-                g_sChar.m_cLocation.Y = 22;
-            }
-            else
-            {
-                Beep(2000, 100);
-            }
-        }
-        if (g_skKeyEvent[K_SPACE].keyDown)
-        {
-            Beep(1000, 30);
-            Beep(500, 50);
-            Beep(1500, 20);
-            g_sChar.m_bActive = !g_sChar.m_bActive;
-        }
-    }
-    else if (level2 == true)
-    {
-        // Updating the location of the character based on the key release
+            // Updating the location of the character based on the key release
         // providing a beep sound whenver we shift the character
-        int iX = g_sChar.m_cLocation.X;
-        int iY = g_sChar.m_cLocation.Y;
+            int iX = g_sChar.m_cLocation.X;
+            int iY = g_sChar.m_cLocation.Y;
 
-        //g_sChar.m_cLocation.X = 1;
-        //g_sChar.m_cLocation.Y = 22;
+            if (g_skKeyEvent[K_UP].keyDown && g_sChar.m_cLocation.Y > 0)
+            {
+                //Beep(1440, 100);
+                if (Gamemap[iY][iX] == 'H' && Gamemap[iY - 1][iX] == 'H')
+                {
+                    g_sChar.m_cLocation.Y--;
+                }
+                else
+                {
+                    Beep(2000, 100);
+                }
+            }
+            if (g_skKeyEvent[K_LEFT].keyDown && g_sChar.m_cLocation.X > 0)
+            {
+                //Beep(2000, 30);
+                if (Gamemap[iY][iX - 1] == ' ' || Gamemap[iY][iX - 1] == 'H')
+                {
+                    g_sChar.m_cLocation.X--;
+                }
+                else
+                {
+                    Beep(2000, 100);
+                }
+            }
+            if (g_skKeyEvent[K_DOWN].keyDown && g_sChar.m_cLocation.Y < g_Console.getConsoleSize().Y - 1)
+            {
+                //Beep(2440, 30);
+                if (Gamemap[iY][iX] == 'H' && Gamemap[iY + 1][iX] == 'H') //For moving up and down the ladder
+                {
+                    g_sChar.m_cLocation.Y++;
+                }
+                else
+                {
+                    Beep(2000, 100);
+                }
+            }
+            if (g_skKeyEvent[K_RIGHT].keyDown && g_sChar.m_cLocation.X < g_Console.getConsoleSize().X - 1)
+            {
+                //Beep(1000, 30);
+                if (Gamemap[iY][iX + 1] == ' ' || Gamemap[iY][iX + 1] == 'H')
+                {
+                    g_sChar.m_cLocation.X++;
+                }
+                else if (Gamemap[iY][iX + 1] == '+')
+                {
+                    level1 = false;
+                    level2 = true;
+                    g_sChar.m_cLocation.X = 1;
+                    g_sChar.m_cLocation.Y = 22;
+                }
+                else
+                {
+                    Beep(2000, 100);
+                }
+            }
+            if (g_skKeyEvent[K_SPACE].keyDown)
+            {
+                Beep(1000, 30);
+                Beep(500, 50);
+                Beep(1500, 20);
+                g_sChar.m_bActive = !g_sChar.m_bActive;
+            }
+        }
+        else if (level2 == true)
+        {
+            // Updating the location of the character based on the key release
+            // providing a beep sound whenver we shift the character
+            int iX = g_sChar.m_cLocation.X;
+            int iY = g_sChar.m_cLocation.Y;
+
+            //g_sChar.m_cLocation.X = 1;
+            //g_sChar.m_cLocation.Y = 22;
 
 
-        if (g_skKeyEvent[K_UP].keyDown && g_sChar.m_cLocation.Y > 0)
-        {
-            //Beep(1440, 100);
-            if (Gamemap1[iY][iX] == 'H' && Gamemap1[iY - 1][iX] == 'H')
+            if (g_skKeyEvent[K_UP].keyDown && g_sChar.m_cLocation.Y > 0)
             {
-                g_sChar.m_cLocation.Y--;
+                //Beep(1440, 100);
+                if (Gamemap1[iY][iX] == 'H' && Gamemap1[iY - 1][iX] == 'H')
+                {
+                    g_sChar.m_cLocation.Y--;
+                }
+                else
+                {
+                    Beep(2000, 100);
+                }
             }
-            else
+            if (g_skKeyEvent[K_LEFT].keyDown && g_sChar.m_cLocation.X > 0)
             {
-                Beep(2000, 100);
+                //Beep(2000, 30);
+                if (Gamemap1[iY][iX - 1] == ' ' || Gamemap1[iY][iX - 1] == 'H')
+                {
+                    g_sChar.m_cLocation.X--;
+                }
+                else if (Gamemap1[iY][iX - 1] == '+')
+                {
+                    level2 = false;
+                    level1 = true;
+                    g_sChar.m_cLocation.X = 78;
+                    g_sChar.m_cLocation.Y = 22;
+                }
+                else
+                {
+                    Beep(2000, 100);
+                }
             }
-        }
-        if (g_skKeyEvent[K_LEFT].keyDown && g_sChar.m_cLocation.X > 0)
-        {
-            //Beep(2000, 30);
-            if (Gamemap1[iY][iX - 1] == ' ' || Gamemap1[iY][iX - 1] == 'H')
+            if (g_skKeyEvent[K_DOWN].keyDown && g_sChar.m_cLocation.Y < g_Console.getConsoleSize().Y - 1)
             {
-                g_sChar.m_cLocation.X--;
+                //Beep(2440, 30);
+                if (Gamemap1[iY][iX] == 'H' && Gamemap1[iY + 1][iX] == 'H') //For moving up and down the ladder
+                {
+                    g_sChar.m_cLocation.Y++;
+                }
+                else
+                {
+                    Beep(2000, 100);
+                }
             }
-            else if (Gamemap1[iY][iX - 1] == '+')
+            if (g_skKeyEvent[K_RIGHT].keyDown && g_sChar.m_cLocation.X < g_Console.getConsoleSize().X - 1)
             {
-                level2 = false;
-                level1 = true;
-                g_sChar.m_cLocation.X = 78;
-                g_sChar.m_cLocation.Y = 22;
+                //Beep(1000, 30);
+                if (Gamemap1[iY][iX + 1] == ' ' || Gamemap1[iY][iX + 1] == 'H')
+                {
+                    g_sChar.m_cLocation.X++;
+                }
+
+                else
+                {
+                    Beep(2000, 100);
+                }
             }
-            else
+            if (g_skKeyEvent[K_SPACE].keyDown)
             {
-                Beep(2000, 100);
+                Beep(1000, 30);
+                Beep(500, 50);
+                Beep(1500, 20);
+                g_sChar.m_bActive = !g_sChar.m_bActive;
             }
-        }
-        if (g_skKeyEvent[K_DOWN].keyDown && g_sChar.m_cLocation.Y < g_Console.getConsoleSize().Y - 1)
-        {
-            //Beep(2440, 30);
-            if (Gamemap1[iY][iX] == 'H' && Gamemap1[iY + 1][iX] == 'H') //For moving up and down the ladder
-            {
-                g_sChar.m_cLocation.Y++;
-            }
-            else
-            {
-                Beep(2000, 100);
-            }
-        }
-        if (g_skKeyEvent[K_RIGHT].keyDown && g_sChar.m_cLocation.X < g_Console.getConsoleSize().X - 1)
-        {
-            //Beep(1000, 30);
-            if (Gamemap1[iY][iX + 1] == ' ' || Gamemap1[iY][iX + 1] == 'H')
-            {
-                g_sChar.m_cLocation.X++;
-            }
-            
-            else
-            {
-                Beep(2000, 100);
-            }
-        }
-        if (g_skKeyEvent[K_SPACE].keyDown)
-        {
-            Beep(1000, 30);
-            Beep(500, 50);
-            Beep(1500, 20);
-            g_sChar.m_bActive = !g_sChar.m_bActive;
         }
     }
-
-
-
-
 }
 void processUserInput()
 {
