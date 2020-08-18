@@ -40,8 +40,7 @@ enum EGAMESTATES
 {
     S_SPLASHSCREEN,
     S_GAME,
-    S_COUNT,
-    S_MAINMENU
+    S_COUNT
 };
 
 // struct for the game character
