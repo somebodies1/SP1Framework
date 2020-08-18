@@ -1,10 +1,16 @@
 Debug/
 Release/
-*.opensdf
 *.sdf
 *.suo
 *.user
 ipch/
+<<<<<<< HEAD
+.VC
+*.opendb
+*.db
+*.opensdf
+=======
 .db
 .vs/SP1Framework/v16/Browse.VC.db-wal
 .vs/SP1Framework/v16/Browse.VC.opendb
+>>>>>>> 0bdfe8acab1fb7be27ab4510dfcd40dd355be471
