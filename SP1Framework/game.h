@@ -41,6 +41,7 @@ enum EGAMESTATES
     S_SPLASHSCREEN,
     S_GAME,
     S_MAINMENU,
+    S_PAUSE,
     S_COUNT
 };
 
@@ -78,6 +79,7 @@ void mouseHandler(const MOUSE_EVENT_RECORD& mouseEvent);      // define this fun
 
 void gameplayKBHandler(const KEY_EVENT_RECORD& keyboardEvent);   // handles keyboard events for gameplay 
 void gameplayMouseHandler(const MOUSE_EVENT_RECORD& mouseEvent); // handles mouse events for gameplay 
-void mainmenuKBHandler(const KEY_EVENT_RECORD& keyboardEvent);   // handles keyborad events for menu
+void mainmenuKBHandler(const KEY_EVENT_RECORD& keyboardEvent);   // handles keyboard events for menu
+void gameplayMenuHandler(const MOUSE_EVENT_RECORD& mouseEvent);  // handles mouse events for menu
 
 #endif // _GAME_H
