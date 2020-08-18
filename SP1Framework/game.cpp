@@ -133,7 +133,9 @@ void keyboardHandler(const KEY_EVENT_RECORD& keyboardEvent)
 {    
     switch (g_eGameState)
     {
-    case S_SPLASHSCREEN: // don't handle anything for the splash screen
+    //case S_SPLASHSCREEN: // don't handle anything for the splash screen
+    //    break;
+    case S_MAINMENU: mainmenuKBHandler(keyboardEvent); // handle menu keyboard event
         break;
     case S_GAME: gameplayKBHandler(keyboardEvent); // handle gameplay keyboard event 
         break;
@@ -200,41 +202,6 @@ void gameplayKBHandler(const KEY_EVENT_RECORD& keyboardEvent)
     }    
 }
 
-//--------------------------------------------------------------
-// Purpose  : This is the mouse handler in the game state. Whenever there is a mouse event in the game state, this function will be called.
-//            
-//            If mouse clicks are detected, the corresponding bit for that mouse button will be set.
-//            mouse wheel, 
-//            
-// Input    : const KEY_EVENT_RECORD& keyboardEvent
-// Output   : void
-//--------------------------------------------------------------
-void gameplayMouseHandler(const MOUSE_EVENT_RECORD& mouseEvent)
-{
-    if (mouseEvent.dwEventFlags & MOUSE_MOVED) // update the mouse position if there are no events
-    {
-        g_mouseEvent.mousePosition = mouseEvent.dwMousePosition;
-    }
-    g_mouseEvent.buttonState = mouseEvent.dwButtonState;
-    g_mouseEvent.eventFlags = mouseEvent.dwEventFlags;
-}
-
-//---------------------------Main Menu items----------------------------------------
-
-void renderMainMenu()  // renders the main menu
-{
-    COORD c = g_Console.getConsoleSize(); //Put stuff here to make the main menu visuals
-    c.Y /= 3;
-    c.X = c.X / 2 - 9;
-    g_Console.writeToBuffer(c, "Mask the World", 0x03);
-    c.Y += 1;
-    c.X = g_Console.getConsoleSize().X / 2 - 20;
-    g_Console.writeToBuffer(c, "Press <Space> to start", 0x09);
-    c.Y += 1;
-    c.X = g_Console.getConsoleSize().X / 2 - 9;
-    g_Console.writeToBuffer(c, "Press 'Esc' to quit", 0x09);
-}
-
 void mainmenuKBHandler(const KEY_EVENT_RECORD& keyboardEvent)  //KB inputs when insde main menu
 {
     EKEYS key = K_COUNT;
@@ -254,17 +221,25 @@ void mainmenuKBHandler(const KEY_EVENT_RECORD& keyboardEvent)  //KB inputs when 
     }
 }
 
-void updateMenu()
+//--------------------------------------------------------------
+// Purpose  : This is the mouse handler in the game state. Whenever there is a mouse event in the game state, this function will be called.
+//            
+//            If mouse clicks are detected, the corresponding bit for that mouse button will be set.
+//            mouse wheel, 
+//            
+// Input    : const KEY_EVENT_RECORD& keyboardEvent
+// Output   : void
+//--------------------------------------------------------------
+void gameplayMouseHandler(const MOUSE_EVENT_RECORD& mouseEvent)
 {
-    if (g_skKeyEvent[K_SPACE].keyDown) //Inputs for main menu that makes it work
+    if (mouseEvent.dwEventFlags & MOUSE_MOVED) // update the mouse position if there are no events
     {
-        g_eGameState = S_GAME;
+        g_mouseEvent.mousePosition = mouseEvent.dwMousePosition;
     }
-    if (g_skKeyEvent[K_ESCAPE].keyReleased) //for quitting  //put it here just in case
-    {
-        g_bQuitGame = true;
-    }
+    g_mouseEvent.buttonState = mouseEvent.dwButtonState;
+    g_mouseEvent.eventFlags = mouseEvent.dwEventFlags;
 }
+
 
 //--------------------------------------------------------------
 // Purpose  : Update function
@@ -312,6 +287,18 @@ void updateGame()       // gameplay logic
     moveCharacter();    // moves the character, collision detection, physics, etc
                         // sound can be played here too.
     Charactergravity();
+}
+
+void updateMenu()
+{
+    if (g_skKeyEvent[K_SPACE].keyDown) //Inputs for main menu that makes it work
+    {
+        g_eGameState = S_GAME;
+    }
+    if (g_skKeyEvent[K_ESCAPE].keyReleased) //for quitting  //put it here just in case
+    {
+        g_bQuitGame = true;
+    }
 }
 
 void Charactergravity()
@@ -411,7 +398,9 @@ void render()
     clearScreen();      // clears the current screen and draw from scratch 
     switch (g_eGameState)
     {
-    case S_SPLASHSCREEN: renderSplashScreen();
+    //case S_SPLASHSCREEN: renderSplashScreen();
+    //    break;
+    case S_MAINMENU: renderMainMenu();
         break;
     case S_GAME: renderGame();
         break;
@@ -442,6 +431,20 @@ void renderSplashScreen()  // renders the splash screen
     c.Y += 1;
     c.X = g_Console.getConsoleSize().X / 2 - 20;
     g_Console.writeToBuffer(c, "Press <Space> to change character colour", 0x09);
+    c.Y += 1;
+    c.X = g_Console.getConsoleSize().X / 2 - 9;
+    g_Console.writeToBuffer(c, "Press 'Esc' to quit", 0x09);
+}
+
+void renderMainMenu()  // renders the main menu
+{
+    COORD c = g_Console.getConsoleSize(); //Put stuff here to make the main menu visuals
+    c.Y /= 3;
+    c.X = c.X / 2 - 9;
+    g_Console.writeToBuffer(c, "Mask the World", 0x03);
+    c.Y += 1;
+    c.X = g_Console.getConsoleSize().X / 2 - 20;
+    g_Console.writeToBuffer(c, "Press <Space> to start", 0x09);
     c.Y += 1;
     c.X = g_Console.getConsoleSize().X / 2 - 9;
     g_Console.writeToBuffer(c, "Press 'Esc' to quit", 0x09);
