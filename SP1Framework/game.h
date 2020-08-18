@@ -40,8 +40,8 @@ enum EGAMESTATES
 {
     S_SPLASHSCREEN,
     S_GAME,
-    S_COUNT,
-    S_MAINMENU
+    S_MAINMENU,
+    S_COUNT
 };
 
 // struct for the game character
@@ -59,27 +59,25 @@ void shutdown    ( void );      // do clean up, free memory
 
 void splashScreenWait();    // waits for time to pass in splash screen
 void updateGame();          // gameplay logic
+void updateMenu();          // menu logic
 void moveCharacter();       // moves the character, collision detection, physics, etc
 void processUserInput();    // checks if you should change states or do something else with the game, e.g. pause, exit
 void clearScreen();         // clears the current screen and draw from scratch 
 void renderSplashScreen();  // renders the splash screen
 void renderGame();          // renders the game stuff
+void renderMainMenu();          // renders the menu stuff
 void renderMap();           // renders the map to the buffer first
 void renderCharacter();     // renders the character into the buffer
 void renderFramerate();     // renders debug information, frame rate, elapsed time, etc
 void renderToScreen();      // dump the contents of the buffer to the screen, one frame worth of game
 void renderInputEvents();   // renders the status of input events
-
-void updateMenu(); // update menu
-void renderMainMenu(); // render main menu
-void mainmenuKBHandler(const KEY_EVENT_RECORD& keyboardEvent); // main menu keyboard events
-
+void Charactergravity();     // Makes the chracter fall when not standing on a platform
 // keyboard and mouse input event managers
 void keyboardHandler(const KEY_EVENT_RECORD& keyboardEvent);  // define this function for the console to call when there are keyboard events
 void mouseHandler(const MOUSE_EVENT_RECORD& mouseEvent);      // define this function for the console to call when there are mouse events
 
 void gameplayKBHandler(const KEY_EVENT_RECORD& keyboardEvent);   // handles keyboard events for gameplay 
 void gameplayMouseHandler(const MOUSE_EVENT_RECORD& mouseEvent); // handles mouse events for gameplay 
-
+void mainmenuKBHandler(const KEY_EVENT_RECORD& keyboardEvent);   // handles keyboard events for menu
 
 #endif // _GAME_H
