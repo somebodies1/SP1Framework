@@ -16,3 +16,4 @@ ipch/
 >>>>>>> 0bdfe8acab1fb7be27ab4510dfcd40dd355be471
 *.json
 *.sqlite
+*.db
