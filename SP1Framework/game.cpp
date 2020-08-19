@@ -7,9 +7,9 @@
 #include <iomanip>
 #include <sstream>
 
-char Gamemap[25][80] = 
+char Gamemap[25][80] =
 {
-    
+
     {'1',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ','1'},
     {'1',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ','=','=','=','=','=','=','=','=','=','=','=','=','=','=','=','=',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ','1'},
     {'1',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ','=',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ','=',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ','1'},
@@ -75,12 +75,14 @@ SMouseEvent g_mouseEvent;
 
 // Game specific variables here
 SGameChar   g_sChar;
+Pew g_pew;
 EGAMESTATES g_eGameState = S_MAINMENU; // initial state
 
 // Console object
 Console g_Console(80, 25, "SP1 Framework");
 bool level1 = true;
 bool level2 = false;
+bool isFiring = false;
 
 
 //--------------------------------------------------------------
@@ -90,10 +92,10 @@ bool level2 = false;
 // Input    : void
 // Output   : void
 //--------------------------------------------------------------
-void init( void )
+void init(void)
 {
     // Set precision for floating point output
-    g_dElapsedTime = 0.0;    
+    g_dElapsedTime = 0.0;
 
     // sets the initial state for the game
     g_eGameState = S_MAINMENU;
@@ -105,6 +107,12 @@ void init( void )
     g_sChar.m_cLocation.X = 1;
     g_sChar.m_cLocation.Y = 22;
     g_sChar.m_bActive = true;
+
+
+    g_pew.m_cLocation.X = g_sChar.m_cLocation.X + 1;
+    g_pew.m_cLocation.Y = g_sChar.m_cLocation.Y;
+
+
     // sets the width, height and the font name to use in the console
     g_Console.setConsoleFont(0, 16, L"Consolas");
 
@@ -120,7 +128,7 @@ void init( void )
 // Input    : Void
 // Output   : void
 //--------------------------------------------------------------
-void shutdown( void )
+void shutdown(void)
 {
     // Reset to white text on black background
     colour(FOREGROUND_BLUE | FOREGROUND_GREEN | FOREGROUND_RED);
@@ -141,12 +149,12 @@ void shutdown( void )
 // Input    : Void
 // Output   : void
 //--------------------------------------------------------------
-void getInput( void )
+void getInput(void)
 {
     // resets all the keyboard events
     memset(g_skKeyEvent, 0, K_COUNT * sizeof(*g_skKeyEvent));
     // then call the console to detect input from user
-    g_Console.readConsoleInput();    
+    g_Console.readConsoleInput();
 }
 
 //--------------------------------------------------------------
@@ -163,11 +171,11 @@ void getInput( void )
 // Output   : void
 //--------------------------------------------------------------
 void keyboardHandler(const KEY_EVENT_RECORD& keyboardEvent)
-{    
+{
     switch (g_eGameState)
     {
-    //case S_SPLASHSCREEN: // don't handle anything for the splash screen
-    //    break;
+        //case S_SPLASHSCREEN: // don't handle anything for the splash screen
+        //    break;
     case S_MAINMENU: mainmenuKBHandler(keyboardEvent); // handle menu keyboard event
         break;
     case S_PAUSE: pausemenuKBHandler(keyboardEvent);
@@ -194,7 +202,7 @@ void keyboardHandler(const KEY_EVENT_RECORD& keyboardEvent)
 // Output   : void
 //--------------------------------------------------------------
 void mouseHandler(const MOUSE_EVENT_RECORD& mouseEvent)
-{    
+{
     switch (g_eGameState)
     {
     case S_SPLASHSCREEN: // don't handle anything for the splash screen
@@ -228,7 +236,7 @@ void gameplayKBHandler(const KEY_EVENT_RECORD& keyboardEvent)
     case 0x41: key = K_LEFT; break;
     case 0x44: key = K_RIGHT; break;
     case VK_SPACE: key = K_SPACE; break;
-    case VK_ESCAPE: key = K_ESCAPE; break; 
+    case VK_ESCAPE: key = K_ESCAPE; break;
     }
     // a key pressed event would be one with bKeyDown == true
     // a key released event would be one with bKeyDown == false
@@ -238,7 +246,7 @@ void gameplayKBHandler(const KEY_EVENT_RECORD& keyboardEvent)
     {
         g_skKeyEvent[key].keyDown = keyboardEvent.bKeyDown;
         g_skKeyEvent[key].keyReleased = !keyboardEvent.bKeyDown;
-    }    
+    }
 }
 
 void mainmenuKBHandler(const KEY_EVENT_RECORD& keyboardEvent)  //KB inputs when inside main menu
@@ -311,13 +319,13 @@ void update(double dt)
 
     switch (g_eGameState)
     {
-        case S_SPLASHSCREEN : splashScreenWait(); // game logic for the splash screen
-            break;
-        case S_MAINMENU: updateMainMenu();
-            break;
-        case S_PAUSE: updatePauseMenu();
-        case S_GAME: updateGame(); // gameplay logic when we are in the game
-            break;
+    case S_SPLASHSCREEN: splashScreenWait(); // game logic for the splash screen
+        break;
+    case S_MAINMENU: updateMainMenu();
+        break;
+    case S_PAUSE: updatePauseMenu();
+    case S_GAME: updateGame(); // gameplay logic when we are in the game
+        break;
     }
 }
 
@@ -331,8 +339,13 @@ void updateGame()       // gameplay logic
 {
     processUserInput(); // checks if you should change states or do something else with the game, e.g. pause, exit
     moveCharacter();    // moves the character, collision detection, physics, etc
-                        // sound can be played here too.
+    movePew();                    // sound can be played here too.
     Charactergravity();
+    /*if (isFiring==true)
+    {
+        renderPew();
+        //g_pew.m_cLocation.X++;
+    }*/
 }
 
 void updateMainMenu()
@@ -379,9 +392,17 @@ void Charactergravity()
     {
         g_sChar.m_cLocation.Y++;
     }
-    else if (Gamemap1[iY + 1][iX] == ' '&& Gamemap1[iY][iX] != 'H' && level2 == true) //Falls if there is nothing beneath the character
+    else if (Gamemap1[iY + 1][iX] == ' ' && Gamemap1[iY][iX] != 'H' && level2 == true) //Falls if there is nothing beneath the character
     {
         g_sChar.m_cLocation.Y++;
+    }
+}
+
+void movePew()
+{
+    if (isFiring == true)
+    {
+        g_pew.m_cLocation.X++;
     }
 }
 
@@ -423,7 +444,7 @@ void moveCharacter()
             if (g_skKeyEvent[K_DOWN].keyDown && g_sChar.m_cLocation.Y < g_Console.getConsoleSize().Y - 1)
             {
                 //Beep(2440, 30);
-                if (Gamemap[iY][iX] == 'H' && Gamemap[iY+1][iX] == 'H') //For moving up and down the ladder
+                if (Gamemap[iY][iX] == 'H' && Gamemap[iY + 1][iX] == 'H') //For moving up and down the ladder
                 {
                     g_sChar.m_cLocation.Y++;
                 }
@@ -457,6 +478,10 @@ void moveCharacter()
                 Beep(500, 50);
                 Beep(1500, 20);
                 g_sChar.m_bActive = !g_sChar.m_bActive;
+                if (Gamemap[iY][iX + 1] == ' ')
+                {
+                    isFiring = true;
+                }
             }
         }
         else if (level2 == true)
@@ -540,7 +565,7 @@ void processUserInput()
 {
     // Pauses the game if player hits the escape key
     if (g_skKeyEvent[K_ESCAPE].keyReleased)
-        g_eGameState = S_PAUSE;    
+        g_eGameState = S_PAUSE;
 }
 
 //--------------------------------------------------------------
@@ -556,8 +581,8 @@ void render()
     clearScreen();      // clears the current screen and draw from scratch 
     switch (g_eGameState)
     {
-    //case S_SPLASHSCREEN: renderSplashScreen();
-    //    break;
+        //case S_SPLASHSCREEN: renderSplashScreen();
+        //    break;
     case S_MAINMENU: renderMainMenu();
         break;
     case S_PAUSE: renderPauseMenu();
@@ -626,7 +651,12 @@ void renderPauseMenu()  // renders the main menu
 void renderGame()
 {
     renderMap();        // renders the map to the buffer first
-    renderCharacter();  // renders the character into the buffer
+    renderCharacter();
+    if (isFiring == true)
+    {
+        renderPew();
+
+    }// renders the character into the buffer
 }
 
 void renderMap()
@@ -713,6 +743,13 @@ void renderCharacter()
     g_Console.writeToBuffer(g_sChar.m_cLocation, (char)1, charColor);
 }
 
+void renderPew()
+{
+    WORD charColor = 0x1F;
+
+    g_Console.writeToBuffer(g_pew.m_cLocation, '-', charColor);
+}
+
 void renderFramerate()
 {
     COORD c;
@@ -727,6 +764,8 @@ void renderFramerate()
     // displays the elapsed time
     ss.str("");
     ss << g_dElapsedTime << "secs";
+    ss << g_pew.m_cLocation.X;
+    ss << isFiring;
     c.X = 0;
     c.Y = 0;
     g_Console.writeToBuffer(c, ss.str(), 0x59);
@@ -736,7 +775,7 @@ void renderFramerate()
 void renderInputEvents()
 {
     // keyboard events
-    COORD startPos = {50, 2};
+    COORD startPos = { 50, 2 };
     std::ostringstream ss;
     std::string key;
     for (int i = 0; i < K_COUNT; ++i)
@@ -805,8 +844,7 @@ void renderInputEvents()
     //default:        
     //    break;
     //}
-    
-}
 
+}
 
 
