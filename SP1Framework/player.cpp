@@ -90,6 +90,10 @@ void player::moveplayer(/*Console g_Console,*/ char Gamemap[25][80], int directi
         {
             m_cLocation.X--;
         }
+        else if (Gamemap[iY][iX - 1] == '+')
+        {
+            m_cLocation.X =+ 78;
+        }
         else
         {
             Beep(3000, 200);
@@ -116,8 +120,7 @@ void player::moveplayer(/*Console g_Console,*/ char Gamemap[25][80], int directi
         }
         else if (Gamemap[iY][iX + 1] == '+')
         {
-            m_cLocation.X = 1;
-            m_cLocation.Y = 22;
+            m_cLocation.X -= 77;
         }
         else
         {
