@@ -23,5 +23,6 @@ public:
 	void moveplayer(/*Console g_console,*/ char gamemap[25][80], int direction);
 
 
+
 };
 
