@@ -62,11 +62,16 @@ int player::get_ammo(void)
 	return ammo;
 }
 
-void player::moveplayer(Console g_Console, char Gamemap[25][80], int direction)
+COORD player::getcoord(void)
+{
+    return m_cLocation;
+}
+
+void player::moveplayer(/*Console g_Console,*/ char Gamemap[25][80], int direction)
 {
     int iX = m_cLocation.X;
     int iY = m_cLocation.Y;
-    if (direction == 1 && m_cLocation.Y > 0)
+    if (direction == 1)
     {
         //Beep(1440, 100);
         if (Gamemap[iY][iX] == 'H' && Gamemap[iY - 1][iX] == 'H')
@@ -75,10 +80,10 @@ void player::moveplayer(Console g_Console, char Gamemap[25][80], int direction)
         }
         else
         {
-            Beep(2000, 100);
+            Beep(3000, 200);
         }
     }
-    if (direction == 2 && m_cLocation.X > 0)
+    if (direction == 2)
     {
         //Beep(2000, 30);
         if (Gamemap[iY][iX - 1] == ' ' || Gamemap[iY][iX - 1] == 'H')
@@ -87,10 +92,10 @@ void player::moveplayer(Console g_Console, char Gamemap[25][80], int direction)
         }
         else
         {
-            Beep(2000, 100);
+            Beep(3000, 200);
         }
     }
-    if (direction == 3 && m_cLocation.Y < g_Console.getConsoleSize().Y - 1)
+    if (direction == 3)
     {
         //Beep(2440, 30);
         if (Gamemap[iY][iX] == 'H' && Gamemap[iY + 1][iX] == 'H') //For moving up and down the ladder
@@ -99,10 +104,10 @@ void player::moveplayer(Console g_Console, char Gamemap[25][80], int direction)
         }
         else
         {
-            Beep(2000, 100);
+            Beep(3000, 200);
         }
     }
-    if (direction == 4 && m_cLocation.X < g_Console.getConsoleSize().X - 1)
+    if (direction == 4)
     {
         //Beep(1000, 30);
         if (Gamemap[iY][iX + 1] == ' ' || Gamemap[iY][iX + 1] == 'H')
@@ -116,8 +121,12 @@ void player::moveplayer(Console g_Console, char Gamemap[25][80], int direction)
         }
         else
         {
-            Beep(2000, 100);
+            Beep(3000, 200);
         }
+    }
+    else if (Gamemap[iY + 1][iX] == ' ')
+    {
+        m_cLocation.Y++;
     }
 }
 
