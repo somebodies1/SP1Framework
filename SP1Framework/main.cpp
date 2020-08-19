@@ -15,13 +15,6 @@ void mainLoop( void );
 // Bug in waitUntil. it waits for the time from getElapsedTime to waitUntil, but should be insignificant.
 
 // main function - starting function
-
-
-
-//HAHAHAHAHAHA GONNA DIEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE
-
-
-
 // You should not be modifying this unless you know what you are doing
 int main( void )
 {
