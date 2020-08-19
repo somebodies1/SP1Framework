@@ -561,6 +561,29 @@ void moveCharacter()
             }
         }
     }
+
+
+
+
+//WIP Function funtionality
+    int direction = 0;
+    if (g_skKeyEvent[K_UP].keyDown)
+    {
+        direction = 1;
+    }
+    if (g_skKeyEvent[K_LEFT].keyDown)
+    {
+        direction = 2;
+    }    
+    if (g_skKeyEvent[K_DOWN].keyDown)
+    {
+        direction = 3;
+    }
+    if (g_skKeyEvent[K_RIGHT].keyDown)
+    {
+        direction = 4;
+    }
+    PlayerChar.moveplayer(g_Console, Gamemap, direction);
 }
 void processUserInput()
 {
