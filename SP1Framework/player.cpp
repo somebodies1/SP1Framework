@@ -3,9 +3,9 @@
 
 player::player()
 {
-	hp = 1;
-	mp = 1;
-	ammo = 1;
+	hp = 3;
+	mp = 5;
+	ammo = 10;
     m_cLocation.X = 2;
     m_cLocation.Y = 22;
     m_bActive = true;
