@@ -15,3 +15,8 @@ public:
 	int getMP(void);
 };
 
+class SlowMob :
+	public Entity
+{
+};
+

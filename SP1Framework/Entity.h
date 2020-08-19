@@ -16,3 +16,7 @@ public:
 	int getMP(void);
 };
 
+class Entity
+{
+};
+
