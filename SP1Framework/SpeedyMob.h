@@ -1,7 +1,6 @@
 #pragma once
 #include "Entity.h"
-class SpeedyMob :
-	public Entity
+class SpeedyMob : public Entity
 {
 private:
 	int hp, mp;

@@ -1,7 +1,6 @@
 #pragma once
 #include "Entity.h"
-class StationaryMob :
-	public Entity
+class StationaryMob : public Entity
 {
 private:
 	int hp, mp;

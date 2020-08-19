@@ -77,6 +77,8 @@ SMouseEvent g_mouseEvent;
 player PlayerChar; //create player object
 SGameChar   g_sChar;
 Pew g_pew;
+Entity* amt[5] = { nullptr, nullptr, nullptr, nullptr, nullptr };
+
 EGAMESTATES g_eGameState = S_MAINMENU; // initial state
 
 // Console object
@@ -85,6 +87,7 @@ bool level1 = true;
 bool level2 = false;
 bool isFiring = false;
 bool bulletmoving = false;
+bool spawned[5] = { false, false, false ,false, false };
 
 
 //--------------------------------------------------------------
@@ -113,6 +116,7 @@ void init(void)
 
     g_pew.m_cLocation.X = g_sChar.m_cLocation.X + 1;
     g_pew.m_cLocation.Y = g_sChar.m_cLocation.Y;
+
 
 
     // sets the width, height and the font name to use in the console
@@ -343,6 +347,7 @@ void updateGame()       // gameplay logic
     moveCharacter();    // moves the character, collision detection, physics, etc
     movePew();                    // sound can be played here too.
     Charactergravity();
+    moveEnemy();
     /*if (isFiring==true)
     {
         renderPew();
@@ -444,6 +449,52 @@ void movePew()
     }
     //Sleep(1000);
     //isFiring = false;
+}
+
+void moveEnemy()
+{
+    if (g_eGameState == S_GAME)
+    {
+        if (level1 == true)
+        {
+            for (int i = 0; i < 2; i++)
+            {
+                if (spawned[i] == false)
+                {
+                    amt[i] = new Entity;
+                    amt[i]->spawnEntity(2, 2);
+                    if (i == 0)
+                    {
+                        amt[i]->setX(77);
+                        amt[i]->setY(22);
+                    }
+                    if (i == 1)
+                    {
+                        amt[i]->setX(76);
+                        amt[i]->setY(22);
+                    }
+                    spawned[i] = true;
+                }
+                    
+
+                if (amt[i] != nullptr)
+                {
+                    
+                    
+                    //SHORT iX = amt[i]->X();
+                    //SHORT iY = amt[i]->Y();
+                    //if (iX > 0) // move left
+                    //{
+                    //    amt[i]->setX(iX - 1);
+                    //}
+                    //if (iX < g_Console.getConsoleSize().X - 1) // move right
+                    //{
+                    //    amt[i]->setY(iX + 1);
+                    //}
+                }
+            }
+        }
+    }
 }
 
 void moveCharacter()
@@ -641,7 +692,7 @@ void moveCharacter()
 
 
 //WIP Function funtionality
-    int direction = 0;
+   /* int direction = 0;
     if (g_skKeyEvent[K_UP].keyDown)
     {
         direction = 1;
@@ -658,7 +709,7 @@ void moveCharacter()
     {
         direction = 4;
     }
-    PlayerChar.moveplayer(g_Console, Gamemap, direction);
+    PlayerChar.moveplayer(g_Console, Gamemap, direction);*/
 }
 void processUserInput()
 {
@@ -752,6 +803,7 @@ void renderGame()
     renderMap();        // renders the map to the buffer first
     renderCharacter();
     renderPlayerUI(PlayerChar);
+    renderEnemy();
     if (isFiring == true)
     {
         renderPew();
@@ -866,6 +918,19 @@ void renderPew()
     g_Console.writeToBuffer(g_pew.m_cLocation, '-', charColor);
 }
 
+void renderEnemy()
+{
+    WORD charColor = 0x1C;
+    for (int i = 0; i < 5; i++)
+    {
+        if (amt[i] != nullptr)
+        {
+            g_Console.writeToBuffer(amt[i]->getXY(), 'Z', charColor);
+        }
+    }
+    
+}
+
 void renderFramerate()
 {
     COORD c;
@@ -880,8 +945,11 @@ void renderFramerate()
     // displays the elapsed time
     ss.str("");
     ss << g_dElapsedTime << "secs";
-    ss << g_pew.m_cLocation.X;
-    ss << isFiring;
+    if (amt[1] != nullptr)
+    {
+        ss << amt[1]->X();
+        ss << amt[1]->Y();
+    }
     c.X = 0;
     c.Y = 0;
     g_Console.writeToBuffer(c, ss.str(), 0x59);
