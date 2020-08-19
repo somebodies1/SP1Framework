@@ -3,12 +3,12 @@ class Entity
 {
 private:
 	static int enemyTotal;
-	int count;
+	static int count;
 	int hp, mp;
 public:
 	Entity();
 	~Entity();
-
+	void spawnEntity(int h, int m);
 	void setHP(int h);
 	void setMP(int m);
 

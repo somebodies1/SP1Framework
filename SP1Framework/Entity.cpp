@@ -1,15 +1,20 @@
 #include "Entity.h"
-
+int enemyTotal = 10;
+int count = 0;
 Entity::Entity()
 {
-	enemyTotal = 10;
-	count = 0;
 	hp = 1;
 	mp = 1;
 }
 
 Entity::~Entity()
 {
+}
+
+void Entity::spawnEntity(int h, int m)
+{
+	hp = h;
+	mp = m;
 }
 
 void Entity::setHP(int h)
