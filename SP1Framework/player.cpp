@@ -1,12 +1,25 @@
 #include "player.h"
 
+
 player::player()
 {
 	hp = 1;
 	mp = 1;
 	ammo = 1;
+    m_cLocation.X = 2;
+    m_cLocation.Y = 22;
+    m_bActive = true;
 }
 
+player::player(int iX, int iY)
+{
+    hp = 1;
+    mp = 1;
+    ammo = 1;
+    m_cLocation.X = iX;
+    m_cLocation.Y = iY;
+    m_bActive = true;
+}
 player::~player()
 {
 	//blank intentionally
@@ -48,3 +61,10 @@ int player::get_ammo(void)
 {
 	return ammo;
 }
+
+void player::moveCharacter()
+{
+
+}
+
+
