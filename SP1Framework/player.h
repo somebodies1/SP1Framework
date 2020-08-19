@@ -1,6 +1,7 @@
 #pragma once
 #include "Framework\timer.h"
 #include "Framework\console.h"
+#include "maps.h"
 
 class player
 {
@@ -16,11 +17,12 @@ public:
 	void set_hp(int h);
 	void set_mp(int m);
 	void set_ammo(int a);
-
 	int get_hp(void);
 	int get_mp(void);
 	int get_ammo(void);
-	void moveplayer(Console g_console, char Gamemap[25][80], int direction);
+	COORD getcoord(void);
+	void moveplayer(maps &gamemap, int direction);
+
 
 
 };

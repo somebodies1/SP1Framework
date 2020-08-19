@@ -7,17 +7,17 @@
 #include <iomanip>
 #include <sstream>
 
-char Gamemap[25][80] =
+/*char Gamemap[25][80] =
 {
 
     {'1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1'},
-    {'1',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ','=','=','=','=','=','=','=','=','=','=','=','=','=','=','=','=',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ','1'},
-    {'1',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ','=',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ','=',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ','1'},
-    {'1',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ','=',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ','=',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ','1'},
-    {'1',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ','=',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ','=',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ','1'},
-    {'1',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ','=',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ','=',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ','1'},
-    {'1',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ','H',' ',' ',' ',' ',' ',' ',' ','H',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ','1'},
-    {'1',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ','H','=','=','=','=','=','=','=','H','=','=','=','=','=','=','=',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ','1'},
+    {'1',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ','1'},
+    {'1',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ','1'},
+    {'1',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ','1'},
+    {'1',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ','1'},
+    {'1',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ','1'},
+    {'+',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ','H',' ',' ',' ',' ',' ',' ',' ','H',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ','1'},
+    {'1','=','=','=','=','=','=','=','=','=','=','=','=','H','=','=','=','=','=','=','=','H','=','=','=','=','=','=','=',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ','1'},
     {'1',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ','H',' ',' ',' ',' ',' ',' ',' ','H',' ',' ',' ',' ',' ',' ','=',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ','1'},
     {'1',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ','H',' ',' ',' ',' ',' ',' ',' ','H',' ',' ',' ',' ',' ',' ','=',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ','1'},
     {'1',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ','H',' ',' ',' ',' ',' ',' ',' ','H',' ',' ',' ',' ',' ',' ','=',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ','1'},
@@ -28,15 +28,16 @@ char Gamemap[25][80] =
     {'1',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ','H',' ',' ',' ',' ',' ',' ',' ','H',' ',' ',' ',' ',' ',' ','=',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ','1'},
     {'1',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ','H',' ',' ',' ',' ',' ',' ',' ','H',' ',' ',' ',' ',' ',' ','=',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ','1'},
     {'1',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ','=','=','=','=','=','=','=','=','H','=','=','=','=','=','=','=',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ','1'},
-    {'1',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ','H',' ',' ',' ',' ',' ',' ','=',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ','1'},
-    {'1',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ','H',' ',' ',' ',' ',' ',' ','=',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ','1'},
-    {'1',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ','H',' ',' ',' ',' ',' ',' ','=',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ','1'},
-    {'1',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ','H',' ',' ',' ',' ',' ',' ','=',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ','1'},
-    {'1',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ','H',' ',' ',' ',' ',' ',' ','=',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ','+'},
+    {'1',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ','H',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ','1'},
+    {'1',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ','H',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ','1'},
+    {'1',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ','H',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ','1'},
+    {'1',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ','H',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ','1'},
+    {'+',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ','H',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ','+'},
     {'=','=','=','=','=','=','=','=','=','=','=','=','=','=','=','=','=','=','=','=','=','=','=','=','=','=','=','=','=','=','=','=','=','=','=','=','=','=','=','=','=','=','=','=','=','=','=','=','=','=','=','=','=','=','=','=','=','=','=','=','=','=','=','=','=','=','=','=','=','=','=','=','=','=','=','=','=','=','=','='},
     {'=','=','=','=','=','=','=','=','=','=','=','=','=','=','=','=','=','=','=','=','=','=','=','=','=','=','=','=','=','=','=','=','=','=','=','=','=','=','=','=','=','=','=','=','=','=','=','=','=','=','=','=','=','=','=','=','=','=','=','=','=','=','=','=','=','=','=','=','=','=','=','=','=','=','=','=','=','=','=','='}
 };
-
+ 
+ */
 char Gamemap1[25][80] =
 {
     {'1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1'},
@@ -61,7 +62,7 @@ char Gamemap1[25][80] =
     {'1',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ','H',' ',' ',' ',' ',' ',' ','=',' ',' ',' ',' ',' ',' ','H',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ','1'},
     {'1',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ','H',' ',' ',' ',' ',' ',' ','=',' ',' ',' ',' ',' ',' ','H',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ','1'},
     {'1',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ','H',' ',' ',' ',' ',' ',' ','=',' ',' ',' ',' ',' ',' ','H',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ','1'},
-    {'+',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ','H',' ',' ',' ',' ',' ',' ','=',' ',' ',' ',' ',' ',' ','H',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ','1'},
+    {(char)27,' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ','H',' ',' ',' ',' ',' ',' ','=',' ',' ',' ',' ',' ',' ','H',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ','1'},
     {'=','=','=','=','=','=','=','=','=','=','=','=','=','=','=','=','=','=','=','=','=','=','=','=','=','=','=','=','=','=','=','=','=','=','=','=','=','=','=','=','=','=','=','=','=','=','=','=','=','=','=','=','=','=','=','=','=','=','=','=','=','=','=','=','=','=','=','=','=','=','=','=','=','=','=','=','=','=','=','='},
     {'=','=','=','=','=','=','=','=','=','=','=','=','=','=','=','=','=','=','=','=','=','=','=','=','=','=','=','=','=','=','=','=','=','=','=','=','=','=','=','=','=','=','=','=','=','=','=','=','=','=','=','=','=','=','=','=','=','=','=','=','=','=','=','=','=','=','=','=','=','=','=','=','=','=','=','=','=','=','=','='}
 };
@@ -75,6 +76,7 @@ SMouseEvent g_mouseEvent;
 
 // Game specific variables here
 player PlayerChar; //create player object
+maps Gamemap;
 SGameChar   g_sChar;
 Pew g_pew;
 Entity* amt[5] = { nullptr, nullptr, nullptr, nullptr, nullptr };
@@ -346,8 +348,9 @@ void updateGame()       // gameplay logic
     processUserInput(); // checks if you should change states or do something else with the game, e.g. pause, exit
     moveCharacter();    // moves the character, collision detection, physics, etc
     movePew();                    // sound can be played here too.
-    Charactergravity();
     moveEnemy();
+    //Charactergravity();
+
     /*if (isFiring==true)
     {
         renderPew();
@@ -390,6 +393,8 @@ void updatePauseMenu()
         g_bQuitGame = true;
     }
 }
+
+/*
 void Charactergravity()
 {
     int iX = g_sChar.m_cLocation.X;
@@ -403,7 +408,7 @@ void Charactergravity()
     {
         g_sChar.m_cLocation.Y++;
     }
-}
+}*/
 
 void movePew()
 {
@@ -414,7 +419,7 @@ void movePew()
 
         if (level1 == true)
         {
-            if (Gamemap[iY][iX + 1] != ' ' && Gamemap[iY][iX + 1] != 'H')
+            if (Gamemap.getchar(iY,iX + 1) != ' ' && Gamemap.getchar(iY,iX + 1) != 'H')
             {
                 isFiring = false;
                 bulletmoving = false;
@@ -499,200 +504,197 @@ void moveEnemy()
 
 void moveCharacter()
 {
-    if (g_eGameState == S_GAME) //Only moves when in game
-    {
-        if (level1 == true)
-        {
-            // Updating the location of the character based on the key release
-        // providing a beep sound whenver we shift the character
-            int iX = g_sChar.m_cLocation.X;
-            int iY = g_sChar.m_cLocation.Y;
 
-            if (g_skKeyEvent[K_UP].keyDown && g_sChar.m_cLocation.Y > 0)
-            {
-                //Beep(1440, 100);
-                if (Gamemap[iY][iX] == 'H' && Gamemap[iY - 1][iX] == 'H')
-                {
-                    g_sChar.m_cLocation.Y--;
-                }
-                else
-                {
-                    Beep(2000, 100);
-                }
-            }
-            if (g_skKeyEvent[K_LEFT].keyDown && g_sChar.m_cLocation.X > 0)
-            {
-                //Beep(2000, 30);
-                if (Gamemap[iY][iX - 1] == ' ' || Gamemap[iY][iX - 1] == 'H')
-                {
-                    g_sChar.m_cLocation.X--;
-                }
-                else
-                {
-                    Beep(2000, 100);
-                }
-            }
-            if (g_skKeyEvent[K_DOWN].keyDown && g_sChar.m_cLocation.Y < g_Console.getConsoleSize().Y - 1)
-            {
-                //Beep(2440, 30);
-                if (Gamemap[iY][iX] == 'H' && Gamemap[iY + 1][iX] == 'H') //For moving up and down the ladder
-                {
-                    g_sChar.m_cLocation.Y++;
-                }
-                else
-                {
-                    Beep(2000, 100);
-                }
-            }
-            if (g_skKeyEvent[K_RIGHT].keyDown && g_sChar.m_cLocation.X < g_Console.getConsoleSize().X - 1)
-            {
-                //Beep(1000, 30);
-                if (Gamemap[iY][iX + 1] == ' ' || Gamemap[iY][iX + 1] == 'H')
-                {
-                    g_sChar.m_cLocation.X++;
-                }
-                else if (Gamemap[iY][iX + 1] == '+')
-                {
-                    level1 = false;
-                    level2 = true;
-                    g_sChar.m_cLocation.X = 1;
-                    g_sChar.m_cLocation.Y = 22;
-                }
-                else
-                {
-                    Beep(2000, 100);
-                }
-            }
-            if (g_skKeyEvent[K_SPACE].keyDown)
-            {
-                Beep(1000, 30);
-                Beep(500, 50);
-                Beep(1500, 20);
-                g_sChar.m_bActive = !g_sChar.m_bActive;
-                if (Gamemap[iY][iX + 1] == ' ')
-                {
-                    if (bulletmoving!=true)
-                    {
-                        g_pew.m_cLocation.X = g_sChar.m_cLocation.X + 1;
-                        g_pew.m_cLocation.Y = g_sChar.m_cLocation.Y;
-                    }
-                    
-                }
-            }
+    //if (g_eGameState == S_GAME) //Only moves when in game
+    //{
+    //    if (level1 == true)
+    //    {
+    //        // Updating the location of the character based on the key release
+    //    // providing a beep sound whenver we shift the character
+    //        int iX = g_sChar.m_cLocation.X;
+    //        int iY = g_sChar.m_cLocation.Y;
 
-            if (g_skKeyEvent[K_SPACE].keyReleased)
-            {
-                if (isFiring!=true)
-                {
-                    isFiring = true;
-                    bulletmoving = true;
+    //        if (g_skKeyEvent[K_UP].keyDown && g_sChar.m_cLocation.Y > 0)
+    //        {
+    //            //Beep(1440, 100);
+    //            if (Gamemap[iY][iX] == 'H' && Gamemap[iY - 1][iX] == 'H')
+    //            {
+    //                g_sChar.m_cLocation.Y--;
+    //            }
+    //            else
+    //            {
+    //                Beep(2000, 100);
+    //            }
+    //        }
+    //        if (g_skKeyEvent[K_LEFT].keyDown && g_sChar.m_cLocation.X > 0)
+    //        {
+    //            //Beep(2000, 30);
+    //            if (Gamemap[iY][iX - 1] == ' ' || Gamemap[iY][iX - 1] == 'H')
+    //            {
+    //                g_sChar.m_cLocation.X--;
+    //            }
+    //            else
+    //            {
+    //                Beep(2000, 100);
+    //            }
+    //        }
+    //        if (g_skKeyEvent[K_DOWN].keyDown && g_sChar.m_cLocation.Y < g_Console.getConsoleSize().Y - 1)
+    //        {
+    //            //Beep(2440, 30);
+    //            if (Gamemap[iY][iX] == 'H' && Gamemap[iY + 1][iX] == 'H') //For moving up and down the ladder
+    //            {
+    //                g_sChar.m_cLocation.Y++;
+    //            }
+    //            else
+    //            {
+    //                Beep(2000, 100);
+    //            }
+    //        }
+    //        if (g_skKeyEvent[K_RIGHT].keyDown && g_sChar.m_cLocation.X < g_Console.getConsoleSize().X - 1)
+    //        {
+    //            //Beep(1000, 30);
+    //            if (Gamemap[iY][iX + 1] == ' ' || Gamemap[iY][iX + 1] == 'H')
+    //            {
+    //                g_sChar.m_cLocation.X++;
+    //            }
+    //            else if (Gamemap[iY][iX + 1] == '+')
+    //            {
+    //                level1 = false;
+    //                level2 = true;
+    //                g_sChar.m_cLocation.X = 1;
+    //                g_sChar.m_cLocation.Y = 22;
+    //            }
+    //            else
+    //            {
+    //                Beep(2000, 100);
+    //            }
+    //        }
+    //        if (g_skKeyEvent[K_SPACE].keyDown)
+    //        {
+    //            Beep(1000, 30);
+    //            Beep(500, 50);
+    //            Beep(1500, 20);
+    //            g_sChar.m_bActive = !g_sChar.m_bActive;
+    //            if (Gamemap[iY][iX + 1] == ' ')
+    //            {
+    //                if (bulletmoving!=true)
+    //                {
+    //                    g_pew.m_cLocation.X = g_sChar.m_cLocation.X + 1;
+    //                    g_pew.m_cLocation.Y = g_sChar.m_cLocation.Y;
+    //                }
+    //                
+    //            }
+    //        }
 
-                }
+    //        if (g_skKeyEvent[K_SPACE].keyReleased)
+    //        {
+    //            if (isFiring!=true)
+    //            {
+    //                isFiring = true;
+    //                bulletmoving = true;
 
-            }
-        }
-        else if (level2 == true)
-        {
-            // Updating the location of the character based on the key release
-            // providing a beep sound whenver we shift the character
-            int iX = g_sChar.m_cLocation.X;
-            int iY = g_sChar.m_cLocation.Y;
+    //            }
 
-            //g_sChar.m_cLocation.X = 1;
-            //g_sChar.m_cLocation.Y = 22;
+    //        }
+    //    }
+    //    else if (level2 == true)
+    //    {
+    //        // Updating the location of the character based on the key release
+    //        // providing a beep sound whenver we shift the character
+    //        int iX = g_sChar.m_cLocation.X;
+    //        int iY = g_sChar.m_cLocation.Y;
 
-
-            if (g_skKeyEvent[K_UP].keyDown && g_sChar.m_cLocation.Y > 0)
-            {
-                //Beep(1440, 100);
-                if (Gamemap1[iY][iX] == 'H' && Gamemap1[iY - 1][iX] == 'H')
-                {
-                    g_sChar.m_cLocation.Y--;
-                }
-                else
-                {
-                    Beep(2000, 100);
-                }
-            }
-            if (g_skKeyEvent[K_LEFT].keyDown && g_sChar.m_cLocation.X > 0)
-            {
-                //Beep(2000, 30);
-                if (Gamemap1[iY][iX - 1] == ' ' || Gamemap1[iY][iX - 1] == 'H')
-                {
-                    g_sChar.m_cLocation.X--;
-                }
-                else if (Gamemap1[iY][iX - 1] == '+')
-                {
-                    level2 = false;
-                    level1 = true;
-                    g_sChar.m_cLocation.X = 78;
-                    g_sChar.m_cLocation.Y = 22;
-                }
-                else
-                {
-                    Beep(2000, 100);
-                }
-            }
-            if (g_skKeyEvent[K_DOWN].keyDown && g_sChar.m_cLocation.Y < g_Console.getConsoleSize().Y - 1)
-            {
-                //Beep(2440, 30);
-                if (Gamemap1[iY][iX] == 'H' && Gamemap1[iY + 1][iX] == 'H') //For moving up and down the ladder
-                {
-                    g_sChar.m_cLocation.Y++;
-                }
-                else
-                {
-                    Beep(2000, 100);
-                }
-            }
-            if (g_skKeyEvent[K_RIGHT].keyDown && g_sChar.m_cLocation.X < g_Console.getConsoleSize().X - 1)
-            {
-                //Beep(1000, 30);
-                if (Gamemap1[iY][iX + 1] == ' ' || Gamemap1[iY][iX + 1] == 'H')
-                {
-                    g_sChar.m_cLocation.X++;
-                }
-
-                else
-                {
-                    Beep(2000, 100);
-                }
-            }
-            if (g_skKeyEvent[K_SPACE].keyDown)
-            {
-                Beep(1000, 30);
-                Beep(500, 50);
-                Beep(1500, 20);
-                g_sChar.m_bActive = !g_sChar.m_bActive;
-                if (Gamemap1[iY][iX + 1] == ' ')
-                {
-                    if (bulletmoving != true)
-                    {
-                        g_pew.m_cLocation.X = g_sChar.m_cLocation.X + 1;
-                        g_pew.m_cLocation.Y = g_sChar.m_cLocation.Y;
-                    }
-
-                }
-            }
-
-            if (g_skKeyEvent[K_SPACE].keyReleased)
-            {
-                if (isFiring != true)
-                {
-                    isFiring = true;
-                    bulletmoving = true;
-
-                }
-
-            }
-        }
-    }
+    //        //g_sChar.m_cLocation.X = 1;
+    //        //g_sChar.m_cLocation.Y = 22;
 
 
+    //        if (g_skKeyEvent[K_UP].keyDown && g_sChar.m_cLocation.Y > 0)
+    //        {
+    //            //Beep(1440, 100);
+    //            if (Gamemap1[iY][iX] == 'H' && Gamemap1[iY - 1][iX] == 'H')
+    //            {
+    //                g_sChar.m_cLocation.Y--;
+    //            }
+    //            else
+    //            {
+    //                Beep(2000, 100);
+    //            }
+    //        }
+    //        if (g_skKeyEvent[K_LEFT].keyDown && g_sChar.m_cLocation.X > 0)
+    //        {
+    //            //Beep(2000, 30);
+    //            if (Gamemap1[iY][iX - 1] == ' ' || Gamemap1[iY][iX - 1] == 'H')
+    //            {
+    //                g_sChar.m_cLocation.X--;
+    //            }
+    //            else if (Gamemap1[iY][iX - 1] == '+')
+    //            {
+    //                level2 = false;
+    //                level1 = true;
+    //                g_sChar.m_cLocation.X = 78;
+    //                g_sChar.m_cLocation.Y = 22;
+    //            }
+    //            else
+    //            {
+    //                Beep(2000, 100);
+    //            }
+    //        }
+    //        if (g_skKeyEvent[K_DOWN].keyDown && g_sChar.m_cLocation.Y < g_Console.getConsoleSize().Y - 1)
+    //        {
+    //            //Beep(2440, 30);
+    //            if (Gamemap1[iY][iX] == 'H' && Gamemap1[iY + 1][iX] == 'H') //For moving up and down the ladder
+    //            {
+    //                g_sChar.m_cLocation.Y++;
+    //            }
+    //            else
+    //            {
+    //                Beep(2000, 100);
+    //            }
+    //        }
+    //        if (g_skKeyEvent[K_RIGHT].keyDown && g_sChar.m_cLocation.X < g_Console.getConsoleSize().X - 1)
+    //        {
+    //            //Beep(1000, 30);
+    //            if (Gamemap1[iY][iX + 1] == ' ' || Gamemap1[iY][iX + 1] == 'H')
+    //            {
+    //                g_sChar.m_cLocation.X++;
+    //            }
 
+    //            else
+    //            {
+    //                Beep(2000, 100);
+    //            }
+    //        }
+    //        if (g_skKeyEvent[K_SPACE].keyDown)
+    //        {
+    //            Beep(1000, 30);
+    //            Beep(500, 50);
+    //            Beep(1500, 20);
+    //            g_sChar.m_bActive = !g_sChar.m_bActive;
+    //            if (Gamemap1[iY][iX + 1] == ' ')
+    //            {
+    //                if (bulletmoving != true)
+    //                {
+    //                    g_pew.m_cLocation.X = g_sChar.m_cLocation.X + 1;
+    //                    g_pew.m_cLocation.Y = g_sChar.m_cLocation.Y;
+    //                }
 
-//WIP Function funtionality
-   /* int direction = 0;
+    //            }
+    //        }
+
+    //        if (g_skKeyEvent[K_SPACE].keyReleased)
+    //        {
+    //            if (isFiring != true)
+    //            {
+    //                isFiring = true;
+    //                bulletmoving = true;
+
+    //            }
+
+    //        }
+    //    }
+    //}
+    int currentmap = Gamemap.getmapno();
+    int direction = 0;
     if (g_skKeyEvent[K_UP].keyDown)
     {
         direction = 1;
@@ -709,8 +711,17 @@ void moveCharacter()
     {
         direction = 4;
     }
-    PlayerChar.moveplayer(g_Console, Gamemap, direction);*/
+    if (g_skKeyEvent[K_SPACE].keyDown)
+    {
+        Beep(1000, 30);
+        Beep(500, 50);
+        Beep(1500, 20);
+        Gamemap.setcurrent(1);
+    }
+    PlayerChar.moveplayer(Gamemap, direction);
 }
+
+
 void processUserInput()
 {
     // Pauses the game if player hits the escape key
@@ -737,8 +748,7 @@ void render()
         break;
     case S_PAUSE: renderPauseMenu();
         break;
-    case S_GAME: 
-        renderGame();
+    case S_GAME:  renderGame();
         break;
     }
     renderFramerate();      // renders debug information, frame rate, elapsed time, etc
@@ -849,21 +859,25 @@ void renderMap()
             {
                 c.X = i;
                 c.Y = j;
-                if (Gamemap[j][i] == '=') // '=' are coloured differently for the floor
+                if (Gamemap.getchar(j,i) == '=') // '=' are coloured differently for the floor
                 {
-                    g_Console.writeToBuffer(c, Gamemap[j][i], 0x0E);
+                    g_Console.writeToBuffer(c, Gamemap.getchar(j,i), 0x0E);
                 }
-                else if (Gamemap[j][i] == 'H')
+                else if (Gamemap.getchar(j,i) == 'H')
                 {
-                    g_Console.writeToBuffer(c, Gamemap[j][i], 0x0C);
+                    g_Console.writeToBuffer(c, Gamemap.getchar(j,i), 0x0C);
                 }
-                else if (Gamemap[j][i] == '1')
+                else if (Gamemap.getchar(j,i) == '1')
                 {
-                    g_Console.writeToBuffer(c, Gamemap[j][i], 0x01);
+                    g_Console.writeToBuffer(c, Gamemap.getchar(j,i), 0x01);
+                }
+                else if (Gamemap.getchar(j,i) == (char)26)
+                {
+                    g_Console.writeToBuffer(c, Gamemap.getchar(j,i), 0x0A);
                 }
                 else //Normal colour of black text with blue background
                 {
-                    g_Console.writeToBuffer(c, Gamemap[j][i], 0x0F); //Btw after the 0x the first number is the background colour and the second is the text colour
+                    g_Console.writeToBuffer(c, Gamemap.getchar(j,i), 0x0F); //Btw after the 0x the first number is the background colour and the second is the text colour
                 }//Black is 0, background blue is 1 and a kind of green is A, F is white
             }
         }
@@ -891,6 +905,10 @@ void renderMap()
                 {
                     g_Console.writeToBuffer(c, Gamemap1[j][i], 0x01);
                 }
+                else if (Gamemap1[j][i] == (char)27)
+                {
+                    g_Console.writeToBuffer(c, Gamemap1[j][i], 0x0A);
+                }
                 else //Normal colour of black text with blue background
                 {
                     g_Console.writeToBuffer(c, Gamemap1[j][i], 0x0F); //Btw after the 0x the first number is the background colour and the second is the text colour
@@ -908,12 +926,13 @@ void renderCharacter()
     {
         charColor = 0x0F;
     }
-    g_Console.writeToBuffer(g_sChar.m_cLocation, (char)1, charColor);
+    //g_Console.writeToBuffer(g_sChar.m_cLocation, (char)1, charColor);
+    g_Console.writeToBuffer(PlayerChar.getcoord(), '&', 0x0F);
 }
 
 void renderPew()
 {
-    WORD charColor = 0x1F;
+    WORD charColor = 0x0F;
 
     g_Console.writeToBuffer(g_pew.m_cLocation, '-', charColor);
 }
@@ -959,7 +978,7 @@ void renderPlayerUI(player player)
 {
     COORD c;
     std::ostringstream ss;
-    ss << "Health: " << player.get_hp() << " Ammo: " << player.get_ammo() << " Energy: " << player.get_mp();
+    ss << "Health "<<(char)3<<":" << player.get_hp() << " Ammo: " << player.get_ammo() << " Energy: " << player.get_mp();
     c.X = 0;
     c.Y = g_Console.getConsoleSize().Y - 1;
     g_Console.writeToBuffer(c, ss.str());
