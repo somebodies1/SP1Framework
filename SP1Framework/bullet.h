@@ -2,6 +2,7 @@
 class bullet
 {
 private:
+	static int max_bullet;
 	int damage;
 	int x, y;
 public:

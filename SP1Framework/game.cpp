@@ -84,6 +84,7 @@ Console g_Console(80, 25, "SP1 Framework");
 bool level1 = true;
 bool level2 = false;
 bool isFiring = false;
+bool bulletmoving = false;
 
 
 //--------------------------------------------------------------
@@ -403,8 +404,46 @@ void movePew()
 {
     if (isFiring == true)
     {
-        g_pew.m_cLocation.X++;
+        int iX = g_pew.m_cLocation.X;
+        int iY = g_pew.m_cLocation.Y;
+
+        if (level1 == true)
+        {
+            if (Gamemap[iY][iX + 1] != ' ' && Gamemap[iY][iX + 1] != 'H')
+            {
+                isFiring = false;
+                bulletmoving = false;
+                //g_pew.m_cLocation.X = g_sChar.m_cLocation.X + 1;
+                //g_pew.m_cLocation.Y = g_sChar.m_cLocation.Y;
+            }
+            else
+            {
+                g_pew.m_cLocation.X++;
+
+            }
+        }
+        else if (level2 == true)
+        {
+            if (Gamemap1[iY][iX + 1] != ' ' && Gamemap1[iY][iX + 1] != 'H')
+            {
+                isFiring = false;
+                bulletmoving = false;
+                //g_pew.m_cLocation.X = g_sChar.m_cLocation.X + 1;
+                //g_pew.m_cLocation.Y = g_sChar.m_cLocation.Y;
+            }
+            else
+            {
+                g_pew.m_cLocation.X++;
+
+            }
+        }
+        
+
+        
+
     }
+    //Sleep(1000);
+    //isFiring = false;
 }
 
 void moveCharacter()
@@ -481,8 +520,24 @@ void moveCharacter()
                 g_sChar.m_bActive = !g_sChar.m_bActive;
                 if (Gamemap[iY][iX + 1] == ' ')
                 {
-                    isFiring = true;
+                    if (bulletmoving!=true)
+                    {
+                        g_pew.m_cLocation.X = g_sChar.m_cLocation.X + 1;
+                        g_pew.m_cLocation.Y = g_sChar.m_cLocation.Y;
+                    }
+                    
                 }
+            }
+
+            if (g_skKeyEvent[K_SPACE].keyReleased)
+            {
+                if (isFiring!=true)
+                {
+                    isFiring = true;
+                    bulletmoving = true;
+
+                }
+
             }
         }
         else if (level2 == true)
@@ -558,6 +613,26 @@ void moveCharacter()
                 Beep(500, 50);
                 Beep(1500, 20);
                 g_sChar.m_bActive = !g_sChar.m_bActive;
+                if (Gamemap1[iY][iX + 1] == ' ')
+                {
+                    if (bulletmoving != true)
+                    {
+                        g_pew.m_cLocation.X = g_sChar.m_cLocation.X + 1;
+                        g_pew.m_cLocation.Y = g_sChar.m_cLocation.Y;
+                    }
+
+                }
+            }
+
+            if (g_skKeyEvent[K_SPACE].keyReleased)
+            {
+                if (isFiring != true)
+                {
+                    isFiring = true;
+                    bulletmoving = true;
+
+                }
+
             }
         }
     }
@@ -724,11 +799,19 @@ void renderMap()
                 c.Y = j;
                 if (Gamemap[j][i] == '=') // '=' are coloured differently for the floor
                 {
-                    g_Console.writeToBuffer(c, Gamemap[j][i], 0x0A);
+                    g_Console.writeToBuffer(c, Gamemap[j][i], 0x0E);
+                }
+                else if (Gamemap[j][i] == 'H')
+                {
+                    g_Console.writeToBuffer(c, Gamemap[j][i], 0x0C);
+                }
+                else if (Gamemap[j][i] == '1')
+                {
+                    g_Console.writeToBuffer(c, Gamemap[j][i], 0x01);
                 }
                 else //Normal colour of black text with blue background
                 {
-                    g_Console.writeToBuffer(c, Gamemap[j][i], 0x10); //Btw after the 0x the first number is the background colour and the second is the text colour
+                    g_Console.writeToBuffer(c, Gamemap[j][i], 0x0F); //Btw after the 0x the first number is the background colour and the second is the text colour
                 }//Black is 0, background blue is 1 and a kind of green is A, F is white
             }
         }
@@ -746,11 +829,19 @@ void renderMap()
                 c.Y = j;
                 if (Gamemap1[j][i] == '=') // '=' are coloured differently for the floor
                 {
-                    g_Console.writeToBuffer(c, Gamemap1[j][i], 0x0A);
+                    g_Console.writeToBuffer(c, Gamemap1[j][i], 0x0E);
+                }
+                else if (Gamemap1[j][i] == 'H')
+                {
+                    g_Console.writeToBuffer(c, Gamemap1[j][i], 0x0C);
+                }
+                else if (Gamemap1[j][i] == '1')
+                {
+                    g_Console.writeToBuffer(c, Gamemap1[j][i], 0x01);
                 }
                 else //Normal colour of black text with blue background
                 {
-                    g_Console.writeToBuffer(c, Gamemap1[j][i], 0x10); //Btw after the 0x the first number is the background colour and the second is the text colour
+                    g_Console.writeToBuffer(c, Gamemap1[j][i], 0x0F); //Btw after the 0x the first number is the background colour and the second is the text colour
                 }//Black is 0, background blue is 1 and a kind of green is A, F is white
             }
         }
@@ -760,10 +851,10 @@ void renderMap()
 void renderCharacter()
 {
     // Draw the location of the character
-    WORD charColor = 0x10;
+    WORD charColor = 0x0A;
     if (g_sChar.m_bActive)
     {
-        charColor = 0x1F;
+        charColor = 0x0F;
     }
     g_Console.writeToBuffer(g_sChar.m_cLocation, (char)1, charColor);
 }

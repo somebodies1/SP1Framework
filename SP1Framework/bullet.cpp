@@ -1,5 +1,7 @@
 #include "bullet.h"
 
+static int max_bullet = 5;
+
 bullet::bullet()
 {
 	x = 0;
