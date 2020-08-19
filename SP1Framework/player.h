@@ -20,7 +20,7 @@ public:
 	int get_hp(void);
 	int get_mp(void);
 	int get_ammo(void);
-	void moveplayer(Console g_console, char Gamemap[25][80], int direction);
+	void moveCharacter(Console g_console, char Gamemap[80][25], int direction);
 
 
 };

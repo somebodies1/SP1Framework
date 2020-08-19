@@ -62,7 +62,7 @@ int player::get_ammo(void)
 	return ammo;
 }
 
-void player::moveplayer(Console g_Console, char Gamemap[25][80], int direction)
+void player::moveCharacter(Console g_Console, char Gamemap[80][25], int direction)
 {
     int iX = m_cLocation.X;
     int iY = m_cLocation.Y;
