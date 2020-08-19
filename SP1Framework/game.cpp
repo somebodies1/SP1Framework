@@ -716,7 +716,6 @@ void moveCharacter()
         Beep(1000, 30);
         Beep(500, 50);
         Beep(1500, 20);
-        Gamemap.setcurrent(1);
     }
     PlayerChar.moveplayer(Gamemap, direction);
 }

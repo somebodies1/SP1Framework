@@ -10,7 +10,6 @@ Entity::Entity()
 	y = 0;
 	C.X = 0;
 	C.Y = 0;
-	alive = false;
 	if (enemyTotal > count)
 	{
 		if (counter[count] != nullptr)

@@ -131,7 +131,7 @@ void player::moveplayer( maps &Gamemap, int direction)
             Beep(3000, 200);
         }
     }
-    if (Gamemap.getchar(iY + 1,iX) == ' ')
+    if (Gamemap.getchar(iY + 1,iX) == ' ' && Gamemap.getchar(iY, iX) != 'H')
     {
         m_cLocation.Y++;
     }
