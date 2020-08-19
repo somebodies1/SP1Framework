@@ -5,7 +5,7 @@ Release/
 *.user
 ipch/
 <<<<<<< HEAD
-.VC
+*.VC
 *.opendb
 *.db
 *.opensdf
@@ -17,3 +17,4 @@ ipch/
 *.json
 *.sqlite
 *.db
+.vs/SP1Framework/v16/Browse.VC.db
