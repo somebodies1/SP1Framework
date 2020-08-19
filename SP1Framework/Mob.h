@@ -15,5 +15,3 @@ public:
 	int getHP(void);
 	int getMP(void);
 };
-
-
