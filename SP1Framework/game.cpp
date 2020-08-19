@@ -640,7 +640,7 @@ void moveCharacter()
     //        }
     //    }
     //}
-
+    int currentmap = Gamemap.getmapno();
     int direction = 0;
     if (g_skKeyEvent[K_UP].keyDown)
     {
@@ -658,7 +658,18 @@ void moveCharacter()
     {
         direction = 4;
     }
+    if (g_skKeyEvent[K_SPACE].keyDown)
+    {
+        Beep(1000, 30);
+        Beep(500, 50);
+        Beep(1500, 20);
+        Gamemap.setcurrent(1);
+    }
     PlayerChar.moveplayer(Gamemap, direction);
+    if (currentmap != Gamemap.getmapno())
+    {
+        renderMap();
+    }
 }
 
 

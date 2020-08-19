@@ -92,7 +92,8 @@ void player::moveplayer( maps &Gamemap, int direction)
         }
         else if (Gamemap.getchar(iY,iX - 1) == '+')
         {
-            Gamemap.setcurrent(0);
+            Gamemap.setmapno(Gamemap.getmapno() - 1);
+            Gamemap.setcurrent(Gamemap.getmapno());
             m_cLocation.X =+ 78;
         }
         else
@@ -121,7 +122,8 @@ void player::moveplayer( maps &Gamemap, int direction)
         }
         else if (Gamemap.getchar(iY,iX + 1) == '+')
         {
-            Gamemap.setcurrent(1);
+            Gamemap.setmapno(Gamemap.getmapno() + 1);
+            Gamemap.setcurrent(Gamemap.getmapno());
             m_cLocation.X -= 77;
         }
         else
