@@ -375,11 +375,11 @@ void Charactergravity()
     int iX = g_sChar.m_cLocation.X;
     int iY = g_sChar.m_cLocation.Y;
 
-    if (Gamemap[iY + 1][iX] == ' '&& level1 == true) //Falls if there is nothing beneath the character
+    if (Gamemap[iY + 1][iX] == ' ' && Gamemap[iY][iX] != 'H' && level1 == true) //Falls if there is nothing beneath the character
     {
         g_sChar.m_cLocation.Y++;
     }
-    else if (Gamemap1[iY + 1][iX] == ' '&& level2 == true) //Falls if there is nothing beneath the character
+    else if (Gamemap1[iY + 1][iX] == ' '&& Gamemap1[iY][iX] != 'H' && level2 == true) //Falls if there is nothing beneath the character
     {
         g_sChar.m_cLocation.Y++;
     }
@@ -423,7 +423,7 @@ void moveCharacter()
             if (g_skKeyEvent[K_DOWN].keyDown && g_sChar.m_cLocation.Y < g_Console.getConsoleSize().Y - 1)
             {
                 //Beep(2440, 30);
-                if (Gamemap[iY][iX] == 'H' && Gamemap[iY + 1][iX] == 'H') //For moving up and down the ladder
+                if (Gamemap[iY][iX] == 'H' && Gamemap[iY+1][iX] == 'H') //For moving up and down the ladder
                 {
                     g_sChar.m_cLocation.Y++;
                 }
