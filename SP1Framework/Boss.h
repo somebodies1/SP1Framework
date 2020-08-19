@@ -16,8 +16,3 @@ public:
 	int getMP(void);
 };
 
-class Boss :
-	public Entity
-{
-};
-

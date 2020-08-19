@@ -17,8 +17,3 @@ public:
 	int getMP(void);
 };
 
-class StationaryMob :
-	public Entity
-{
-};
-
