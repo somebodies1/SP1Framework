@@ -67,14 +67,14 @@ COORD player::getcoord(void)
     return m_cLocation;
 }
 
-void player::moveplayer(/*Console g_Console,*/ char Gamemap[25][80], int direction)
+void player::moveplayer( maps &Gamemap, int direction)
 {
     int iX = m_cLocation.X;
     int iY = m_cLocation.Y;
     if (direction == 1)
     {
         //Beep(1440, 100);
-        if (Gamemap[iY][iX] == 'H' && Gamemap[iY - 1][iX] == 'H')
+        if (Gamemap.getchar(iY,iX) == 'H' && Gamemap.getchar(iY-1,iX) == 'H')
         {
             m_cLocation.Y--;
         }
@@ -86,12 +86,13 @@ void player::moveplayer(/*Console g_Console,*/ char Gamemap[25][80], int directi
     if (direction == 2)
     {
         //Beep(2000, 30);
-        if (Gamemap[iY][iX - 1] == ' ' || Gamemap[iY][iX - 1] == 'H')
+        if (Gamemap.getchar(iY,iX - 1) == ' ' || Gamemap.getchar(iY,iX - 1) == 'H')
         {
             m_cLocation.X--;
         }
-        else if (Gamemap[iY][iX - 1] == '+')
+        else if (Gamemap.getchar(iY,iX - 1) == '+')
         {
+            Gamemap.setcurrent(0);
             m_cLocation.X =+ 78;
         }
         else
@@ -102,7 +103,7 @@ void player::moveplayer(/*Console g_Console,*/ char Gamemap[25][80], int directi
     if (direction == 3)
     {
         //Beep(2440, 30);
-        if (Gamemap[iY][iX] == 'H' && Gamemap[iY + 1][iX] == 'H') //For moving up and down the ladder
+        if (Gamemap.getchar(iY,iX) == 'H' && Gamemap.getchar(iY+1,iX) == 'H') //For moving up and down the ladder
         {
             m_cLocation.Y++;
         }
@@ -114,12 +115,13 @@ void player::moveplayer(/*Console g_Console,*/ char Gamemap[25][80], int directi
     if (direction == 4)
     {
         //Beep(1000, 30);
-        if (Gamemap[iY][iX + 1] == ' ' || Gamemap[iY][iX + 1] == 'H')
+        if (Gamemap.getchar(iY,iX + 1) == ' ' || Gamemap.getchar(iY,iX + 1) == 'H')
         {
             m_cLocation.X++;
         }
-        else if (Gamemap[iY][iX + 1] == '+')
+        else if (Gamemap.getchar(iY,iX + 1) == '+')
         {
+            Gamemap.setcurrent(1);
             m_cLocation.X -= 77;
         }
         else
@@ -127,7 +129,7 @@ void player::moveplayer(/*Console g_Console,*/ char Gamemap[25][80], int directi
             Beep(3000, 200);
         }
     }
-    else if (Gamemap[iY + 1][iX] == ' ')
+    if (Gamemap.getchar(iY + 1,iX) == ' ')
     {
         m_cLocation.Y++;
     }

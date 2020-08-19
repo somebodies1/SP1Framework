@@ -7,7 +7,7 @@
 #include <iomanip>
 #include <sstream>
 
-char Gamemap[25][80] =
+/*char Gamemap[25][80] =
 {
 
     {'1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1'},
@@ -36,7 +36,8 @@ char Gamemap[25][80] =
     {'=','=','=','=','=','=','=','=','=','=','=','=','=','=','=','=','=','=','=','=','=','=','=','=','=','=','=','=','=','=','=','=','=','=','=','=','=','=','=','=','=','=','=','=','=','=','=','=','=','=','=','=','=','=','=','=','=','=','=','=','=','=','=','=','=','=','=','=','=','=','=','=','=','=','=','=','=','=','=','='},
     {'=','=','=','=','=','=','=','=','=','=','=','=','=','=','=','=','=','=','=','=','=','=','=','=','=','=','=','=','=','=','=','=','=','=','=','=','=','=','=','=','=','=','=','=','=','=','=','=','=','=','=','=','=','=','=','=','=','=','=','=','=','=','=','=','=','=','=','=','=','=','=','=','=','=','=','=','=','=','=','='}
 };
-
+ 
+ */
 char Gamemap1[25][80] =
 {
     {'1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1'},
@@ -75,6 +76,7 @@ SMouseEvent g_mouseEvent;
 
 // Game specific variables here
 player PlayerChar; //create player object
+maps Gamemap;
 SGameChar   g_sChar;
 Pew g_pew;
 EGAMESTATES g_eGameState = S_MAINMENU; // initial state
@@ -342,7 +344,7 @@ void updateGame()       // gameplay logic
     processUserInput(); // checks if you should change states or do something else with the game, e.g. pause, exit
     moveCharacter();    // moves the character, collision detection, physics, etc
     movePew();                    // sound can be played here too.
-    Charactergravity();
+    //Charactergravity();
     /*if (isFiring==true)
     {
         renderPew();
@@ -385,6 +387,8 @@ void updatePauseMenu()
         g_bQuitGame = true;
     }
 }
+
+/*
 void Charactergravity()
 {
     int iX = g_sChar.m_cLocation.X;
@@ -398,7 +402,7 @@ void Charactergravity()
     {
         g_sChar.m_cLocation.Y++;
     }
-}
+}*/
 
 void movePew()
 {
@@ -409,7 +413,7 @@ void movePew()
 
         if (level1 == true)
         {
-            if (Gamemap[iY][iX + 1] != ' ' && Gamemap[iY][iX + 1] != 'H')
+            if (Gamemap.getchar(iY,iX + 1) != ' ' && Gamemap.getchar(iY,iX + 1) != 'H')
             {
                 isFiring = false;
                 bulletmoving = false;
@@ -794,25 +798,25 @@ void renderMap()
             {
                 c.X = i;
                 c.Y = j;
-                if (Gamemap[j][i] == '=') // '=' are coloured differently for the floor
+                if (Gamemap.getchar(j,i) == '=') // '=' are coloured differently for the floor
                 {
-                    g_Console.writeToBuffer(c, Gamemap[j][i], 0x0E);
+                    g_Console.writeToBuffer(c, Gamemap.getchar(j,i), 0x0E);
                 }
-                else if (Gamemap[j][i] == 'H')
+                else if (Gamemap.getchar(j,i) == 'H')
                 {
-                    g_Console.writeToBuffer(c, Gamemap[j][i], 0x0C);
+                    g_Console.writeToBuffer(c, Gamemap.getchar(j,i), 0x0C);
                 }
-                else if (Gamemap[j][i] == '1')
+                else if (Gamemap.getchar(j,i) == '1')
                 {
-                    g_Console.writeToBuffer(c, Gamemap[j][i], 0x01);
+                    g_Console.writeToBuffer(c, Gamemap.getchar(j,i), 0x01);
                 }
-                else if (Gamemap[j][i] == (char)26)
+                else if (Gamemap.getchar(j,i) == (char)26)
                 {
-                    g_Console.writeToBuffer(c, Gamemap[j][i], 0x0A);
+                    g_Console.writeToBuffer(c, Gamemap.getchar(j,i), 0x0A);
                 }
                 else //Normal colour of black text with blue background
                 {
-                    g_Console.writeToBuffer(c, Gamemap[j][i], 0x0F); //Btw after the 0x the first number is the background colour and the second is the text colour
+                    g_Console.writeToBuffer(c, Gamemap.getchar(j,i), 0x0F); //Btw after the 0x the first number is the background colour and the second is the text colour
                 }//Black is 0, background blue is 1 and a kind of green is A, F is white
             }
         }
