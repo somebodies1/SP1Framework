@@ -74,6 +74,7 @@ SKeyEvent g_skKeyEvent[K_COUNT];
 SMouseEvent g_mouseEvent;
 
 // Game specific variables here
+player PlayerChar; //create player object
 SGameChar   g_sChar;
 Pew g_pew;
 EGAMESTATES g_eGameState = S_MAINMENU; // initial state
@@ -662,11 +663,11 @@ void render()
         break;
     case S_PAUSE: renderPauseMenu();
         break;
-    case S_GAME: renderGame();
+    case S_GAME: 
+        renderGame();
         break;
     }
     renderFramerate();      // renders debug information, frame rate, elapsed time, etc
-    renderInputEvents();    // renders status of input events
     renderToScreen();       // dump the contents of the buffer to the screen, one frame worth of game
 }
 
@@ -727,6 +728,7 @@ void renderGame()
 {
     renderMap();        // renders the map to the buffer first
     renderCharacter();
+    renderPlayerUI(PlayerChar);
     if (isFiring == true)
     {
         renderPew();
@@ -861,6 +863,17 @@ void renderFramerate()
     c.Y = 0;
     g_Console.writeToBuffer(c, ss.str(), 0x59);
 }
+
+void renderPlayerUI(player player)
+{
+    COORD c;
+    std::ostringstream ss;
+    ss << "Health: " << player.get_hp() << " Ammo: " << player.get_ammo() << " Energy: " << player.get_mp();
+    c.X = 0;
+    c.Y = g_Console.getConsoleSize().Y - 1;
+    g_Console.writeToBuffer(c, ss.str());
+}
+
 
 // this is an example of how you would use the input events
 void renderInputEvents()
