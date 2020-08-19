@@ -16,8 +16,4 @@ public:
 	int getMP(void);
 };
 
-class Mob :
-	public Entity
-{
-};
 

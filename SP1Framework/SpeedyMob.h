@@ -15,9 +15,3 @@ public:
 	int getHP(void);
 	int getMP(void);
 };
-
-class SpeedyMob :
-	public Entity
-{
-};
-

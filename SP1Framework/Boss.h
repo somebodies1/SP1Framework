@@ -1,7 +1,6 @@
 #pragma once
 #include "Entity.h"
-class Boss :
-	public Entity
+class Boss :public Entity
 {
 private:
 	int hp, mp;
@@ -16,8 +15,4 @@ public:
 	int getMP(void);
 };
 
-class Boss :
-	public Entity
-{
-};
 
