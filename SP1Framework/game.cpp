@@ -439,13 +439,27 @@ void moveEnemy()
 {
     if (g_eGameState == S_GAME)
     {
-        for (int i = 0; i < 5; i++)
+        if (Gamemap.getmapno() == 0)
         {
-            if (amt[i] != nullptr)
+            for (int i = 0; i < 2; i++)
             {
-                amt[i]->move('Z', Gamemap);
+                if (amt[i] != nullptr)
+                {
+                    amt[i]->move('Z', Gamemap);
+                }
             }
         }
+        if (Gamemap.getmapno() == 1)
+        {
+            for (int i = 2; i < 5; i++)
+            {
+                if (amt[i] != nullptr)
+                {
+                    amt[i]->move('Z', Gamemap);
+                }
+            }
+        }
+        
     }
     //if (g_eGameState == S_GAME)
     //{
