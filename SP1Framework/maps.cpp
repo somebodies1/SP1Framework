@@ -221,15 +221,15 @@ void maps::setchar(char add, int x, int y)
     current[y][x] = add;
     if (mapno == 0)
     {
-        gamemap[y][x] = current[y][x];
+        stage1_1[y][x] = current[y][x];
     }
     else if (mapno == 1)
     {
-        gamemap1[y][x] = current[y][x];
+        stage1_2[y][x] = current[y][x];
     }
     else if (mapno == 2)
     {
-        gamemap2[y][x] = current[y][x];
+        stage1_3[y][x] = current[y][x];
     }
 }
 
