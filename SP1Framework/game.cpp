@@ -86,8 +86,7 @@ EGAMESTATES g_eGameState = S_MAINMENU; // initial state
 
 // Console object
 Console g_Console(80, 25, "SP1 Framework");
-bool level1 = true;
-bool level2 = false;
+bool initialload = true; // The initial load of the map
 bool isFiring = false;
 bool bulletmoving = false;
 bool spawned[5] = { false, false, false ,false, false };
@@ -416,43 +415,21 @@ void movePew()
 {
     if (isFiring == true)
     {
-        int iX = g_pew.m_cLocation.X;
-        int iY = g_pew.m_cLocation.Y;
+    int iX = g_pew.m_cLocation.X;
+    int iY = g_pew.m_cLocation.Y;
 
-        if (level1 == true)
+        if (Gamemap.getchar(iY,iX + 1) != ' ' && Gamemap.getchar(iY,iX + 1) != 'H')
         {
-            if (Gamemap.getchar(iY,iX + 1) != ' ' && Gamemap.getchar(iY,iX + 1) != 'H')
-            {
-                isFiring = false;
-                bulletmoving = false;
-                //g_pew.m_cLocation.X = g_sChar.m_cLocation.X + 1;
-                //g_pew.m_cLocation.Y = g_sChar.m_cLocation.Y;
-            }
-            else
-            {
-                g_pew.m_cLocation.X++;
-
-            }
+            isFiring = false;
+            bulletmoving = false;
+            //g_pew.m_cLocation.X = g_sChar.m_cLocation.X + 1;
+            //g_pew.m_cLocation.Y = g_sChar.m_cLocation.Y;
         }
-        else if (level2 == true)
+        else
         {
-            if (Gamemap1[iY][iX + 1] != ' ' && Gamemap1[iY][iX + 1] != 'H')
-            {
-                isFiring = false;
-                bulletmoving = false;
-                //g_pew.m_cLocation.X = g_sChar.m_cLocation.X + 1;
-                //g_pew.m_cLocation.Y = g_sChar.m_cLocation.Y;
-            }
-            else
-            {
-                g_pew.m_cLocation.X++;
+            g_pew.m_cLocation.X++;
 
-            }
         }
-        
-
-        
-
     }
     //Sleep(1000);
     //isFiring = false;
@@ -460,11 +437,14 @@ void movePew()
 
 void moveEnemy()
 {
-    for (int i = 0; i < 5; i++)
+    if (g_eGameState == S_GAME)
     {
-        if (amt[i] != nullptr)
+        for (int i = 0; i < 5; i++)
         {
-            amt[i]->move('Z', Gamemap);
+            if (amt[i] != nullptr)
+            {
+                amt[i]->move('Z', Gamemap);
+            }
         }
     }
     //if (g_eGameState == S_GAME)
@@ -567,13 +547,17 @@ void moveCharacter()
         //Potentially where the shooting code goes
         //You can but the direction facing in the above movement codes, make the faced direction a data member of the player object
     }
-    if (PlayerChar.moveplayer(Gamemap, direction)); //This if statement is to check whether the is a map change since the map changing code is in the moveplayer code
+    if (PlayerChar.moveplayer(Gamemap, direction) || initialload) //This if statement is to check whether the is a map change since the map changing code is in the moveplayer code
     {                                               //Regardless of true or false, the character will still move
         spawnEnemy();
+        if (initialload)
+        {
+            initialload = false; //Changes to false after the inital map load
+        }
     }
     if (PlayerChar.collisioncheck(Gamemap) == 'Z') // collision work, just have to put something here
     {
-        
+        PlayerChar.setHP(PlayerChar.getHP() - 1);
     }
 }
 
@@ -706,39 +690,36 @@ void renderMap()
     //    c.Y = g_Console.getConsoleSize().Y - 2;
     //    g_Console.writeToBuffer(c, "=", 0x0A);
     //}
-    if (level1 == true)
+    for (int i = 0; i < 80; i++)
     {
-        for (int i = 0; i < 80; i++)
+        for (int j = 0; j < 25; j++)
         {
-            for (int j = 0; j < 25; j++)
+            c.X = i;
+            c.Y = j;
+            if (Gamemap.getchar(j,i) == '=') // '=' are coloured differently for the floor
             {
-                c.X = i;
-                c.Y = j;
-                if (Gamemap.getchar(j,i) == '=') // '=' are coloured differently for the floor
-                {
-                    g_Console.writeToBuffer(c, Gamemap.getchar(j,i), 0x0E);
-                }
-                else if (Gamemap.getchar(j,i) == 'H')
-                {
-                    g_Console.writeToBuffer(c, Gamemap.getchar(j,i), 0x0C);
-                }
-                else if (Gamemap.getchar(j,i) == '1')
-                {
-                    g_Console.writeToBuffer(c, Gamemap.getchar(j,i), 0x01);
-                }
-                else if (Gamemap.getchar(j, i) == 'Z')
-                {
-                    g_Console.writeToBuffer(c, Gamemap.getchar(j, i), 0x09);
-                }
-                else if (Gamemap.getchar(j,i) == (char)26)
-                {
-                    g_Console.writeToBuffer(c, Gamemap.getchar(j,i), 0x0A);
-                }
-                else //Normal colour of black text with blue background
-                {
-                    g_Console.writeToBuffer(c, Gamemap.getchar(j,i), 0x0F); //Btw after the 0x the first number is the background colour and the second is the text colour
-                }//Black is 0, background blue is 1 and a kind of green is A, F is white
+                g_Console.writeToBuffer(c, Gamemap.getchar(j,i), 0x0E);
             }
+            else if (Gamemap.getchar(j,i) == 'H')
+            {
+                g_Console.writeToBuffer(c, Gamemap.getchar(j,i), 0x0C);
+            }
+            else if (Gamemap.getchar(j,i) == '1')
+            {
+                g_Console.writeToBuffer(c, Gamemap.getchar(j,i), 0x01);
+            }
+            else if (Gamemap.getchar(j, i) == 'Z')
+            {
+                g_Console.writeToBuffer(c, Gamemap.getchar(j, i), 0x09);
+            }
+            else if (Gamemap.getchar(j,i) == (char)26)
+            {
+                g_Console.writeToBuffer(c, Gamemap.getchar(j,i), 0x0A);
+            }
+            else //Normal colour of black text with blue background
+            {
+                g_Console.writeToBuffer(c, Gamemap.getchar(j,i), 0x0F); //Btw after the 0x the first number is the background colour and the second is the text colour
+            }//Black is 0, background blue is 1 and a kind of green is A, F is white
         }
     }
 }
@@ -850,7 +831,7 @@ void renderPlayerUI(player player)
 {
     COORD c;
     std::ostringstream ss;
-    ss << "Health "<<(char)3<<":" << player.get_hp() << " Ammo: " << player.get_ammo() << " Energy: " << player.get_mp();
+    ss << "Health "<<(char)3<<":" << player.getHP() << " Ammo: " << player.get_ammo() << " Energy: " << player.getMP();
     c.X = 0;
     c.Y = g_Console.getConsoleSize().Y - 1;
     g_Console.writeToBuffer(c, ss.str());
