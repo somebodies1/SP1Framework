@@ -20,7 +20,6 @@ public:
 	int get_hp(void);
 	int get_mp(void);
 	int get_ammo(void);
-	COORD getcoord(void);
 	bool moveplayer(maps &gamemap, int direction);
 
 

@@ -62,11 +62,6 @@ int player::get_ammo(void)
 	return ammo;
 }
 
-COORD player::getcoord(void)
-{
-    return C;
-}
-
 bool player::moveplayer( maps &Gamemap, int direction)
 {
     int iX = C.X;

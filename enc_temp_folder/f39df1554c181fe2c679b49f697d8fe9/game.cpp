@@ -565,7 +565,7 @@ void moveCharacter()
     }
     if (PlayerChar.collisioncheck(Gamemap) == 'Z')
     {
-        
+        g_bQuitGame = true;
     }
 }
 
