@@ -2,9 +2,12 @@
 class maps
 {
 private:
-	static char gamemap[25][80];
-	static char gamemap1[25][80];
-	static char gamemap2[25][80];
+	static char stage1_1[25][80];
+	static char stage1_2[25][80];
+	static char stage1_3[25][80];
+	static char tut_1[25][80];
+	static char tut_2[25][80];
+	static char tut_3[25][80];
 	char current[25][80];
 	int mapno;
 public:
