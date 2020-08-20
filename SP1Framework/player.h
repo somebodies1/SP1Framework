@@ -2,12 +2,12 @@
 #include "Framework\timer.h"
 #include "Framework\console.h"
 #include "maps.h"
+#include "Entity.h"
 
-class player
+class player: public Entity
 {
 private:
-	int hp, mp, ammo;
-	COORD m_cLocation;
+	int ammo;
 	bool  m_bActive;
 public:
 	player();

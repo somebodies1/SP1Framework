@@ -93,3 +93,26 @@ void Entity::moveEnemy()
 {
 
 }
+
+char Entity::collisioncheck(maps& gamemap)
+{
+	int iX = C.X;
+	int iY = C.Y;
+	if (gamemap.getchar(iX, iY - 1) != ' ' || gamemap.getchar(iX, iY - 1) != '=' || gamemap.getchar(iX, iY - 1) != 'H')
+	{
+		return gamemap.getchar(iX, iY - 1);
+	}
+	if (gamemap.getchar(iX - 1, iY) != ' ' || gamemap.getchar(iX - 1, iY) != '=' || gamemap.getchar(iX - 1, iY) != 'H')
+	{
+		return gamemap.getchar(iX - 1, iY);
+	}
+	if (gamemap.getchar(iX, iY + 1) != ' ' || gamemap.getchar(iX, iY + 1) != '=' || gamemap.getchar(iX, iY + 1) != 'H')
+	{
+		return gamemap.getchar(iX, iY + 1);
+	}
+	if (gamemap.getchar(iX + 1, iY ) != ' ' || gamemap.getchar(iX + 1, iY) != '=' || gamemap.getchar(iX + 1, iY) != 'H')
+	{
+		return gamemap.getchar(iX + 1, iY);
+	}
+	return 0;
+}

@@ -4,7 +4,7 @@
 
 class Entity
 {
-private:
+protected:
 	static int enemyTotal;
 	static int count;
 	int hp, mp;
@@ -29,6 +29,7 @@ public:
 	int getID(void);
 	void addtomap(char add, maps& Gamemap);
 	void moveEnemy();
+	char collisioncheck(maps& gamemap);
 };
 
 
