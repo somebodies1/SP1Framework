@@ -21,7 +21,7 @@ public:
 	int get_mp(void);
 	int get_ammo(void);
 	COORD getcoord(void);
-	void moveplayer(maps &gamemap, int direction);
+	bool moveplayer(maps &gamemap, int direction);
 
 
 

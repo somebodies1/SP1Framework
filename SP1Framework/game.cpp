@@ -77,6 +77,7 @@ SMouseEvent g_mouseEvent;
 // Game specific variables here
 player PlayerChar; //create player object
 maps Gamemap;
+char spawnedmaps[3] = {' ', ' ', ' '}; //Keeps track to the current map to check if a new map has been loaded by the end of a function
 SGameChar   g_sChar;
 Pew g_pew;
 Entity* amt[5] = { nullptr, nullptr, nullptr, nullptr, nullptr };
@@ -555,11 +556,13 @@ void moveCharacter()
         Beep(1000, 30);
         Beep(500, 50);
         Beep(1500, 20);
-        spawnEnemy();
         //Potentially where the shooting code goes
         //You can but the direction facing in the above movement codes, make the faced direction a data member of the player object
     }
-    PlayerChar.moveplayer(Gamemap, direction);
+    if (PlayerChar.moveplayer(Gamemap, direction)); //This if statement is to check whether the is a map change since the map changing code is in the moveplayer code
+    {                                               //Regardless of true or false, the character will still move
+        spawnEnemy();
+    }
 }
 
 
@@ -748,15 +751,18 @@ void renderPew()
 }
 
 void spawnEnemy()
-{
-    for (int i = 0; i < 5; i++)
+{  
+    if (Gamemap.getmapno() == 0 && spawnedmaps[0] == ' ')
     {
-        if (amt[i] != nullptr)
+        spawnedmaps[1] = '0';
+        for (int i = 0; i < 5; i++)
         {
-            amt[i]->addtomap('Z', Gamemap);
+            if (amt[i] != nullptr)
+            {
+                amt[i]->addtomap('Z', Gamemap);
+            }
         }
-    }
-   
+    } 
 }
 
 void renderFramerate()

@@ -67,7 +67,7 @@ COORD player::getcoord(void)
     return m_cLocation;
 }
 
-void player::moveplayer( maps &Gamemap, int direction)
+bool player::moveplayer( maps &Gamemap, int direction)
 {
     int iX = m_cLocation.X;
     int iY = m_cLocation.Y;
@@ -95,6 +95,7 @@ void player::moveplayer( maps &Gamemap, int direction)
             Gamemap.setmapno(Gamemap.getmapno() - 1);
             Gamemap.setcurrent(Gamemap.getmapno());
             m_cLocation.X =+ 78;
+            return true;
         }
         else
         {
@@ -125,6 +126,7 @@ void player::moveplayer( maps &Gamemap, int direction)
             Gamemap.setmapno(Gamemap.getmapno() + 1);
             Gamemap.setcurrent(Gamemap.getmapno());
             m_cLocation.X -= 77;
+            return true;
         }
         else
         {
@@ -135,6 +137,7 @@ void player::moveplayer( maps &Gamemap, int direction)
     {
         m_cLocation.Y++;
     }
+    return false;
 }
 
 
