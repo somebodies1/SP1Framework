@@ -10,6 +10,7 @@ Entity::Entity()
 	y = 0;
 	C.X = 0;
 	C.Y = 0;
+	direction = 1;
 	if (enemyTotal > count)
 	{
 		if (counter[count] != nullptr)
@@ -89,30 +90,76 @@ void Entity::addtomap(char add, maps& Gamemap)
 	}
 }
 
-void Entity::moveEnemy()
+void Entity::move(char ent, maps& gamemap)
 {
-
+	if (direction == 1)
+	{
+		if (gamemap.getchar(C.Y, (C.X - 1)) == ' ')
+		{
+			gamemap.setchar(' ', C.X, C.Y);
+			C.X -= 1;
+			gamemap.setchar(ent, C.X, C.Y);
+		}
+		else
+		{
+			direction = 2;
+		}
+	}
+	else if(direction == 2)
+	{
+		if (gamemap.getchar(C.Y, (C.X + 1)) == ' ')
+		{
+			gamemap.setchar(' ', C.X, C.Y);
+			C.X += 1;
+			gamemap.setchar(ent, C.X, C.Y);
+		}
+		else
+		{
+			direction = 1;
+		}
+	}
 }
 
 char Entity::collisioncheck(maps& gamemap)
 {
 	int iX = C.X;
 	int iY = C.Y;
-	if (gamemap.getchar(iX, iY - 1) != ' ' || gamemap.getchar(iX, iY - 1) != '=' || gamemap.getchar(iX, iY - 1) != 'H')
+	//if (gamemap.getchar(iX, iY - 1) != ' ' && gamemap.getchar(iX, iY - 1) != '=' && gamemap.getchar(iX, iY - 1) != 'H')
+	//{
+	//	return gamemap.getchar(iX, iY - 1);
+	//}
+	//if (gamemap.getchar(iX - 1, iY) != ' ' && gamemap.getchar(iX - 1, iY) != '=' && gamemap.getchar(iX - 1, iY) != 'H')
+	//{
+	//	return gamemap.getchar(iX - 1, iY);
+	//}
+	//if (gamemap.getchar(iX, iY + 1) != ' ' && gamemap.getchar(iX, iY + 1) != '=' && gamemap.getchar(iX, iY + 1) != 'H')
+	//{
+	//	return gamemap.getchar(iX, iY + 1);
+	//}
+	//if (gamemap.getchar(iX + 1, iY ) != ' ' && gamemap.getchar(iX + 1, iY) != '=' && gamemap.getchar(iX + 1, iY) != 'H')
+	//{
+	//	return gamemap.getchar(iX + 1, iY);
+	//}
+
+
+	if (gamemap.getchar(iY - 1, iX) == 'Z')
 	{
-		return gamemap.getchar(iX, iY - 1);
+		return 'Z';
 	}
-	if (gamemap.getchar(iX - 1, iY) != ' ' || gamemap.getchar(iX - 1, iY) != '=' || gamemap.getchar(iX - 1, iY) != 'H')
+	else if (gamemap.getchar(iY, iX - 1) == 'Z')
 	{
-		return gamemap.getchar(iX - 1, iY);
+		return 'Z';
 	}
-	if (gamemap.getchar(iX, iY + 1) != ' ' || gamemap.getchar(iX, iY + 1) != '=' || gamemap.getchar(iX, iY + 1) != 'H')
+	else if (gamemap.getchar(iY + 1, iX) == 'Z')
 	{
-		return gamemap.getchar(iX, iY + 1);
+		return 'Z';
 	}
-	if (gamemap.getchar(iX + 1, iY ) != ' ' || gamemap.getchar(iX + 1, iY) != '=' || gamemap.getchar(iX + 1, iY) != 'H')
+	else if (gamemap.getchar(iY, iX + 1) == 'Z')
 	{
-		return gamemap.getchar(iX + 1, iY);
+		return 'Z';
 	}
-	return 0;
+	else
+	{
+		return ' ';
+	}
 }

@@ -346,8 +346,9 @@ void splashScreenWait()    // waits for time to pass in splash screen
 
 void updateGame()       // gameplay logic
 {
+    renderMap();
     processUserInput(); // checks if you should change states or do something else with the game, e.g. pause, exit
-    //moveEnemy(); //enemies don't move yet
+    moveEnemy(); 
     moveCharacter();    // moves the character, collision detection, physics, etc
     movePew();                    // sound can be played here too.
     //Charactergravity();
@@ -459,6 +460,13 @@ void movePew()
 
 void moveEnemy()
 {
+    for (int i = 0; i < 5; i++)
+    {
+        if (amt[i] != nullptr)
+        {
+            amt[i]->move('Z', Gamemap);
+        }
+    }
     //if (g_eGameState == S_GAME)
     //{
     //    if (Gamemap.getmapno() == 0)
@@ -563,7 +571,7 @@ void moveCharacter()
     {                                               //Regardless of true or false, the character will still move
         spawnEnemy();
     }
-    if (PlayerChar.collisioncheck(Gamemap) == 'Z')
+    if (PlayerChar.collisioncheck(Gamemap) == 'Z') // collision work, just have to put something here
     {
         
     }

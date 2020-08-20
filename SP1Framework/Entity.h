@@ -7,6 +7,7 @@ class Entity
 protected:
 	static int enemyTotal;
 	static int count;
+	int direction; //1 for left, 2 for right
 	int hp, mp;
 	int x, y;
 	int id;
@@ -28,7 +29,7 @@ public:
 	COORD getXY(void);
 	int getID(void);
 	void addtomap(char add, maps& Gamemap);
-	void moveEnemy();
+	void move(char ent, maps& Gamemap);
 	char collisioncheck(maps& gamemap);
 };
 
