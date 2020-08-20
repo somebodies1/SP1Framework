@@ -347,9 +347,9 @@ void splashScreenWait()    // waits for time to pass in splash screen
 void updateGame()       // gameplay logic
 {
     processUserInput(); // checks if you should change states or do something else with the game, e.g. pause, exit
+    moveEnemy();
     moveCharacter();    // moves the character, collision detection, physics, etc
     movePew();                    // sound can be played here too.
-    moveEnemy();
     //Charactergravity();
 
     /*if (isFiring==true)
@@ -461,7 +461,7 @@ void moveEnemy()
 {
     if (g_eGameState == S_GAME)
     {
-        if (level1 == true)
+        if (Gamemap.getmapno() == 0)
         {
             for (int i = 0; i < 2; i++)
             {
@@ -754,7 +754,6 @@ void spawnEnemy()
 {  
     if (Gamemap.getmapno() == 0 && spawnedmaps[0] == ' ')
     {
-        spawnedmaps[1] = '0';
         for (int i = 0; i < 5; i++)
         {
             if (amt[i] != nullptr)
@@ -762,6 +761,7 @@ void spawnEnemy()
                 amt[i]->addtomap('Z', Gamemap);
             }
         }
+        spawnedmaps[0] = '0';
     } 
 }
 
