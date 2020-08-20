@@ -1,5 +1,6 @@
 #ifndef _GAME_H
 #define _GAME_H
+#include <cmath>
 #include "player.h"
 #include "Entity.h"
 #include "maps.h"
@@ -67,7 +68,7 @@ void render(void);      // renders the current state of the game to the console
 void shutdown(void);      // do clean up, free memory
 
 void splashScreenWait();    // waits for time to pass in splash screen
-void updateGame();          // gameplay logic
+void updateGame(double dt);          // gameplay logic
 void updateMainMenu();      // main menu logic
 void updatePauseMenu();     // Pause menu logic
 void moveCharacter();       // moves the character, collision detection, physics, etc

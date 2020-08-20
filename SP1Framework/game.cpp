@@ -277,7 +277,7 @@ void pausemenuKBHandler(const KEY_EVENT_RECORD& keyboardEvent)  //KB inputs when
     EKEYS key = K_COUNT;
     switch (keyboardEvent.wVirtualKeyCode)
     {
-    case VK_SPACE: key = K_SPACE; break;
+    case VK_ESCAPE: key = K_ESCAPE; break;
     }
     if (key != K_COUNT)
     {
@@ -332,7 +332,8 @@ void update(double dt)
     case S_MAINMENU: updateMainMenu();
         break;
     case S_PAUSE: updatePauseMenu();
-    case S_GAME: updateGame(); // gameplay logic when we are in the game
+        break;
+    case S_GAME: updateGame(g_dElapsedTime); // gameplay logic when we are in the game
         break;
     }
 }
@@ -343,11 +344,14 @@ void splashScreenWait()    // waits for time to pass in splash screen
         g_eGameState = S_GAME;
 }
 
-void updateGame()       // gameplay logic
+void updateGame(double g_dElapsedTime)       // gameplay logic
 {
     renderMap();
-    processUserInput(); // checks if you should change states or do something else with the game, e.g. pause, exit
-    moveEnemy(); 
+    processUserInput(); // checks if you should change  states or do something else with the game, e.g. pause, exit
+    if (fmod(g_dElapsedTime,0.2) <= 0.02)
+    {
+        moveEnemy();
+    }
     moveCharacter();    // moves the character, collision detection, physics, etc
     movePew();                    // sound can be played here too.
     //Charactergravity();
@@ -381,7 +385,7 @@ void updateMainMenu()
 
 void updatePauseMenu()
 {
-    if (g_skKeyEvent[K_SPACE].keyReleased)
+    if (g_skKeyEvent[K_ESCAPE].keyReleased)
     {
         g_eGameState = S_GAME;
     }
