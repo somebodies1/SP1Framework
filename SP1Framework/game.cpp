@@ -347,7 +347,7 @@ void splashScreenWait()    // waits for time to pass in splash screen
 void updateGame()       // gameplay logic
 {
     processUserInput(); // checks if you should change states or do something else with the game, e.g. pause, exit
-    moveEnemy();
+    //moveEnemy();
     moveCharacter();    // moves the character, collision detection, physics, etc
     movePew();                    // sound can be played here too.
     //Charactergravity();
@@ -752,17 +752,62 @@ void renderPew()
 
 void spawnEnemy()
 {  
-    if (Gamemap.getmapno() == 0 && spawnedmaps[0] == ' ')
+    if (g_eGameState == S_GAME)
     {
-        for (int i = 0; i < 5; i++)
+        if (Gamemap.getmapno() == 0 && spawnedmaps[0] == ' ')
         {
-            if (amt[i] != nullptr)
+            for (int i = 0; i < 2; i++)
             {
-                amt[i]->addtomap('Z', Gamemap);
+                if (spawned[i] == false)
+                {
+                    amt[i] = new Entity;
+                    amt[i]->spawnEntity(2, 2);
+                    if (i == 0)
+                    {
+                        amt[i]->setX(32);
+                        amt[i]->setY(22);
+                    }
+                    if (i == 1)
+                    {
+                        amt[i]->setX(33);
+                        amt[i]->setY(22);
+                    }
+                    spawned[i] = true;
+                    amt[i]->addtomap('Z', Gamemap);
+                }
             }
+            spawnedmaps[0] = '0';
         }
-        spawnedmaps[0] = '0';
-    } 
+        if (Gamemap.getmapno() == 1 && spawnedmaps[1] == ' ')
+        {
+            for (int i = 2; i < 5; i++)
+            {
+                if (spawned[i] == false)
+                {
+                    amt[i] = new Entity;
+                    amt[i]->spawnEntity(2, 2);
+                    if (i == 2)
+                    {
+                        amt[i]->setX(31);
+                        amt[i]->setY(22);
+                    }
+                    if (i == 3)
+                    {
+                        amt[i]->setX(33);
+                        amt[i]->setY(22);
+                    }
+                    if (i == 4)
+                    {
+                        amt[i]->setX(35);
+                        amt[i]->setY(22);
+                    }
+                    amt[i]->addtomap('Z', Gamemap);
+                    spawned[i] = true;
+                }
+            }
+            spawnedmaps[1] = '1';
+        }
+    }
 }
 
 void renderFramerate()
