@@ -470,12 +470,12 @@ void moveEnemy()
                     amt[i]->spawnEntity(2, 2);
                     if (i == 0)
                     {
-                        amt[i]->setX(77);
+                        amt[i]->setX(32);
                         amt[i]->setY(22);
                     }
                     if (i == 1)
                     {
-                        amt[i]->setX(76);
+                        amt[i]->setX(33);
                         amt[i]->setY(22);
                     }
                     spawned[i] = true;
@@ -533,7 +533,6 @@ void moveCharacter()
 
     //            }
 
-    int currentmap = Gamemap.getmapno();
     int direction = 0;
     if (g_skKeyEvent[K_UP].keyDown)
     {
@@ -556,6 +555,9 @@ void moveCharacter()
         Beep(1000, 30);
         Beep(500, 50);
         Beep(1500, 20);
+        spawnEnemy();
+        //Potentially where the shooting code goes
+        //You can but the direction facing in the above movement codes, make the faced direction a data member of the player object
     }
     PlayerChar.moveplayer(Gamemap, direction);
 }
@@ -652,7 +654,6 @@ void renderGame()
     renderMap();        // renders the map to the buffer first
     renderCharacter();
     renderPlayerUI(PlayerChar);
-    renderEnemy();
     if (isFiring == true)
     {
         renderPew();
@@ -710,6 +711,10 @@ void renderMap()
                 {
                     g_Console.writeToBuffer(c, Gamemap.getchar(j,i), 0x01);
                 }
+                else if (Gamemap.getchar(j, i) == 'Z')
+                {
+                    g_Console.writeToBuffer(c, Gamemap.getchar(j, i), 0x09);
+                }
                 else if (Gamemap.getchar(j,i) == (char)26)
                 {
                     g_Console.writeToBuffer(c, Gamemap.getchar(j,i), 0x0A);
@@ -717,40 +722,6 @@ void renderMap()
                 else //Normal colour of black text with blue background
                 {
                     g_Console.writeToBuffer(c, Gamemap.getchar(j,i), 0x0F); //Btw after the 0x the first number is the background colour and the second is the text colour
-                }//Black is 0, background blue is 1 and a kind of green is A, F is white
-            }
-        }
-    }
-
-    else if (level2 == true)
-    {
-        //g_sChar.m_cLocation.X = 1;
-        //g_sChar.m_cLocation.Y = 22;
-        for (int i = 0; i < 80; i++)
-        {
-            for (int j = 0; j < 25; j++)
-            {
-                c.X = i;
-                c.Y = j;
-                if (Gamemap1[j][i] == '=') // '=' are coloured differently for the floor
-                {
-                    g_Console.writeToBuffer(c, Gamemap1[j][i], 0x0E);
-                }
-                else if (Gamemap1[j][i] == 'H')
-                {
-                    g_Console.writeToBuffer(c, Gamemap1[j][i], 0x0C);
-                }
-                else if (Gamemap1[j][i] == '1')
-                {
-                    g_Console.writeToBuffer(c, Gamemap1[j][i], 0x01);
-                }
-                else if (Gamemap1[j][i] == (char)27)
-                {
-                    g_Console.writeToBuffer(c, Gamemap1[j][i], 0x0A);
-                }
-                else //Normal colour of black text with blue background
-                {
-                    g_Console.writeToBuffer(c, Gamemap1[j][i], 0x0F); //Btw after the 0x the first number is the background colour and the second is the text colour
                 }//Black is 0, background blue is 1 and a kind of green is A, F is white
             }
         }
@@ -776,17 +747,16 @@ void renderPew()
     g_Console.writeToBuffer(g_pew.m_cLocation, '-', charColor);
 }
 
-void renderEnemy()
+void spawnEnemy()
 {
-    WORD charColor = 0x1C;
     for (int i = 0; i < 5; i++)
     {
         if (amt[i] != nullptr)
         {
-            g_Console.writeToBuffer(amt[i]->getXY(), 'Z', charColor);
+            amt[i]->addtomap('Z', Gamemap);
         }
     }
-    
+   
 }
 
 void renderFramerate()

@@ -81,6 +81,14 @@ int Entity::getID(void)
 	return this->id;
 }
 
+void Entity::addtomap(char add, maps& Gamemap)
+{
+	if (Gamemap.getchar(C.Y, C.X) == ' ')
+	{
+		Gamemap.setchar(add, C.X, C.Y);
+	}
+}
+
 void Entity::moveEnemy()
 {
 

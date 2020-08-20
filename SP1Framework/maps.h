@@ -11,7 +11,8 @@ public:
 	maps();
 	~maps();
 	void setcurrent(int mapnum);
-	char getchar(int x, int y);
+	char getchar(int x, int y); //Gets the character in the index
+	void setchar(char add, int x, int y); //Sets the character in the index
 	int getmapno();
 	void setmapno(int mapnum);
 };

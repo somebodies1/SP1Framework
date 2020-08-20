@@ -1,5 +1,7 @@
 #pragma once
 #include <Windows.h>
+#include "maps.h"
+
 class Entity
 {
 private:
@@ -25,7 +27,7 @@ public:
 	SHORT Y(void);
 	COORD getXY(void);
 	int getID(void);
-
+	void addtomap(char add, maps& Gamemap);
 	void moveEnemy();
 };
 
