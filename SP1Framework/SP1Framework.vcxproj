@@ -110,6 +110,9 @@
     <Text Include="Stage1_1.txt" />
     <Text Include="Stage1_2.txt" />
     <Text Include="Stage1_3.txt" />
+    <Text Include="Stage0_1.txt" />
+    <Text Include="Stage0_2.txt" />
+    <Text Include="Stage0_3.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
