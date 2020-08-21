@@ -48,7 +48,7 @@ bool player::moveplayer( maps &Gamemap, int direction)
     int iY = C.Y;
     if (direction == 1)
     {
-        if (Gamemap.getchar(iY,iX) == 'H' && Gamemap.getchar(iY-1,iX) == 'H')
+        if (Gamemap.getchar(iY,iX) == 'H' && Gamemap.getchar(iY-1,iX) != '=' || Gamemap.getchar(iY - 1, iX) == 'H')
         {
             C.Y--;
         }
@@ -69,7 +69,7 @@ bool player::moveplayer( maps &Gamemap, int direction)
     }
     if (direction == 3)
     {
-        if (Gamemap.getchar(iY,iX) == 'H' && Gamemap.getchar(iY+1,iX) != '=')
+        if (Gamemap.getchar(iY,iX) == 'H' && Gamemap.getchar(iY+1,iX) != '=' || Gamemap.getchar(iY + 1, iX) == 'H')
        {
             C.Y++;
         }
