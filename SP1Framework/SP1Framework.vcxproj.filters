@@ -100,7 +100,10 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <Text Include="mapsheet.txt">
+    <Text Include="Stage1_1.txt">
+      <Filter>Resource Files</Filter>
+    </Text>
+    <Text Include="Stage1_2.txt">
       <Filter>Resource Files</Filter>
     </Text>
   </ItemGroup>

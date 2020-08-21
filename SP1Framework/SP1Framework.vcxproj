@@ -107,7 +107,8 @@
     <ClInclude Include="StationaryMob.h" />
   </ItemGroup>
   <ItemGroup>
-    <Text Include="mapsheet.txt" />
+    <Text Include="Stage1_1.txt" />
+    <Text Include="Stage1_2.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

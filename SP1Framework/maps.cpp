@@ -185,26 +185,34 @@ maps::~maps()
 
 void maps::setcurrent(int mapnum)
 {
+    string filename;
     string line;
-    ifstream myfile("mapsheet.txt");
+    if (mapnum == 0)
+    {
+        filename = "Stage1_1.txt";
+    }
+    else if(mapnum == 1)
+    {
+        filename = "Stage1_2.txt";
+    }
+    ifstream mapfile(filename);
     for (int i = 0; i < 25; i++)
     {
-        getline(myfile, line);
-        char cstr[2000];
-        strcpy(cstr, line.c_str());
+        getline(mapfile, line); //Gets a line from the text file
+        char linearray[100]; //An array of chars
+        strcpy(linearray, line.c_str()); //Turns the line of string from the text file into an array fo char
         for (int j = 0; j < 80; j++)
         {
             switch (mapnum + 1)
             {
             case 1: //Stage 1 part 1
             {
-                //current[i][j] = stage1_1[i][j];
-                current[i][j] =  cstr[j];
+                current[i][j] = linearray[j];
                 break;
             }
             case 2: //Stage 1 part 2
             {
-                current[i][j] = stage1_2[i][j];
+                current[i][j] = linearray[j];
                 break;
             }
             case 3: //Stage 1 part 3
