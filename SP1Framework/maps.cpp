@@ -185,15 +185,21 @@ maps::~maps()
 
 void maps::setcurrent(int mapnum)
 {
+    string line;
+    ifstream myfile("mapsheet.txt");
     for (int i = 0; i < 25; i++)
     {
+        getline(myfile, line);
+        char cstr[2000];
+        strcpy(cstr, line.c_str());
         for (int j = 0; j < 80; j++)
         {
             switch (mapnum + 1)
             {
             case 1: //Stage 1 part 1
             {
-                current[i][j] = stage1_1[i][j];
+                //current[i][j] = stage1_1[i][j];
+                current[i][j] =  cstr[j];
                 break;
             }
             case 2: //Stage 1 part 2
@@ -242,3 +248,5 @@ void maps::setmapno(int mapnum)
 {
     mapno = mapnum;
 }
+
+
