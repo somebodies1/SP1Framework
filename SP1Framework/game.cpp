@@ -761,7 +761,7 @@ void renderPew()
     g_Console.writeToBuffer(g_pew.m_cLocation, '-', charColor);
 }
 
-void spawnEnemy()
+void spawnEnemy() //TODO: Set it so that when map changes, the enemies would be deleted and become nullptr for future use
 {  
     if (g_eGameState == S_GAME)
     {
@@ -769,7 +769,7 @@ void spawnEnemy()
         {
             for (int i = 0; i < 2; i++)
             {
-                if (spawned[i] == false)
+                if (spawned[i] == false) //Only happen once
                 {
                     amt[i] = new Entity;
                     amt[i]->spawnEntity(2, 2);
@@ -793,7 +793,7 @@ void spawnEnemy()
         {
             for (int i = 2; i < 5; i++)
             {
-                if (spawned[i] == false)
+                if (spawned[i] == false) //Only happen once
                 {
                     amt[i] = new Entity;
                     amt[i]->spawnEntity(2, 2);
@@ -813,7 +813,7 @@ void spawnEnemy()
                         amt[i]->setY(22);
                     }
                     amt[i]->addtomap('Z', Gamemap);
-                    spawned[i] = true;
+                    spawned[i] = true; 
                 }
             }
             spawnedmaps[1] = '1';
