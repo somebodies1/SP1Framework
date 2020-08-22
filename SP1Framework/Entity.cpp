@@ -26,10 +26,10 @@ Entity::~Entity()
 {
 }
 
-void Entity::spawnEntity(int h, int m)
+void Entity::spawnEntity(int x, int y)
 {
-	this->hp = h;
-	this->mp = m;
+	this->C.X = x;
+	this->C.Y = y;
 }
 
 void Entity::setHP(int h)
@@ -94,7 +94,7 @@ void Entity::move(char ent, maps& gamemap)
 {
 	if (direction == 1)
 	{
-		if (gamemap.getchar(C.Y, (C.X - 1)) == ' ')
+		if (gamemap.getchar(C.Y, (C.X - 1)) != '1' && gamemap.getchar(C.Y, (C.X - 1)) != '=')
 		{
 			gamemap.setchar(' ', C.X, C.Y);
 			C.X -= 1;
@@ -107,7 +107,7 @@ void Entity::move(char ent, maps& gamemap)
 	}
 	else if(direction == 2)
 	{
-		if (gamemap.getchar(C.Y, (C.X + 1)) == ' ')
+		if (gamemap.getchar(C.Y, (C.X + 1)) != '1' && gamemap.getchar(C.Y, (C.X + 1)) != '=')
 		{
 			gamemap.setchar(' ', C.X, C.Y);
 			C.X += 1;

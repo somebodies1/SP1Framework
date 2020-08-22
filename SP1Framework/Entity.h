@@ -15,7 +15,7 @@ protected:
 public:
 	Entity();
 	~Entity();
-	void spawnEntity(int h, int m);
+	void spawnEntity(int x, int y);
 
 	void setHP(int h);
 	void setMP(int m);

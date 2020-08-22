@@ -42,7 +42,7 @@ int player::get_ammo(void)
 	return ammo;
 }
 
-bool player::moveplayer( maps &Gamemap, int direction)
+bool player::moveplayer( maps &Gamemap, maps &Entitylayer, int direction)
 {
     int iX = C.X;
     int iY = C.Y;
@@ -63,6 +63,8 @@ bool player::moveplayer( maps &Gamemap, int direction)
         {
             Gamemap.setmapno(Gamemap.getmapno() - 1);
             Gamemap.setcurrent(Gamemap.getmapno());
+            Entitylayer.setmapno(Entitylayer.getmapno() - 1);
+            Entitylayer.setcurrent(Entitylayer.getmapno());
             C.X =+ 78;
             return true;
         }
@@ -84,6 +86,8 @@ bool player::moveplayer( maps &Gamemap, int direction)
         {
             Gamemap.setmapno(Gamemap.getmapno() + 1);
             Gamemap.setcurrent(Gamemap.getmapno());
+            Entitylayer.setmapno(Entitylayer.getmapno() + 1);
+            Entitylayer.setcurrent(Entitylayer.getmapno());
             C.X -= 77;
             return true;
         }

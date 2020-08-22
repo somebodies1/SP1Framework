@@ -5,16 +5,16 @@
 1                                                                              1
 1                                                                              1
 1                                                                              1
-1                       You can only go up by using ladders                    1
+1              Z        You can only go up by using ladders                    1
 1                                                                              1
-1                                                                              1
-1                                                                              1
+1                       Z                                                      1
+1                                                          Z                   1
 1                                                                              1
 1                                                                              1
 1                          =======H===============H==                          1
 1                                 H             = H                            1
 1                                 H             = H                            1
-1                                 H             = H                            1
+1                                 H             = H                Z           1
 1                                 H             = H                            1
 1                                 H             = H                            1
 1                                 H             = H                            1

@@ -16,6 +16,6 @@ public:
 	void spawn_player(int h, int m, int a);
 	void set_ammo(int a);
 	int get_ammo(void);
-	bool moveplayer(maps &gamemap, int direction);
+	bool moveplayer(maps &gamemap, maps &Entitylayer, int direction);  // The 2 layer are entered as passby parameters to updated 
 };
 

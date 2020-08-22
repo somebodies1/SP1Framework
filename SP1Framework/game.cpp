@@ -14,12 +14,15 @@ SMouseEvent g_mouseEvent;
 
 // Game specific variables here
 player PlayerChar; //create player object
-maps Gamemap;
-maps Entitylayer;
+maps Gamemap;     //Layer for the map
+maps Entitylayer; //Layer for the enitites so they can overlap with map objects
+int enemyno = 0;  //index of enemy spawned per map, set to 0 and increased for each enemy spawned per map. Reset to 0 when it enters a new map
 char spawnedmaps[3] = {' ', ' ', ' '}; //Keeps track to the current map to check if a new map has been loaded by the end of a function
 SGameChar   g_sChar;
 Pew g_pew;
-Entity* amt[5] = { nullptr, nullptr, nullptr, nullptr, nullptr };
+Entity* amt[3][5] = { { nullptr, nullptr, nullptr, nullptr, nullptr }, // the total entities in a stage
+    { nullptr, nullptr, nullptr, nullptr, nullptr },                   // right now the maximum for enemies 5 per map, 3 maps per stage
+    { nullptr, nullptr, nullptr, nullptr, nullptr }};                  // can be increased and the adding of nullptr can be a for loop
 
 EGAMESTATES g_eGameState = S_MAINMENU; // initial state
 
@@ -366,27 +369,13 @@ void moveEnemy()
 {
     if (g_eGameState == S_GAME)
     {
-        if (Gamemap.getmapno() == 0)
+        for (int i = 0; i < 5; i++)
         {
-            for (int i = 0; i < 2; i++)
+            if (amt[Entitylayer.getmapno()][i] != nullptr)
             {
-                if (amt[i] != nullptr)
-                {
-                    amt[i]->move('Z', Gamemap);
-                }
+                amt[Entitylayer.getmapno()][i]->move('Z', Entitylayer);
             }
         }
-        if (Gamemap.getmapno() == 1)
-        {
-            for (int i = 2; i < 5; i++)
-            {
-                if (amt[i] != nullptr)
-                {
-                    amt[i]->move('Z', Gamemap);
-                }
-            }
-        }
-        
     }
 }
 
@@ -443,27 +432,35 @@ void moveCharacter()
         Beep(1000, 30);
         Beep(500, 50);
         Beep(1500, 20);
-        for (int i = 0; i < 5; i++)
+        for (int j = 0; j < 3; j++)
         {
-            if (amt[i] != nullptr)
+            for (int i = 0; i < 3; i++)
             {
-                Gamemap.setchar(' ', amt[i]->getXY().X, amt[i]->getXY().Y);
-                delete amt[i];
-                amt[i] = nullptr;
+                if (amt[j][i] != nullptr)
+                {
+                    Entitylayer.setchar(' ', amt[j][i]->getXY().X, amt[j][i]->getXY().Y);
+                    delete amt[j][i];
+                    amt[j][i] = nullptr;
+                }
             }
         }
         //Potentially where the shooting code goes
         //You can but the direction facing in the above movement codes, make the faced direction a data member of the player object
     }
-    if (PlayerChar.moveplayer(Gamemap, direction) || initialload) //This if statement is to check whether the is a map change since the map changing code is in the moveplayer code
-    {                                               //Regardless of true or false, the character will still move
-        spawnEnemy();
-        if (initialload)
+    if (PlayerChar.moveplayer(Gamemap, Entitylayer, direction) || initialload) //This if statement is to check whether the is a map change since the map changing code is in the moveplayer code
+    {   
+        if (spawnedmaps[Gamemap.getmapno()] == ' ')
         {
-            initialload = false; //Changes to false after the inital map load
+            spawnedmaps[Gamemap.getmapno()] = 'X';
+            spawnEnemy();
+            if (initialload)
+            {
+                initialload = false; //Changes to false after the inital map load
+            }
+
         }
     }
-    if (PlayerChar.collisioncheck(Gamemap) == 'Z') // collision work, just have to put something here
+    if (PlayerChar.collisioncheck(Entitylayer) == 'Z') // collision work, just have to put something here
     {
         PlayerChar.setHP(PlayerChar.getHP() - 1);
     }
@@ -559,8 +556,9 @@ void renderPauseMenu()  // renders the main menu
 void renderGame()
 {
     renderMap();        // renders the map to the buffer first
-    renderCharacter();
-    renderPlayerUI(PlayerChar);
+    renderEntities();   // renders the entities a layer above
+    renderCharacter();  // renders the player a layer above
+    renderPlayerUI(PlayerChar); //renders the resource indicators a layer above
     if (isFiring == true)
     {
         renderPew();
@@ -593,30 +591,29 @@ void renderMap()
         {
             c.X = i;
             c.Y = j;
-            if (Gamemap.getchar(j,i) == '=') // '=' are coloured differently for the floor
+            if (Gamemap.getchar(j, i) != 'Z' /* || add the rest of the entities here */)
             {
-                g_Console.writeToBuffer(c, Gamemap.getchar(j,i), 0x0E);
+                if (Gamemap.getchar(j, i) == '=') // '=' are coloured differently for the floor
+                {
+                    g_Console.writeToBuffer(c, Gamemap.getchar(j, i), 0x0E);
+                }
+                else if (Gamemap.getchar(j, i) == 'H')
+                {
+                    g_Console.writeToBuffer(c, Gamemap.getchar(j, i), 0x0C);
+                }
+                else if (Gamemap.getchar(j, i) == '1')
+                {
+                    g_Console.writeToBuffer(c, Gamemap.getchar(j, i), 0x01);
+                }
+                else if (Gamemap.getchar(j, i) == 'K')
+                {
+                    g_Console.writeToBuffer(c, Gamemap.getchar(j, i), 0x0A);
+                }
+                else  //Normal colour of black text with blue background
+                {
+                    g_Console.writeToBuffer(c, Gamemap.getchar(j, i), 0x0F); //Btw after the 0x the first number is the background colour and the second is the text colour
+                }//Black is 0, background blue is 1 and a kind of green is A, F is white
             }
-            else if (Gamemap.getchar(j,i) == 'H')
-            {
-                g_Console.writeToBuffer(c, Gamemap.getchar(j,i), 0x0C);
-            }
-            else if (Gamemap.getchar(j,i) == '1')
-            {
-                g_Console.writeToBuffer(c, Gamemap.getchar(j,i), 0x01);
-            }
-            else if (Gamemap.getchar(j, i) == 'Z')
-            {
-                g_Console.writeToBuffer(c, Gamemap.getchar(j, i), 0x09);
-            }
-            else if (Gamemap.getchar(j,i) == 'K')
-            {
-                g_Console.writeToBuffer(c, Gamemap.getchar(j,i), 0x0A);
-            }
-            else //Normal colour of black text with blue background
-            {
-                g_Console.writeToBuffer(c, Gamemap.getchar(j,i), 0x0F); //Btw after the 0x the first number is the background colour and the second is the text colour
-            }//Black is 0, background blue is 1 and a kind of green is A, F is white
         }
     }
 }
@@ -641,67 +638,28 @@ void renderPew()
 }
 
 void spawnEnemy() //TODO: Set it so that when map changes, the enemies would be deleted and become nullptr for future use
-//{  
-//    if (g_eGameState == S_GAME)
-//    {
-//        if (Gamemap.getmapno() == 0 && spawnedmaps[0] == ' ')
-//        {
-//            for (int i = 0; i < 2; i++)
-//            {
-//                if (spawned[i] == false) //Only happen once
-//                {
-//                    amt[i] = new Entity;
-//                    amt[i]->spawnEntity(2, 2);
-//                    if (i == 0)
-//                    {
-//                        amt[i]->setX(32);
-//                        amt[i]->setY(22);
-//                    }
-//                    if (i == 1)
-//                    {
-//                        amt[i]->setX(33);
-//                        amt[i]->setY(22);
-//                    }
-//                    spawned[i] = true;
-//                    amt[i]->addtomap('Z', Gamemap);
-//                }
-//            }
-//            spawnedmaps[0] = '0';
-//        }
-//        if (Gamemap.getmapno() == 1 && spawnedmaps[1] == ' ')
-//        {
-//            for (int i = 2; i < 5; i++)
-//            {
-//                if (spawned[i] == false) //Only happen once
-//                {
-//                    amt[i] = new Entity;
-//                    amt[i]->spawnEntity(2, 2);
-//                    if (i == 2)
-//                    {
-//                        amt[i]->setX(31);
-//                        amt[i]->setY(22);
-//                    }
-//                    if (i == 3)
-//                    {
-//                        amt[i]->setX(33);
-//                        amt[i]->setY(22);
-//                    }
-//                    if (i == 4)
-//                    {
-//                        amt[i]->setX(35);
-//                        amt[i]->setY(22);
-//                    }
-//                    amt[i]->addtomap('Z', Gamemap);
-//                    spawned[i] = true; 
-//                }
-//            }
-//            spawnedmaps[1] = '1';
-//        }
-//    }
-//}
-
 {  
-    if (g_eGameState == S_GAME)
+    COORD c;
+    for (int i = 0; i < 80; i++)
+    {
+        for (int j = 0; j < 25; j++)
+        {
+            if (Entitylayer.getchar(j, i) == 'Z')
+            {
+                c.X = i;
+                c.Y = j;
+                Entitylayer.setchar('Z', i, j);
+                if (amt[Entitylayer.getmapno()][enemyno] == nullptr) //if the index is empty, fill it
+                {
+                    amt[Entitylayer.getmapno()][enemyno] = new Entity;
+                    amt[Entitylayer.getmapno()][enemyno]->spawnEntity(i, j);
+                    g_Console.writeToBuffer(c, Entitylayer.getchar(j, i), 0x08);
+                }
+                enemyno++;
+            }
+        }
+    }
+  /*if (g_eGameState == S_GAME)
     {
         if (Gamemap.getmapno() == 0 && spawnedmaps[0] == ' ')
         {
@@ -806,7 +764,7 @@ void spawnEnemy() //TODO: Set it so that when map changes, the enemies would be 
                 }
             }
         }
-    }
+    }*/
 }
 void renderFramerate()
 {
@@ -822,10 +780,10 @@ void renderFramerate()
     // displays the elapsed time
     ss.str("");
     ss << g_dElapsedTime << "secs";
-    if (amt[1] != nullptr)
+    if (amt[0][1] != nullptr)
     {
-        ss << amt[1]->X();
-        ss << amt[1]->Y();
+        ss << amt[0][1]->X();
+        ss << amt[0][1]->Y();
     }
     c.X = 0;
     c.Y = 0;
@@ -840,6 +798,24 @@ void renderPlayerUI(player player)
     c.X = 0;
     c.Y = g_Console.getConsoleSize().Y - 1;
     g_Console.writeToBuffer(c, ss.str());
+}
+
+void renderEntities()
+{
+    COORD c;
+    for (int i = 0; i < 80; i++)
+    {
+        for (int j = 0; j < 25; j++)
+        {
+            c.X = i;
+            c.Y = j;
+            if (Entitylayer.getchar(j, i) == 'Z')
+            {
+                g_Console.writeToBuffer(c, Entitylayer.getchar(j, i), 0x08);
+            }
+            //Add more if statments for the other type of enemies, and make the other enemies different letters
+        }
+    }
 }
 
 

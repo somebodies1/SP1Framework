@@ -83,6 +83,7 @@ void renderPauseMenu();     // renders the pause menu
 void renderMap();           // renders the map to the buffer first
 void renderCharacter();     // renders the character into the buffer
 void renderPlayerUI(player player); //Displays information from player object
+void renderEntities();      // renders entites on top of the map
 void renderPew();
 void spawnEnemy();
 void renderFramerate();     // renders debug information, frame rate, elapsed time, etc
