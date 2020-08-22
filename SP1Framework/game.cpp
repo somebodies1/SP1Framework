@@ -55,8 +55,8 @@ void init(void)
     g_sChar.m_bActive = true;
 
 
-    g_pew.m_cLocation.X = PlayerChar.getXY().X + 1;
-    g_pew.m_cLocation.Y = PlayerChar.getXY().Y;
+    //g_pew.m_cLocation.X = PlayerChar.getXY().X + 1;
+    //g_pew.m_cLocation.Y = PlayerChar.getXY().Y;
 
 
 
@@ -342,21 +342,41 @@ void movePew()
 {
     if (isFiring == true)
     {
-    int iX = g_pew.m_cLocation.X;
-    int iY = g_pew.m_cLocation.Y;
+        int iX = g_pew.m_cLocation.X;
+        int iY = g_pew.m_cLocation.Y;
 
-        if (Gamemap.getchar(iY,iX + 1) != ' ' && Gamemap.getchar(iY,iX + 1) != 'H')
+        if (PlayerChar.fireright==false)
         {
-            isFiring = false;
-            bulletmoving = false;
-            g_pew.m_cLocation.X = PlayerChar.getXY().X + 1;
-            g_pew.m_cLocation.Y = PlayerChar.getXY().Y;
+            if (Gamemap.getchar(iY, iX - 1) != ' ' && Gamemap.getchar(iY, iX - 1) != 'H')
+            {
+                isFiring = false;
+                bulletmoving = false;
+                g_pew.m_cLocation.X = PlayerChar.getXY().X - 1;
+                g_pew.m_cLocation.Y = PlayerChar.getXY().Y;
+            }
+            else
+            {
+                g_pew.m_cLocation.X--;
+
+            }
         }
         else
         {
-            g_pew.m_cLocation.X++;
+            if (Gamemap.getchar(iY, iX + 1) != ' ' && Gamemap.getchar(iY, iX + 1) != 'H')
+            {
+                isFiring = false;
+                bulletmoving = false;
+                g_pew.m_cLocation.X = PlayerChar.getXY().X + 1;
+                g_pew.m_cLocation.Y = PlayerChar.getXY().Y;
+            }
+            else
+            {
+                g_pew.m_cLocation.X++;
 
+            }
         }
+
+        
     }
     //Sleep(1000);
     //isFiring = false;
@@ -447,29 +467,57 @@ void moveCharacter()
         int iX = g_sChar.m_cLocation.X;
         int iY = g_sChar.m_cLocation.Y;
 
-
-        if (Gamemap.getchar(iY, iX + 1) == ' ')
+        if (PlayerChar.fireright == false)
         {
-            if (bulletmoving != true)
+            if (Gamemap.getchar(iY, iX - 1) == ' ')
             {
-                g_pew.m_cLocation.X = PlayerChar.getXY().X + 1;
-                g_pew.m_cLocation.Y = PlayerChar.getXY().Y;
+                if (bulletmoving != true)
+                {
+                    g_pew.m_cLocation.X = PlayerChar.getXY().X - 1;
+                    g_pew.m_cLocation.Y = PlayerChar.getXY().Y;
 
-                //PlayerChar.getXY().X;
+                    //PlayerChar.getXY().X;
+                }
+
             }
 
-        }
-
-        //isFiring = true;
-        for (int i = 0; i < 5; i++)
-        {
-            if (amt[i] != nullptr)
+            //isFiring = true;
+            for (int i = 0; i < 5; i++)
             {
-                Gamemap.setchar(' ', amt[i]->getXY().X, amt[i]->getXY().Y);
-                delete amt[i];
-                amt[i] = nullptr;
+                if (amt[i] != nullptr)
+                {
+                    Gamemap.setchar(' ', amt[i]->getXY().X, amt[i]->getXY().Y);
+                    delete amt[i];
+                    amt[i] = nullptr;
+                }
             }
         }
+        else
+        {
+            if (Gamemap.getchar(iY, iX + 1) == ' ')
+            {
+                if (bulletmoving != true)
+                {
+                    g_pew.m_cLocation.X = PlayerChar.getXY().X + 1;
+                    g_pew.m_cLocation.Y = PlayerChar.getXY().Y;
+
+                    //PlayerChar.getXY().X;
+                }
+
+            }
+
+            //isFiring = true;
+            for (int i = 0; i < 5; i++)
+            {
+                if (amt[i] != nullptr)
+                {
+                    Gamemap.setchar(' ', amt[i]->getXY().X, amt[i]->getXY().Y);
+                    delete amt[i];
+                    amt[i] = nullptr;
+                }
+            }
+        }
+        
         //Potentially where the shooting code goes
         //You can but the direction facing in the above movement codes, make the faced direction a data member of the player object
     }

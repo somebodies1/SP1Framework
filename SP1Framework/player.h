@@ -17,5 +17,6 @@ public:
 	void set_ammo(int a);
 	int get_ammo(void);
 	bool moveplayer(maps &gamemap, int direction);
+	bool fireright = true;
 };
 
