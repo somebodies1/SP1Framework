@@ -55,8 +55,8 @@ void init(void)
     g_sChar.m_bActive = true;
 
 
-    g_pew.m_cLocation.X = g_sChar.m_cLocation.X + 1;
-    g_pew.m_cLocation.Y = g_sChar.m_cLocation.Y;
+    g_pew.m_cLocation.X = PlayerChar.getXY().X + 1;
+    g_pew.m_cLocation.Y = PlayerChar.getXY().Y;
 
 
 
@@ -295,11 +295,11 @@ void updateGame(double g_dElapsedTime)       // gameplay logic
     movePew();                    // sound can be played here too.
     //Charactergravity();
 
-    /*if (isFiring==true)
+    if (isFiring==true)
     {
         renderPew();
         //g_pew.m_cLocation.X++;
-    }*/
+    }
 }
 
 void updateMainMenu()
@@ -349,8 +349,8 @@ void movePew()
         {
             isFiring = false;
             bulletmoving = false;
-            //g_pew.m_cLocation.X = g_sChar.m_cLocation.X + 1;
-            //g_pew.m_cLocation.Y = g_sChar.m_cLocation.Y;
+            g_pew.m_cLocation.X = PlayerChar.getXY().X + 1;
+            g_pew.m_cLocation.Y = PlayerChar.getXY().Y;
         }
         else
         {
@@ -443,6 +443,24 @@ void moveCharacter()
         Beep(1000, 30);
         Beep(500, 50);
         Beep(1500, 20);
+
+        int iX = g_sChar.m_cLocation.X;
+        int iY = g_sChar.m_cLocation.Y;
+
+
+        if (Gamemap.getchar(iY, iX + 1) == ' ')
+        {
+            if (bulletmoving != true)
+            {
+                g_pew.m_cLocation.X = PlayerChar.getXY().X + 1;
+                g_pew.m_cLocation.Y = PlayerChar.getXY().Y;
+
+                //PlayerChar.getXY().X;
+            }
+
+        }
+
+        //isFiring = true;
         for (int i = 0; i < 5; i++)
         {
             if (amt[i] != nullptr)
@@ -454,6 +472,16 @@ void moveCharacter()
         }
         //Potentially where the shooting code goes
         //You can but the direction facing in the above movement codes, make the faced direction a data member of the player object
+    }
+    if (g_skKeyEvent[K_SPACE].keyReleased)
+    {
+        if (isFiring != true)
+        {
+            isFiring = true;
+            bulletmoving = true;
+
+        }
+
     }
     if (PlayerChar.moveplayer(Gamemap, direction) || initialload) //This if statement is to check whether the is a map change since the map changing code is in the moveplayer code
     {                                               //Regardless of true or false, the character will still move
