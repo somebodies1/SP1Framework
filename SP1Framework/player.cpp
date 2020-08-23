@@ -58,6 +58,10 @@ bool player::moveplayer( maps &Gamemap, maps &Entitylayer, int direction)
         if (Gamemap.getchar(iY,iX - 1) == ' ' || Gamemap.getchar(iY,iX - 1) == 'H')
         {
             C.X--;
+            if (player::fireright != false)
+            {
+                player::fireright = false;
+            }
         }
         else if (Gamemap.getchar(iY,iX - 1) == '+')
         {
@@ -81,6 +85,11 @@ bool player::moveplayer( maps &Gamemap, maps &Entitylayer, int direction)
         if (Gamemap.getchar(iY,iX + 1) == ' ' || Gamemap.getchar(iY,iX + 1) == 'H')
         {
             C.X++;
+            if (player::fireright != true)
+            {
+                player::fireright = true;
+            }
+
         }
         else if (Gamemap.getchar(iY,iX + 1) == '+')
         {

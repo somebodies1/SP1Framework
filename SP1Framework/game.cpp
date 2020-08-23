@@ -58,8 +58,8 @@ void init(void)
     g_sChar.m_bActive = true;
 
 
-    g_pew.m_cLocation.X = g_sChar.m_cLocation.X + 1;
-    g_pew.m_cLocation.Y = g_sChar.m_cLocation.Y;
+    //g_pew.m_cLocation.X = PlayerChar.getXY().X + 1;
+    //g_pew.m_cLocation.Y = PlayerChar.getXY().Y;
 
 
 
@@ -298,11 +298,11 @@ void updateGame(double g_dElapsedTime)       // gameplay logic
     movePew();                    // sound can be played here too.
     //Charactergravity();
 
-    /*if (isFiring==true)
+    if (isFiring==true)
     {
         renderPew();
         //g_pew.m_cLocation.X++;
-    }*/
+    }
 }
 
 void updateMainMenu()
@@ -345,21 +345,41 @@ void movePew()
 {
     if (isFiring == true)
     {
-    int iX = g_pew.m_cLocation.X;
-    int iY = g_pew.m_cLocation.Y;
+        int iX = g_pew.m_cLocation.X;
+        int iY = g_pew.m_cLocation.Y;
 
-        if (Gamemap.getchar(iY,iX + 1) != ' ' && Gamemap.getchar(iY,iX + 1) != 'H')
+        if (PlayerChar.fireright==false)
         {
-            isFiring = false;
-            bulletmoving = false;
-            //g_pew.m_cLocation.X = g_sChar.m_cLocation.X + 1;
-            //g_pew.m_cLocation.Y = g_sChar.m_cLocation.Y;
+            if (Gamemap.getchar(iY, iX - 1) != ' ' && Gamemap.getchar(iY, iX - 1) != 'H')
+            {
+                isFiring = false;
+                bulletmoving = false;
+                g_pew.m_cLocation.X = PlayerChar.getXY().X - 1;
+                g_pew.m_cLocation.Y = PlayerChar.getXY().Y;
+            }
+            else
+            {
+                g_pew.m_cLocation.X--;
+
+            }
         }
         else
         {
-            g_pew.m_cLocation.X++;
+            if (Gamemap.getchar(iY, iX + 1) != ' ' && Gamemap.getchar(iY, iX + 1) != 'H')
+            {
+                isFiring = false;
+                bulletmoving = false;
+                g_pew.m_cLocation.X = PlayerChar.getXY().X + 1;
+                g_pew.m_cLocation.Y = PlayerChar.getXY().Y;
+            }
+            else
+            {
+                g_pew.m_cLocation.X++;
 
+            }
         }
+
+        
     }
     //Sleep(1000);
     //isFiring = false;
@@ -432,18 +452,60 @@ void moveCharacter()
         Beep(1000, 30);
         Beep(500, 50);
         Beep(1500, 20);
-        for (int j = 0; j < 3; j++)
+        int iX = g_sChar.m_cLocation.X;
+        int iY = g_sChar.m_cLocation.Y;
+
+        if (PlayerChar.fireright == false)
         {
+            if (Gamemap.getchar(iY, iX - 1) == ' ')
+            {
+                if (bulletmoving != true)
+                {
+                    g_pew.m_cLocation.X = PlayerChar.getXY().X - 1;
+                    g_pew.m_cLocation.Y = PlayerChar.getXY().Y;
+
+                    //PlayerChar.getXY().X;
+                }
+
+            }
+
+            //isFiring = true;
             for (int i = 0; i < 5; i++)
             {
-                if (amt[j][i] != nullptr)
+                if (amt[i] != nullptr)
                 {
-                    Entitylayer.setchar(' ', amt[j][i]->getXY().X, amt[j][i]->getXY().Y);
-                    delete amt[j][i];
-                    amt[j][i] = nullptr;
+                    Gamemap.setchar(' ', amt[i]->getXY().X, amt[i]->getXY().Y);
+                    delete amt[i];
+                    amt[i] = nullptr;
                 }
             }
         }
+        else
+        {
+            if (Gamemap.getchar(iY, iX + 1) == ' ')
+            {
+                if (bulletmoving != true)
+                {
+                    g_pew.m_cLocation.X = PlayerChar.getXY().X + 1;
+                    g_pew.m_cLocation.Y = PlayerChar.getXY().Y;
+
+                    //PlayerChar.getXY().X;
+                }
+
+            }
+
+            //isFiring = true;
+            for (int i = 0; i < 5; i++)
+            {
+                if (amt[i] != nullptr)
+                {
+                    Gamemap.setchar(' ', amt[i]->getXY().X, amt[i]->getXY().Y);
+                    delete amt[i];
+                    amt[i] = nullptr;
+                }
+            }
+        }
+        
         //Potentially where the shooting code goes
         //You can but the direction facing in the above movement codes, make the faced direction a data member of the player object
     }
@@ -451,6 +513,20 @@ void moveCharacter()
     {   
         enemyno = 0; // set the enenmy index to zero when a new map is loaded
         if (spawnedmaps[Gamemap.getmapno()] == ' ')
+    if (g_skKeyEvent[K_SPACE].keyReleased)
+    {
+        if (isFiring != true)
+        {
+            isFiring = true;
+            bulletmoving = true;
+
+        }
+
+    }
+    if (PlayerChar.moveplayer(Gamemap, direction) || initialload) //This if statement is to check whether the is a map change since the map changing code is in the moveplayer code
+    {                                               //Regardless of true or false, the character will still move
+        spawnEnemy();
+        if (initialload)
         {
             spawnedmaps[Gamemap.getmapno()] = 'X';
             Gamemap.setinitial(Gamemap.getmapno());
