@@ -23,6 +23,7 @@ Pew g_pew;
 Entity* amt[3][5] = { { nullptr, nullptr, nullptr, nullptr, nullptr }, // the total entities in a stage
     { nullptr, nullptr, nullptr, nullptr, nullptr },                   // right now the maximum for enemies 5 per map, 3 maps per stage
     { nullptr, nullptr, nullptr, nullptr, nullptr }};                  // can be increased and the adding of nullptr can be a for loop
+bullet* bulletlist[50]; // maximum of 50 bullets at a time
 
 EGAMESTATES g_eGameState = S_MAINMENU; // initial state
 
@@ -290,10 +291,7 @@ void updateGame(double g_dElapsedTime)       // gameplay logic
 {
     renderMap();
     processUserInput(); // checks if you should change  states or do something else with the game, e.g. pause, exit
-    if (fmod(g_dElapsedTime,0.2) <= 0.02)
-    {
-        moveEnemy();
-    }
+    moveEntities(g_dElapsedTime);
     moveCharacter();    // moves the character, collision detection, physics, etc
     movePew();                    // sound can be played here too.
     //Charactergravity();
@@ -385,15 +383,72 @@ void movePew()
     //isFiring = false;
 }
 
-void moveEnemy()
+void moveEntities(double g_dElapsedTime)
 {
     if (g_eGameState == S_GAME)
     {
-        for (int i = 0; i < 5; i++)
+        if (fmod(g_dElapsedTime, 0.2) <= 0.02) // Moving the enemies
         {
-            if (amt[Entitylayer.getmapno()][i] != nullptr)
+            for (int i = 0; i < 5; i++)
             {
-                amt[Entitylayer.getmapno()][i]->move('Z', Entitylayer);
+                if (amt[Entitylayer.getmapno()][i] != nullptr)
+                {
+                    amt[Entitylayer.getmapno()][i]->move('Z', Entitylayer);
+                }
+            }
+        }
+        char bullethit; //What the bullet hits, may be ' ' when nothing
+        if (true)//speed for bullets here
+        {
+            for (int i = 0; i < 50; i++)
+            {
+                if (bulletlist[i] != nullptr)
+                {
+                    bullethit = bulletlist[i]->move('-', Entitylayer); //This function also causes the bullet to move so it can only be called once
+                    if (bullethit == 'Z')
+                    {
+                        for (int enemyindex = 0; enemyindex < 5; enemyindex++)
+                        {
+                            if (amt[Entitylayer.getmapno()][enemyindex] != nullptr) // When the indexes before are nullptr, it crashes, so this line is added
+                            {
+                                if (bulletlist[i]->getdirection() == 1)
+                                {
+                                    if (amt[Entitylayer.getmapno()][enemyindex]->getXY().X == bulletlist[i]->getXY().X - 1 && amt[Entitylayer.getmapno()][enemyindex]->getXY().Y == bulletlist[i]->getXY().Y) //deletes enemy upon contact, to ba changed
+                                    {
+                                        delete amt[Entitylayer.getmapno()][enemyindex];
+                                        amt[Entitylayer.getmapno()][enemyindex] = nullptr;
+                                        Entitylayer.setchar(' ', bulletlist[i]->getXY().X - 1, bulletlist[i]->getXY().Y);
+                                        Entitylayer.setchar(' ', bulletlist[i]->getXY().X, bulletlist[i]->getXY().Y);
+                                        delete bulletlist[i];
+                                        bulletlist[i] = nullptr;
+                                        break;
+                                    }
+                                }
+                                else if (bulletlist[i]->getdirection() == 2)
+                                {
+                                    if (amt[Entitylayer.getmapno()][enemyindex]->getXY().X == bulletlist[i]->getXY().X + 1 && amt[Entitylayer.getmapno()][enemyindex]->getXY().Y == bulletlist[i]->getXY().Y) //deletes enemy upon contact, to ba changed
+                                    {
+                                        delete amt[Entitylayer.getmapno()][enemyindex];
+                                        amt[Entitylayer.getmapno()][enemyindex] = nullptr;
+                                        Entitylayer.setchar(' ', bulletlist[i]->getXY().X + 1, bulletlist[i]->getXY().Y);
+                                        Entitylayer.setchar(' ', bulletlist[i]->getXY().X, bulletlist[i]->getXY().Y);
+                                        delete bulletlist[i];
+                                        bulletlist[i] = nullptr;
+                                        break;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    if ( bullethit == '=' || bullethit == '1' || bullethit == '+')
+                    {
+
+                        Entitylayer.setchar(' ', bulletlist[i]->getXY().X, bulletlist[i]->getXY().Y);
+                        delete bulletlist[i];
+                        bulletlist[i] = nullptr;
+                    }
+                    
+                }
             }
         }
     }
@@ -454,50 +509,84 @@ void moveCharacter()
         Beep(1500, 20);
         int iX = g_sChar.m_cLocation.X;
         int iY = g_sChar.m_cLocation.Y;
-
-        if (PlayerChar.fireright == false)
+        for (int i = 0; i < 50; i++)
         {
-            if (Gamemap.getchar(iY, iX - 1) == ' ')
+            if (bulletlist[i] == nullptr)
             {
-                if (bulletmoving != true)
+                if (PlayerChar.getdirection() == 1 && Entitylayer.getchar(PlayerChar.getXY().Y, PlayerChar.getXY().X - 1) == ' ' || Entitylayer.getchar(PlayerChar.getXY().Y, PlayerChar.getXY().X - 1) == 'H')
                 {
-                    g_pew.m_cLocation.X = PlayerChar.getXY().X - 1;
-                    g_pew.m_cLocation.Y = PlayerChar.getXY().Y;
-
-                    //PlayerChar.getXY().X;
+                    bulletlist[i] = new bullet(PlayerChar.getdirection(), PlayerChar.getXY().X - 1, PlayerChar.getXY().Y);
+                    Entitylayer.setchar('-', PlayerChar.getXY().X - 1, PlayerChar.getXY().Y); 
+                    g_Console.writeToBuffer(bulletlist[i]->getXY(),'-', 0x06);
                 }
-
+                if (PlayerChar.getdirection() == 2 && Entitylayer.getchar(PlayerChar.getXY().Y, PlayerChar.getXY().X + 1) == ' ' || Entitylayer.getchar(PlayerChar.getXY().Y, PlayerChar.getXY().X + 1) == 'H')
+                {
+                    bulletlist[i] = new bullet(PlayerChar.getdirection(), PlayerChar.getXY().X + 1, PlayerChar.getXY().Y);
+                    Entitylayer.setchar('-', PlayerChar.getXY().X + 1, PlayerChar.getXY().Y);
+                    g_Console.writeToBuffer(bulletlist[i]->getXY(), '-', 0x06);
+                }
+                break;
             }
         }
-        else
-        {
-            if (Gamemap.getchar(iY, iX + 1) == ' ')
-            {
-                if (bulletmoving != true)
-                {
-                    g_pew.m_cLocation.X = PlayerChar.getXY().X + 1;
-                    g_pew.m_cLocation.Y = PlayerChar.getXY().Y;
 
-                    //PlayerChar.getXY().X;
-                }
+//==========================================================================================================
+    //    if (PlayerChar.fireright == false)
+    //    {
+    //        if (Gamemap.getchar(iY, iX - 1) == ' ')
+    //        {
+    //            if (bulletmoving != true)
+    //            {
+    //                g_pew.m_cLocation.X = PlayerChar.getXY().X - 1;
+    //                g_pew.m_cLocation.Y = PlayerChar.getXY().Y;
 
-            }
-        }
-        
-        //Potentially where the shooting code goes
-        //You can but the direction facing in the above movement codes, make the faced direction a data member of the player object
+    //                //PlayerChar.getXY().X;
+    //            }
+
+    //        }
+    //    }
+    //    else
+    //    {
+    //        if (Gamemap.getchar(iY, iX + 1) == ' ')
+    //        {
+    //            if (bulletmoving != true)
+    //            {
+    //                g_pew.m_cLocation.X = PlayerChar.getXY().X + 1;
+    //                g_pew.m_cLocation.Y = PlayerChar.getXY().Y;
+
+    //                //PlayerChar.getXY().X;
+    //            }
+
+    //        }
+    //    }
+    //    
+    //    //Potentially where the shooting code goes
+    //    //You can but the direction facing in the above movement codes, make the faced direction a data member of the player object
+    //}
+    //if (g_skKeyEvent[K_SPACE].keyReleased)
+    //{
+    //    if (isFiring != true)
+    //    {
+    //        isFiring = true;
+    //        bulletmoving = true;
+    //    }
+//========================================================================================================================================================
     }
-    if (g_skKeyEvent[K_SPACE].keyReleased)
-    {
-        if (isFiring != true)
-        {
-            isFiring = true;
-            bulletmoving = true;
-        }
-    }
+
     if (PlayerChar.moveplayer(Gamemap, Entitylayer, direction) || initialload) //This if statement is to check whether the is a map change since the map changing code is in the moveplayer code
     {                                                             //Regardless of true or false, the character will still move
         enemyno = 0; // set the enenmy index to zero when a new map is loaded
+        for (int i = 0; i < 50; i++) //destroys all bullets when switching maps and fills the initial list with nullptr
+        {
+            //if (bulletlist[i] != nullptr)
+            //{
+            //    if (Entitylayer.getchar(bulletlist[i]->getXY().Y, bulletlist[i]->getXY().X) == '-')
+            //    {
+            //        g_Console.writeToBuffer(bulletlist[i]->getXY(), ' ', 0x01);
+            //    }
+            //}
+            delete bulletlist[i];
+            bulletlist[i] = nullptr;
+        }
         if (spawnedmaps[Gamemap.getmapno()] == ' ')
         {
             spawnedmaps[Gamemap.getmapno()] = 'X';
@@ -832,10 +921,10 @@ void renderFramerate()
     // displays the elapsed time
     ss.str("");
     ss << g_dElapsedTime << "secs";
-    if (amt[0][1] != nullptr)
+    if (bulletlist[3] != nullptr)
     {
-        ss << amt[0][1]->X();
-        ss << amt[0][1]->Y();
+        ss << bulletlist[3]->X();
+        ss << bulletlist[3]->Y();
     }
     c.X = 0;
     c.Y = 0;
@@ -860,12 +949,16 @@ void renderEntities()
         for (int j = 0; j < 25; j++)
         {
             c.X = i;
-            c.Y = j;
+            c.Y = j; 
             if (Entitylayer.getchar(j, i) == 'Z')
             {
                 g_Console.writeToBuffer(c, Entitylayer.getchar(j, i), 0x08);
             }
             //Add more if statments for the other type of enemies, and make the other enemies different letters
+            if(Entitylayer.getchar(j, i) == '-')
+            {
+                g_Console.writeToBuffer(c, Entitylayer.getchar(j, i), 0x08);
+            }
         }
     }
 }

@@ -3,6 +3,7 @@
 
 player::player()
 {
+    direction = 2;
 	hp = 3;
 	mp = 5;
 	ammo = 10;
@@ -55,6 +56,7 @@ bool player::moveplayer( maps &Gamemap, maps &Entitylayer, int direction)
     }
     if (direction == 2)
     {
+        this->direction = 1;
         if (Gamemap.getchar(iY,iX - 1) == ' ' || Gamemap.getchar(iY,iX - 1) == 'H')
         {
             C.X--;
@@ -82,6 +84,7 @@ bool player::moveplayer( maps &Gamemap, maps &Entitylayer, int direction)
     }
     if (direction == 4)
     {
+        this->direction = 2;
         if (Gamemap.getchar(iY,iX + 1) == ' ' || Gamemap.getchar(iY,iX + 1) == 'H')
         {
             C.X++;
@@ -107,6 +110,7 @@ bool player::moveplayer( maps &Gamemap, maps &Entitylayer, int direction)
     }
     return false;
 }
+
 
 
 

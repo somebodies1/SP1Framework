@@ -52,6 +52,11 @@ void Entity::setY(SHORT y)
 	this->C.Y = y;
 }
 
+void Entity::setdirection(int direction)
+{
+	this->direction = direction;
+}
+
 int Entity::getHP(void)
 {
 	return this->hp;
@@ -60,6 +65,11 @@ int Entity::getHP(void)
 int Entity::getMP(void)
 {
 	return this->mp;
+}
+
+int Entity::getdirection(void)
+{
+	return direction;
 }
 
 SHORT Entity::X(void)

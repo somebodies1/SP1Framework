@@ -1,18 +1,21 @@
 #pragma once
-class bullet
+#include "Entity.h"
+class bullet: public Entity
 {
 private:
-	static int max_bullet;
+	static int bulletnumber;
 	int damage;
-	int x, y;
 public:
 	bullet();
+	bullet(int direction, int x, int y);
 	~bullet();
 
-	void spawn_bullet(int x, int y, int dmg);
+	void spawn_bullet(int direction, int iX, int iY);
 	void set_x(int x);
 	void set_y(int y);
 	void set_damage(int dmg);
 	int get_damage(void);
+	static int getbulletnumber();
+	char move(char ent, maps& Gamemap); //Also doubles as a collisions detection
 };
 

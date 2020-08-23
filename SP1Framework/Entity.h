@@ -21,9 +21,11 @@ public:
 	void setMP(int m);
 	void setX(SHORT x);
 	void setY(SHORT y);
+	void setdirection(int direction);
 
 	int getHP(void);
 	int getMP(void);
+	int getdirection(void);
 	SHORT X(void);
 	SHORT Y(void);
 	COORD getXY(void);

@@ -84,7 +84,10 @@ void maps::setcurrent(int mapnum)
     {
         for (int j = 0; j < 80; j++)
         {
-            current[i][j] = stage[mapno][i][j];
+            if (current[i][j] != '-') // bullets are not saved when a new map is loaded
+            {
+                current[i][j] = stage[mapno][i][j];
+            }
         }
     }
 }
