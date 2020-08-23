@@ -31,7 +31,7 @@ Console g_Console(80, 25, "SP1 Framework");
 bool initialload = true; // The initial load of the map
 bool isFiring = false;
 bool bulletmoving = false;
-bool spawned[5] = { false, false, false ,false, false };
+//bool spawned[5] = { false, false, false ,false, false };
 
 
 //--------------------------------------------------------------
@@ -434,7 +434,7 @@ void moveCharacter()
         Beep(1500, 20);
         for (int j = 0; j < 3; j++)
         {
-            for (int i = 0; i < 3; i++)
+            for (int i = 0; i < 5; i++)
             {
                 if (amt[j][i] != nullptr)
                 {
@@ -449,9 +449,12 @@ void moveCharacter()
     }
     if (PlayerChar.moveplayer(Gamemap, Entitylayer, direction) || initialload) //This if statement is to check whether the is a map change since the map changing code is in the moveplayer code
     {   
+        enemyno = 0; // set the enenmy index to zero when a new map is loaded
         if (spawnedmaps[Gamemap.getmapno()] == ' ')
         {
             spawnedmaps[Gamemap.getmapno()] = 'X';
+            Gamemap.setinitial(Gamemap.getmapno());
+            Entitylayer.setinitial(Entitylayer.getmapno());
             spawnEnemy();
             if (initialload)
             {
@@ -591,29 +594,31 @@ void renderMap()
         {
             c.X = i;
             c.Y = j;
-            if (Gamemap.getchar(j, i) != 'Z' /* || add the rest of the entities here */)
+            if (Gamemap.getchar(j, i) == '=') // '=' are coloured differently for the floor
             {
-                if (Gamemap.getchar(j, i) == '=') // '=' are coloured differently for the floor
-                {
-                    g_Console.writeToBuffer(c, Gamemap.getchar(j, i), 0x0E);
-                }
-                else if (Gamemap.getchar(j, i) == 'H')
-                {
-                    g_Console.writeToBuffer(c, Gamemap.getchar(j, i), 0x0C);
-                }
-                else if (Gamemap.getchar(j, i) == '1')
-                {
-                    g_Console.writeToBuffer(c, Gamemap.getchar(j, i), 0x01);
-                }
-                else if (Gamemap.getchar(j, i) == 'K')
-                {
-                    g_Console.writeToBuffer(c, Gamemap.getchar(j, i), 0x0A);
-                }
-                else  //Normal colour of black text with blue background
-                {
-                    g_Console.writeToBuffer(c, Gamemap.getchar(j, i), 0x0F); //Btw after the 0x the first number is the background colour and the second is the text colour
-                }//Black is 0, background blue is 1 and a kind of green is A, F is white
+                g_Console.writeToBuffer(c, Gamemap.getchar(j, i), 0x0E);
             }
+            else if (Gamemap.getchar(j, i) == 'H')
+            {
+                g_Console.writeToBuffer(c, Gamemap.getchar(j, i), 0x0C);
+            }
+            else if (Gamemap.getchar(j, i) == '1')
+            {
+                g_Console.writeToBuffer(c, Gamemap.getchar(j, i), 0x01);
+            }
+            else if (Gamemap.getchar(j, i) == 'K')
+            {
+                g_Console.writeToBuffer(c, Gamemap.getchar(j, i), 0x0A);
+            }
+            else if (Gamemap.getchar(j, i) == 'Z') // add the rest of the entities here in with or statments
+            {
+                Gamemap.setchar(' ', i, j);
+                g_Console.writeToBuffer(c, ' ', 0x0F);
+            }
+            else //Normal colour of black text with blue background
+            {
+                g_Console.writeToBuffer(c, Gamemap.getchar(j, i), 0x0F); //Btw after the 0x the first number is the background colour and the second is the text colour
+            }//Black is 0, background blue is 1 and a kind of green is A, F is white
         }
     }
 }
@@ -648,12 +653,12 @@ void spawnEnemy() //TODO: Set it so that when map changes, the enemies would be 
             {
                 c.X = i;
                 c.Y = j;
-                Entitylayer.setchar('Z', i, j);
                 if (amt[Entitylayer.getmapno()][enemyno] == nullptr) //if the index is empty, fill it
                 {
                     amt[Entitylayer.getmapno()][enemyno] = new Entity;
                     amt[Entitylayer.getmapno()][enemyno]->spawnEntity(i, j);
                     g_Console.writeToBuffer(c, Entitylayer.getchar(j, i), 0x08);
+                    Entitylayer.setchar(' ', i, j);
                 }
                 enemyno++;
             }

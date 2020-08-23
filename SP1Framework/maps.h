@@ -14,9 +14,10 @@ private:
 public:
 	maps();
 	~maps();
+	void setinitial(int mapnum); //set the initial map by reading from text file
 	void setcurrent(int mapnum);
 	void setstage(int stagenum);
-	char getchar(int x, int y); //Gets the character in the index
+	char getchar(int y, int x); //Gets the character in the index
 	void setchar(char add, int x, int y); //Sets the character in the index
 	int getmapno();
 	void setmapno(int mapnum);

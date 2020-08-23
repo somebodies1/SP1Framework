@@ -124,42 +124,48 @@ char Entity::collisioncheck(maps& gamemap)
 {
 	int iX = C.X;
 	int iY = C.Y;
-	//if (gamemap.getchar(iX, iY - 1) != ' ' && gamemap.getchar(iX, iY - 1) != '=' && gamemap.getchar(iX, iY - 1) != 'H')
-	//{
-	//	return gamemap.getchar(iX, iY - 1);
-	//}
-	//if (gamemap.getchar(iX - 1, iY) != ' ' && gamemap.getchar(iX - 1, iY) != '=' && gamemap.getchar(iX - 1, iY) != 'H')
-	//{
-	//	return gamemap.getchar(iX - 1, iY);
-	//}
-	//if (gamemap.getchar(iX, iY + 1) != ' ' && gamemap.getchar(iX, iY + 1) != '=' && gamemap.getchar(iX, iY + 1) != 'H')
-	//{
-	//	return gamemap.getchar(iX, iY + 1);
-	//}
-	//if (gamemap.getchar(iX + 1, iY ) != ' ' && gamemap.getchar(iX + 1, iY) != '=' && gamemap.getchar(iX + 1, iY) != 'H')
-	//{
-	//	return gamemap.getchar(iX + 1, iY);
-	//}
-
-
-	if (gamemap.getchar(iY - 1, iX) == 'Z')
+	if (gamemap.getchar(iY - 1,iX) != ' ' && gamemap.getchar(iY - 1, iX) != '=' && gamemap.getchar(iY - 1, iX) != 'H')
 	{
-		return 'Z';
+		return gamemap.getchar(iY - 1, iX);
 	}
-	else if (gamemap.getchar(iY, iX - 1) == 'Z')
+	else if (gamemap.getchar(iY, iX - 1) != ' ' && gamemap.getchar(iY, iX - 1) != '=' && gamemap.getchar(iY, iX - 1) != 'H')
 	{
-		return 'Z';
+		return gamemap.getchar(iY, iX - 1);
 	}
-	else if (gamemap.getchar(iY + 1, iX) == 'Z')
+	else if (gamemap.getchar(iY + 1, iX) != ' ' && gamemap.getchar(iY + 1, iX) != '=' && gamemap.getchar(iY + 1, iX) != 'H')
 	{
-		return 'Z';
+		return gamemap.getchar(iY + 1, iX);
 	}
-	else if (gamemap.getchar(iY, iX + 1) == 'Z')
+	else if (gamemap.getchar(iY, iX + 1) != ' ' && gamemap.getchar(iY, iX + 1) != '=' && gamemap.getchar(iY, iX + 1) != 'H')
 	{
-		return 'Z';
+		return gamemap.getchar(iY, iX + 1);
 	}
 	else
 	{
 		return ' ';
 	}
+	//if (gamemap.getchar(iY, iX) == 'Z')
+	//{
+	//	return 'Z';
+	//}
+	//else if (gamemap.getchar(iY - 1, iX) == 'Z')
+	//{
+	//	return 'Z';
+	//}
+	//else if (gamemap.getchar(iY, iX - 1) == 'Z')
+	//{
+	//	return 'Z';
+	//}
+	//else if (gamemap.getchar(iY + 1, iX) == 'Z')
+	//{
+	//	return 'Z';
+	//}
+	//else if (gamemap.getchar(iY, iX + 1) == 'Z')
+	//{
+	//	return 'Z';
+	//}
+	//else
+	//{
+	//	return ' ';
+	//}
 }

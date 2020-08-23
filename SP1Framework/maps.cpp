@@ -12,11 +12,11 @@ maps::~maps()
 {
 }
 
-void maps::setcurrent(int mapnum)
+void maps::setinitial(int mapnum)
 {
     string filename;
     string line;
-    switch(stageno)
+    switch (stageno)
     {
     case 0:
     {
@@ -73,6 +73,18 @@ void maps::setcurrent(int mapnum)
         for (int j = 0; j < 80; j++)
         {
             current[i][j] = linearray[j];
+            stage[mapno][i][j] = current[i][j]; //set the map to the temp map which holds the changes to the maps (enemy positions and such)
+        }
+    }
+}
+
+void maps::setcurrent(int mapnum)
+{
+    for (int i = 0; i < 25; i++)
+    {
+        for (int j = 0; j < 80; j++)
+        {
+            current[i][j] = stage[mapno][i][j];
         }
     }
 }
