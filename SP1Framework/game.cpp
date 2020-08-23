@@ -468,17 +468,6 @@ void moveCharacter()
                 }
 
             }
-
-            //isFiring = true;
-            for (int i = 0; i < 5; i++)
-            {
-                if (amt[i] != nullptr)
-                {
-                    Gamemap.setchar(' ', amt[i]->getXY().X, amt[i]->getXY().Y);
-                    delete amt[i];
-                    amt[i] = nullptr;
-                }
-            }
         }
         else
         {
@@ -493,50 +482,32 @@ void moveCharacter()
                 }
 
             }
-
-            //isFiring = true;
-            for (int i = 0; i < 5; i++)
-            {
-                if (amt[i] != nullptr)
-                {
-                    Gamemap.setchar(' ', amt[i]->getXY().X, amt[i]->getXY().Y);
-                    delete amt[i];
-                    amt[i] = nullptr;
-                }
-            }
         }
         
         //Potentially where the shooting code goes
         //You can but the direction facing in the above movement codes, make the faced direction a data member of the player object
     }
-    if (PlayerChar.moveplayer(Gamemap, Entitylayer, direction) || initialload) //This if statement is to check whether the is a map change since the map changing code is in the moveplayer code
-    {   
-        enemyno = 0; // set the enenmy index to zero when a new map is loaded
-        if (spawnedmaps[Gamemap.getmapno()] == ' ')
     if (g_skKeyEvent[K_SPACE].keyReleased)
     {
         if (isFiring != true)
         {
             isFiring = true;
             bulletmoving = true;
-
         }
-
     }
-    if (PlayerChar.moveplayer(Gamemap, direction) || initialload) //This if statement is to check whether the is a map change since the map changing code is in the moveplayer code
-    {                                               //Regardless of true or false, the character will still move
-        spawnEnemy();
-        if (initialload)
+    if (PlayerChar.moveplayer(Gamemap, Entitylayer, direction) || initialload) //This if statement is to check whether the is a map change since the map changing code is in the moveplayer code
+    {                                                             //Regardless of true or false, the character will still move
+        enemyno = 0; // set the enenmy index to zero when a new map is loaded
+        if (spawnedmaps[Gamemap.getmapno()] == ' ')
         {
             spawnedmaps[Gamemap.getmapno()] = 'X';
             Gamemap.setinitial(Gamemap.getmapno());
             Entitylayer.setinitial(Entitylayer.getmapno());
             spawnEnemy();
-            if (initialload)
-            {
-                initialload = false; //Changes to false after the inital map load
-            }
-
+        }
+        if (initialload)
+        {
+            initialload = false; //Changes to false after the inital map load
         }
     }
     if (PlayerChar.collisioncheck(Entitylayer) == 'Z') // collision work, just have to put something here
