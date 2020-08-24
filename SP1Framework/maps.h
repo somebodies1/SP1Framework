@@ -20,6 +20,7 @@ public:
 	char getchar(int y, int x); //Gets the character in the index
 	void setchar(char add, int x, int y); //Sets the character in the index
 	int getmapno();
+	int getstageno();
 	void setmapno(int mapnum);
 	void reset();
 };

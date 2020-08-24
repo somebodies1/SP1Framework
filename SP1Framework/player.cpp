@@ -43,7 +43,7 @@ int player::get_ammo(void)
 	return ammo;
 }
 
-bool player::moveplayer( maps &Gamemap, maps &Entitylayer, int direction)
+char player::moveplayer( maps &Gamemap, maps &Entitylayer, int direction)
 {
     int iX = C.X;
     int iY = C.Y;
@@ -72,7 +72,7 @@ bool player::moveplayer( maps &Gamemap, maps &Entitylayer, int direction)
             Entitylayer.setmapno(Entitylayer.getmapno() - 1);
             Entitylayer.setcurrent(Entitylayer.getmapno());
             C.X =+ 78;
-            return true;
+            return 'M'; //
         }
     }
     if (direction == 3)
@@ -102,7 +102,7 @@ bool player::moveplayer( maps &Gamemap, maps &Entitylayer, int direction)
             Entitylayer.setcurrent(Entitylayer.getmapno());
             C.X -= 77;
             
-            return true;
+            return 'M';
         }
         else if (Gamemap.getchar(iY, iX + 1) == '!')
         {
@@ -111,14 +111,14 @@ bool player::moveplayer( maps &Gamemap, maps &Entitylayer, int direction)
             Entitylayer.setmapno(Entitylayer.getmapno() + 1);
             Entitylayer.setcurrent(Entitylayer.getmapno());
             C.X -= 77;
-            return true;
+            return 'S';
         }
     }
     if (Gamemap.getchar(iY + 1,iX) == ' ' && Gamemap.getchar(iY, iX) != 'H')
     {
         C.Y++;
     }
-    return false;
+    return ' ';
 }
 
 

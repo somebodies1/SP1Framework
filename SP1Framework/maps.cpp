@@ -95,6 +95,7 @@ void maps::setcurrent(int mapnum)
 void maps::setstage(int stagenum)
 {
     stageno = stagenum;
+    mapno = 0;
 }
 
 void maps::reset()
@@ -129,6 +130,11 @@ void maps::setchar(char add, int x, int y)
 int maps::getmapno()
 {
     return mapno;
+}
+
+int maps::getstageno()
+{
+    return stageno;
 }
 
 void maps::setmapno(int mapnum)

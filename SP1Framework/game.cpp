@@ -384,12 +384,31 @@ void movePew()
 }
 
 void Reset() {
-    for (int i = 0; i < 3; i++)
+    for (int i = 0; i < 3; i++) //reset spawned map status
     {
         spawnedmaps[i] = ' ';
         
     }
-    initialload = true;
+    initialload = true; //resets variable that loads the initial map once
+    for (int i = 0; i < 3; i++) // reset enemies
+    {
+        for (int j = 0; j < 5; j++)
+        {
+            if (amt[i][j] != nullptr)
+            {
+                delete amt[i][j];
+                amt[i][j] = nullptr;
+            }
+        }
+    }
+    for (int i = 0; i < 50; i++) //resets bullets
+    {
+        if (bulletlist[i] != nullptr)
+        {
+            delete bulletlist[i];
+            bulletlist[i] = nullptr;
+        }
+    }
 }
 
 void moveEntities(double g_dElapsedTime)
@@ -580,9 +599,9 @@ void moveCharacter()
     //    }
 //========================================================================================================================================================
     }
-
-    if (PlayerChar.moveplayer(Gamemap, Entitylayer, direction) || initialload) //This if statement is to check whether the is a map change since the map changing code is in the moveplayer code
-    {                                                             //Regardless of true or false, the character will still move
+    char mapaction = PlayerChar.moveplayer(Gamemap, Entitylayer, direction);
+    if (mapaction =='M' || initialload) //This if statement is to check whether the is a map change since the map changing code is in the moveplayer code
+    {              //M for change in map                         //Regardless of true or false, the character will still move
         enemyno = 0; // set the enenmy index to zero when a new map is loaded
         for (int i = 0; i < 50; i++) //destroys all bullets when switching maps and fills the initial list with nullptr
         {
@@ -607,6 +626,12 @@ void moveCharacter()
         {
             initialload = false; //Changes to false after the inital map load
         }
+    }
+    else if (mapaction == 'S') // S for stage change
+    {
+        Reset(); // Resets the map initialiser values and entity arrays
+        Gamemap.setstage(Gamemap.getstageno() + 1);
+        Entitylayer.setstage(Entitylayer.getstageno() + 1);
     }
     if (PlayerChar.collisioncheck(Entitylayer) == 'Z') // collision work, just have to put something here
     {
