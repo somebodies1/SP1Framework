@@ -62,28 +62,6 @@ void maps::setinitial(int mapnum)
         }
         break;
     }
-    case 2:
-    {
-        switch (mapnum)
-        {
-        case 0:
-        {
-            filename = "Stage2_1.txt";
-            break;
-        }
-        case 1:
-        {
-            filename = "Stage2_2.txt";
-            break;
-        }
-        case 2:
-        {
-            filename = "Stage2_3.txt";
-            break;
-        }
-        }
-        break;
-    }
     }
 
     ifstream mapfile(filename);
@@ -146,10 +124,6 @@ void maps::setchar(char add, int x, int y)
     else if (mapno == 2)
     {
         stage[2][y][x] = current[y][x];
-    }
-    else if (mapno == 3)
-    {
-        stage[3][y][x] = current[y][x];
     }
 }
 

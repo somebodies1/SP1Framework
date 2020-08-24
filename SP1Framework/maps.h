@@ -7,7 +7,6 @@ class maps
 private:
 	char stage0[3][25][80];
 	char stage1[3][25][80];
-	char stage2[3][25][80];
 	char stage[10][25][80]; //currently allows each stage to have 10 maps max
 	char current[25][80];
 	int mapno;
