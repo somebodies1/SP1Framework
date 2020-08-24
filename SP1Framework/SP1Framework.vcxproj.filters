@@ -142,5 +142,14 @@
     <Text Include="Levelselect.txt">
       <Filter>Resource Files</Filter>
     </Text>
+    <Text Include="Stage3_1.txt">
+      <Filter>Resource Files</Filter>
+    </Text>
+    <Text Include="Stage3_2.txt">
+      <Filter>Resource Files</Filter>
+    </Text>
+    <Text Include="Stage3_3.txt">
+      <Filter>Resource Files</Filter>
+    </Text>
   </ItemGroup>
 </Project>
