@@ -327,7 +327,7 @@ void updateGame(double g_dElapsedTime)       // gameplay logic
         renderPew();
         //g_pew.m_cLocation.X++;
     }
-    if (PlayerChar.getHP() < 0)
+    if (PlayerChar.getHP() <= 0)
     {
         g_eGameState = S_GAMEOVER;       
     }
