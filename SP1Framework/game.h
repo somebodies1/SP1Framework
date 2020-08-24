@@ -66,6 +66,7 @@ void getInput(void);      // get input from player
 void update(double dt); // update the game and the state of the game
 void render(void);      // renders the current state of the game to the console
 void shutdown(void);      // do clean up, free memory
+void Reset(void);         // Resets map statuses
 
 void splashScreenWait();    // waits for time to pass in splash screen
 void updateGame(double dt);          // gameplay logic

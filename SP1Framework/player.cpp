@@ -110,7 +110,6 @@ char player::moveplayer( maps &Gamemap, maps &Entitylayer, int direction)
             Gamemap.setcurrent(Gamemap.getmapno());
             Entitylayer.setmapno(Entitylayer.getmapno() + 1);
             Entitylayer.setcurrent(Entitylayer.getmapno());
-            C.X -= 77;
             return 'S';
         }
     }

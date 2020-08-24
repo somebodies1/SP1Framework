@@ -84,6 +84,26 @@ void shutdown(void)
     // Reset to white text on black background
     colour(FOREGROUND_BLUE | FOREGROUND_GREEN | FOREGROUND_RED);
 
+    //Preventing memory leaks
+    for (int i = 0; i < 3; i++)
+    {
+        for (int j = 0; j < 5; j++)
+        {
+            if (amt[i][j] != nullptr)
+            {
+                delete amt[i][j];
+                amt[i][j] = nullptr;
+            }
+        }
+    }
+    for (int i = 0; i < 50; i++) //deletes bullet pointers
+    {
+        if (bulletlist[i] != nullptr)
+        {
+            delete bulletlist[i];
+            bulletlist[i] = nullptr;
+        }
+    }
     g_Console.clearBuffer();
 }
 
@@ -329,6 +349,11 @@ void updatePauseMenu()
     {
         g_eGameState = S_GAME;
     }
+    if (g_mouseEvent.mousePosition.X >= 36 && g_mouseEvent.mousePosition.X <= 44 && g_mouseEvent.mousePosition.Y == 16 && g_mouseEvent.buttonState == FROM_LEFT_1ST_BUTTON_PRESSED)
+    {
+        Reset();
+        g_eGameState = S_MAINMENU;
+    }
     if (g_mouseEvent.mousePosition.X >= 36 && g_mouseEvent.mousePosition.X <= 43 && g_mouseEvent.mousePosition.Y == 18 && g_mouseEvent.buttonState == FROM_LEFT_1ST_BUTTON_PRESSED)
     {
         g_eGameState = S_GAME;
@@ -409,6 +434,9 @@ void Reset() {
             bulletlist[i] = nullptr;
         }
     }
+    Gamemap.setmapno(0);
+    Entitylayer.setmapno(0);
+    PlayerChar  = player();
 }
 
 void moveEntities(double g_dElapsedTime)

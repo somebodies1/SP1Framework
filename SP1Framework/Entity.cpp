@@ -104,7 +104,7 @@ void Entity::move(char ent, maps& gamemap)
 {
 	if (direction == 1)
 	{
-		if (gamemap.getchar(C.Y, (C.X - 1)) != '1' && gamemap.getchar(C.Y, (C.X - 1)) != '=')
+		if (gamemap.getchar(C.Y, (C.X - 1)) != '1' && gamemap.getchar(C.Y, (C.X - 1)) != '=' && gamemap.getchar(C.Y+1, C.X-1) != ' ')
 		{
 			gamemap.setchar(' ', C.X, C.Y);
 			C.X -= 1;
@@ -117,7 +117,7 @@ void Entity::move(char ent, maps& gamemap)
 	}
 	else if(direction == 2)
 	{
-		if (gamemap.getchar(C.Y, (C.X + 1)) != '1' && gamemap.getchar(C.Y, (C.X + 1)) != '=')
+		if (gamemap.getchar(C.Y, (C.X + 1)) != '1' && gamemap.getchar(C.Y, (C.X + 1)) != '=' && gamemap.getchar(C.Y+1, C.X+1) != ' ')
 		{
 			gamemap.setchar(' ', C.X, C.Y);
 			C.X += 1;
