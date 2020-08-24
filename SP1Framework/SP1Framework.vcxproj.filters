@@ -118,13 +118,25 @@
     <Text Include="Stage0_3.txt">
       <Filter>Resource Files</Filter>
     </Text>
-    <Text Include="Mainmenu.txt">
+    <Text Include="Stage2_1.txt">
+      <Filter>Resource Files</Filter>
+    </Text>
+    <Text Include="Stage2_2.txt">
+      <Filter>Resource Files</Filter>
+    </Text>
+    <Text Include="Stage2_3.txt">
       <Filter>Resource Files</Filter>
     </Text>
     <Text Include="Pausemenu.txt">
       <Filter>Resource Files</Filter>
     </Text>
+    <Text Include="Mainmenu.txt">
+      <Filter>Resource Files</Filter>
+    </Text>
     <Text Include="Stagetemplate.txt">
+      <Filter>Resource Files</Filter>
+    </Text>
+    <Text Include="Gameover.txt">
       <Filter>Resource Files</Filter>
     </Text>
   </ItemGroup>

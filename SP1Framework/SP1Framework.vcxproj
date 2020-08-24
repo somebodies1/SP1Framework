@@ -114,8 +114,12 @@
     <Text Include="Stage0_2.txt" />
     <Text Include="Stage0_3.txt" />
     <Text Include="Mainmenu.txt" />
+    <Text Include="Stage2_1.txt" />
+    <Text Include="Stage2_2.txt" />
+    <Text Include="Stage2_3.txt" />
     <Text Include="Stagetemplate.txt" />
     <Text Include="Pausemenu.txt" />
+    <Text Include="Gameover.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

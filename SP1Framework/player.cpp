@@ -4,7 +4,7 @@
 player::player()
 {
     direction = 2;
-	hp = 3;
+	hp = 10;
 	mp = 5;
 	ammo = 10;
     C.X = 1;

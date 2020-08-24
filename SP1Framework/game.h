@@ -45,6 +45,7 @@ enum EGAMESTATES
     S_GAME,
     S_MAINMENU,
     S_PAUSE,
+    S_GAMEOVER,
     S_COUNT
 };
 
@@ -69,9 +70,10 @@ void shutdown(void);      // do clean up, free memory
 void Reset(void);         // Resets map statuses
 
 void splashScreenWait();    // waits for time to pass in splash screen
-void updateGame(double dt);          // gameplay logic
+void updateGame(double dt); // gameplay logic
 void updateMainMenu();      // main menu logic
 void updatePauseMenu();     // Pause menu logic
+void updateGameover();      // Game over screen logic
 void moveCharacter();       // moves the character, collision detection, physics, etc
 void movePew();
 void moveEntities(double dt);
@@ -81,6 +83,7 @@ void renderSplashScreen();  // renders the splash screen
 void renderGame();          // renders the game stuff
 void renderMainMenu();      // renders the menu stuff
 void renderPauseMenu();     // renders the pause menu
+void renderGameover();      // renders gameover screen
 void renderMap();           // renders the map to the buffer first
 void renderCharacter();     // renders the character into the buffer
 void renderPlayerUI(player player); //Displays information from player object

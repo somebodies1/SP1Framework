@@ -151,6 +151,8 @@ void keyboardHandler(const KEY_EVENT_RECORD& keyboardEvent)
         break;
     case S_PAUSE: pausemenuKBHandler(keyboardEvent);
         break;
+    case S_GAMEOVER:mainmenuKBHandler(keyboardEvent);
+        break;
     case S_GAME: gameplayKBHandler(keyboardEvent); // handle gameplay keyboard event 
         break;
     }
@@ -181,6 +183,8 @@ void mouseHandler(const MOUSE_EVENT_RECORD& mouseEvent)
     case S_MAINMENU: gameplayMouseHandler(mouseEvent);
         break;
     case S_PAUSE: gameplayMouseHandler(mouseEvent);
+        break;
+    case S_GAMEOVER: gameplayMouseHandler(mouseEvent);
         break;
     case S_GAME: gameplayMouseHandler(mouseEvent); // handle gameplay mouse event
         break;
@@ -296,6 +300,8 @@ void update(double dt)
         break;
     case S_PAUSE: updatePauseMenu();
         break;
+    case S_GAMEOVER: updateGameover();
+        break;
     case S_GAME: updateGame(g_dElapsedTime); // gameplay logic when we are in the game
         break;
     }
@@ -321,23 +327,19 @@ void updateGame(double g_dElapsedTime)       // gameplay logic
         renderPew();
         //g_pew.m_cLocation.X++;
     }
+    if (PlayerChar.getHP() < 0)
+    {
+        g_eGameState = S_GAMEOVER;       
+    }
 }
 
 void updateMainMenu()
 {
-    if (g_skKeyEvent[K_SPACE].keyDown) //Inputs for main menu that makes it work
+    if (g_mouseEvent.mousePosition.X >= 38 && g_mouseEvent.mousePosition.X <= 42 && g_mouseEvent.mousePosition.Y == 19 && g_mouseEvent.buttonState == FROM_LEFT_1ST_BUTTON_PRESSED || g_skKeyEvent[K_SPACE].keyDown)
     {
         g_eGameState = S_GAME;
     }
-    if (g_mouseEvent.mousePosition.X >= 38 && g_mouseEvent.mousePosition.X <= 42 && g_mouseEvent.mousePosition.Y == 19 && g_mouseEvent.buttonState == FROM_LEFT_1ST_BUTTON_PRESSED)
-    {
-        g_eGameState = S_GAME;
-    }
-    if (g_mouseEvent.mousePosition.X >= 38 && g_mouseEvent.mousePosition.X <= 41 && g_mouseEvent.mousePosition.Y == 21 && g_mouseEvent.buttonState == FROM_LEFT_1ST_BUTTON_PRESSED)
-    {
-        g_bQuitGame = true;
-    }
-    if (g_skKeyEvent[K_ESCAPE].keyReleased) //for quitting  //put it here just in case
+    if (g_mouseEvent.mousePosition.X >= 38 && g_mouseEvent.mousePosition.X <= 41 && g_mouseEvent.mousePosition.Y == 21 && g_mouseEvent.buttonState == FROM_LEFT_1ST_BUTTON_PRESSED || g_skKeyEvent[K_ESCAPE].keyReleased)
     {
         g_bQuitGame = true;
     }
@@ -359,6 +361,24 @@ void updatePauseMenu()
         g_eGameState = S_GAME;
     }
     if (g_mouseEvent.mousePosition.X >= 38 && g_mouseEvent.mousePosition.X <= 41 && g_mouseEvent.mousePosition.Y == 20 && g_mouseEvent.buttonState == FROM_LEFT_1ST_BUTTON_PRESSED)
+    {
+        g_bQuitGame = true;
+    }
+}
+
+void updateGameover()
+{
+    if (g_mouseEvent.mousePosition.X >= 34 && g_mouseEvent.mousePosition.X <= 44 && g_mouseEvent.mousePosition.Y == 20 && g_mouseEvent.buttonState == FROM_LEFT_1ST_BUTTON_PRESSED)
+    {
+        Reset();
+        g_eGameState = S_MAINMENU;
+    }
+    if (g_mouseEvent.mousePosition.X >= 36 && g_mouseEvent.mousePosition.X <= 41 && g_mouseEvent.mousePosition.Y == 18 && g_mouseEvent.buttonState == FROM_LEFT_1ST_BUTTON_PRESSED || g_skKeyEvent[K_SPACE].keyDown)
+    {
+        Reset();
+        g_eGameState = S_GAME;
+    }
+    if (g_mouseEvent.mousePosition.X >= 36 && g_mouseEvent.mousePosition.X <= 40 && g_mouseEvent.mousePosition.Y == 22 && g_mouseEvent.buttonState == FROM_LEFT_1ST_BUTTON_PRESSED || g_skKeyEvent[K_ESCAPE].keyDown)
     {
         g_bQuitGame = true;
     }
@@ -694,6 +714,8 @@ void render()
         break;
     case S_PAUSE: renderPauseMenu();
         break;
+    case S_GAMEOVER: renderGameover();
+        break;
     case S_GAME:  renderGame();
         break;
     }
@@ -761,6 +783,24 @@ void renderPauseMenu()  // renders the main menu
             c.X = j;
             c.Y = i;
             g_Console.writeToBuffer(c, linearray[j], 0x0E);
+        }
+    }
+}
+void renderGameover()
+{
+    string line;
+    COORD c;
+    ifstream mapfile("Gameover.txt");
+    for (int i = 0; i < 25; i++)
+    {
+        getline(mapfile, line);
+        char linearray[200];
+        strcpy(linearray, line.c_str());
+        for (int j = 0; j < 80; j++)
+        {
+            c.X = j;
+            c.Y = i;
+            g_Console.writeToBuffer(c, linearray[j], 0x09);
         }
     }
 }
