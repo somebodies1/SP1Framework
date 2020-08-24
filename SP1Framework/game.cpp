@@ -329,11 +329,11 @@ void updatePauseMenu()
     {
         g_eGameState = S_GAME;
     }
-    if (g_mouseEvent.mousePosition.X >= 36 && g_mouseEvent.mousePosition.X <= 43 && g_mouseEvent.mousePosition.Y == 11 && g_mouseEvent.buttonState == FROM_LEFT_1ST_BUTTON_PRESSED)
+    if (g_mouseEvent.mousePosition.X >= 36 && g_mouseEvent.mousePosition.X <= 43 && g_mouseEvent.mousePosition.Y == 18 && g_mouseEvent.buttonState == FROM_LEFT_1ST_BUTTON_PRESSED)
     {
         g_eGameState = S_GAME;
     }
-    if (g_mouseEvent.mousePosition.X >= 38 && g_mouseEvent.mousePosition.X <= 41 && g_mouseEvent.mousePosition.Y == 13 && g_mouseEvent.buttonState == FROM_LEFT_1ST_BUTTON_PRESSED)
+    if (g_mouseEvent.mousePosition.X >= 38 && g_mouseEvent.mousePosition.X <= 41 && g_mouseEvent.mousePosition.Y == 20 && g_mouseEvent.buttonState == FROM_LEFT_1ST_BUTTON_PRESSED)
     {
         g_bQuitGame = true;
     }
@@ -703,16 +703,6 @@ void renderMainMenu()  // renders the main menu
 {
     string line;
     COORD c;
-    //c.Y = 9;
-    //c.X = g_Console.getConsoleSize().X / 2 - 6;
-    //g_Console.writeToBuffer(c, "Mask the World", 0x03);
-    //c.Y += 2;
-    //c.X = g_Console.getConsoleSize().X / 2 - 2;
-    //g_Console.writeToBuffer(c, "start", 0xF0);
-    //c.Y += 2;
-    //c.X = g_Console.getConsoleSize().X / 2 - 2;
-    //g_Console.writeToBuffer(c, "quit", 0xF0);
-
     ifstream mapfile("Mainmenu.txt");
     for (int i = 0; i < 25; i++)
     {
@@ -730,16 +720,21 @@ void renderMainMenu()  // renders the main menu
 
 void renderPauseMenu()  // renders the main menu
 {
+    string line;
     COORD c;
-    c.Y = 9;
-    c.X = g_Console.getConsoleSize().X / 2 - 2;
-    g_Console.writeToBuffer(c, "Pause", 0x8F);
-    c.Y = g_Console.getConsoleSize().Y / 2 - 1;
-    c.X = g_Console.getConsoleSize().X / 2 - 4;
-    g_Console.writeToBuffer(c, "continue", 0xF0);
-    c.Y += 2;
-    c.X = g_Console.getConsoleSize().X / 2 - 2;
-    g_Console.writeToBuffer(c, "quit", 0xF0);
+    ifstream mapfile("Pausemenu.txt");
+    for (int i = 0; i < 25; i++)
+    {
+        getline(mapfile, line);
+        char linearray[200];
+        strcpy(linearray, line.c_str());
+        for (int j = 0; j < 80; j++)
+        {
+            c.X = j;
+            c.Y = i;
+            g_Console.writeToBuffer(c, linearray[j], 0x0E);
+        }
+    }
 }
 void renderGame()
 {

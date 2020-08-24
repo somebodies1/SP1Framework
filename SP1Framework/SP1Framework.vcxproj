@@ -115,6 +115,7 @@
     <Text Include="Stage0_3.txt" />
     <Text Include="Mainmenu.txt" />
     <Text Include="Stagetemplate.txt" />
+    <Text Include="Pausemenu.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

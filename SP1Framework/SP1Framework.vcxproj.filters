@@ -121,6 +121,9 @@
     <Text Include="Mainmenu.txt">
       <Filter>Resource Files</Filter>
     </Text>
+    <Text Include="Pausemenu.txt">
+      <Filter>Resource Files</Filter>
+    </Text>
     <Text Include="Stagetemplate.txt">
       <Filter>Resource Files</Filter>
     </Text>
