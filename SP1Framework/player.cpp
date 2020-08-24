@@ -65,7 +65,7 @@ bool player::moveplayer( maps &Gamemap, maps &Entitylayer, int direction)
                 player::fireright = false;
             }
         }
-        else if (Gamemap.getchar(iY,iX - 1) == '+')
+        else if (Gamemap.getchar(iY,iX - 1) == '<')
         {
             Gamemap.setmapno(Gamemap.getmapno() - 1);
             Gamemap.setcurrent(Gamemap.getmapno());
@@ -94,7 +94,17 @@ bool player::moveplayer( maps &Gamemap, maps &Entitylayer, int direction)
             }
 
         }
-        else if (Gamemap.getchar(iY,iX + 1) == '+')
+        else if (Gamemap.getchar(iY,iX + 1) == '>')
+        {
+            Gamemap.setmapno(Gamemap.getmapno() + 1);
+            Gamemap.setcurrent(Gamemap.getmapno());
+            Entitylayer.setmapno(Entitylayer.getmapno() + 1);
+            Entitylayer.setcurrent(Entitylayer.getmapno());
+            C.X -= 77;
+            
+            return true;
+        }
+        else if (Gamemap.getchar(iY, iX + 1) == '!')
         {
             Gamemap.setmapno(Gamemap.getmapno() + 1);
             Gamemap.setcurrent(Gamemap.getmapno());

@@ -21,5 +21,6 @@ public:
 	void setchar(char add, int x, int y); //Sets the character in the index
 	int getmapno();
 	void setmapno(int mapnum);
+	void reset();
 };
 

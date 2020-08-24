@@ -97,6 +97,13 @@ void maps::setstage(int stagenum)
     stageno = stagenum;
 }
 
+void maps::reset()
+{
+    setinitial(0);
+    setstage(0);
+    setstage(+1);
+}
+
 char maps::getchar(int y, int x)
 {
     return current[y][x];

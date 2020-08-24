@@ -383,6 +383,15 @@ void movePew()
     //isFiring = false;
 }
 
+void Reset() {
+    for (int i = 0; i < 3; i++)
+    {
+        spawnedmaps[i] = ' ';
+        
+    }
+    initialload = true;
+}
+
 void moveEntities(double g_dElapsedTime)
 {
     if (g_eGameState == S_GAME)
