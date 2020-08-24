@@ -139,5 +139,8 @@
     <Text Include="Gameover.txt">
       <Filter>Resource Files</Filter>
     </Text>
+    <Text Include="Levelselect.txt">
+      <Filter>Resource Files</Filter>
+    </Text>
   </ItemGroup>
 </Project>

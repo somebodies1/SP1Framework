@@ -153,6 +153,8 @@ void keyboardHandler(const KEY_EVENT_RECORD& keyboardEvent)
         break;
     case S_GAMEOVER:mainmenuKBHandler(keyboardEvent);
         break;
+    case S_LEVEL: pausemenuKBHandler(keyboardEvent);
+        break;
     case S_GAME: gameplayKBHandler(keyboardEvent); // handle gameplay keyboard event 
         break;
     }
@@ -185,6 +187,8 @@ void mouseHandler(const MOUSE_EVENT_RECORD& mouseEvent)
     case S_PAUSE: gameplayMouseHandler(mouseEvent);
         break;
     case S_GAMEOVER: gameplayMouseHandler(mouseEvent);
+        break;
+    case S_LEVEL: gameplayMouseHandler(mouseEvent);
         break;
     case S_GAME: gameplayMouseHandler(mouseEvent); // handle gameplay mouse event
         break;
@@ -302,6 +306,8 @@ void update(double dt)
         break;
     case S_GAMEOVER: updateGameover();
         break;
+    case S_LEVEL: updateLevelselect();
+        break;
     case S_GAME: updateGame(g_dElapsedTime); // gameplay logic when we are in the game
         break;
     }
@@ -338,6 +344,10 @@ void updateMainMenu()
     if (g_mouseEvent.mousePosition.X >= 38 && g_mouseEvent.mousePosition.X <= 42 && g_mouseEvent.mousePosition.Y == 19 && g_mouseEvent.buttonState == FROM_LEFT_1ST_BUTTON_PRESSED || g_skKeyEvent[K_SPACE].keyDown)
     {
         g_eGameState = S_GAME;
+    }
+    if (g_mouseEvent.mousePosition.X >= 37 && g_mouseEvent.mousePosition.X <= 42 && g_mouseEvent.mousePosition.Y == 20 && g_mouseEvent.buttonState == FROM_LEFT_1ST_BUTTON_PRESSED)
+    {
+        g_eGameState = S_LEVEL;
     }
     if (g_mouseEvent.mousePosition.X >= 38 && g_mouseEvent.mousePosition.X <= 41 && g_mouseEvent.mousePosition.Y == 21 && g_mouseEvent.buttonState == FROM_LEFT_1ST_BUTTON_PRESSED || g_skKeyEvent[K_ESCAPE].keyReleased)
     {
@@ -381,6 +391,56 @@ void updateGameover()
     if (g_mouseEvent.mousePosition.X >= 36 && g_mouseEvent.mousePosition.X <= 40 && g_mouseEvent.mousePosition.Y == 22 && g_mouseEvent.buttonState == FROM_LEFT_1ST_BUTTON_PRESSED || g_skKeyEvent[K_ESCAPE].keyDown)
     {
         g_bQuitGame = true;
+    }
+}
+
+void updateLevelselect()
+{
+    if (g_mouseEvent.mousePosition.X >= 36 && g_mouseEvent.mousePosition.X <= 43 && g_mouseEvent.mousePosition.Y == 14 && g_mouseEvent.buttonState == FROM_LEFT_1ST_BUTTON_PRESSED)
+    {
+        Gamemap.setstage(0);
+        Entitylayer.setstage(0);
+        Reset();
+        g_eGameState = S_GAME;
+    }
+    if (g_mouseEvent.mousePosition.X >= 36 && g_mouseEvent.mousePosition.X <= 43 && g_mouseEvent.mousePosition.Y == 16 && g_mouseEvent.buttonState == FROM_LEFT_1ST_BUTTON_PRESSED)
+    {
+        Gamemap.setstage(1);
+        Entitylayer.setstage(1);
+        Reset();
+        g_eGameState = S_GAME;
+    }
+    if (g_mouseEvent.mousePosition.X >= 36 && g_mouseEvent.mousePosition.X <= 43 && g_mouseEvent.mousePosition.Y == 17 && g_mouseEvent.buttonState == FROM_LEFT_1ST_BUTTON_PRESSED)
+    {
+        Gamemap.setstage(2);
+        Entitylayer.setstage(2);
+        Reset();
+        g_eGameState = S_GAME;
+    }
+    if (g_mouseEvent.mousePosition.X >= 36 && g_mouseEvent.mousePosition.X <= 43 && g_mouseEvent.mousePosition.Y == 18 && g_mouseEvent.buttonState == FROM_LEFT_1ST_BUTTON_PRESSED)
+    {
+        Gamemap.setstage(3);
+        Entitylayer.setstage(3);
+        Reset();
+        g_eGameState = S_GAME;
+    }
+    if (g_mouseEvent.mousePosition.X >= 36 && g_mouseEvent.mousePosition.X <= 43 && g_mouseEvent.mousePosition.Y == 19 && g_mouseEvent.buttonState == FROM_LEFT_1ST_BUTTON_PRESSED)
+    {
+        //Gamemap.setstage(4);
+        //Entitylayer.setstage(4);
+        //Reset();
+        //g_eGameState = S_GAME;
+    }
+    if (g_mouseEvent.mousePosition.X >= 36 && g_mouseEvent.mousePosition.X <= 43 && g_mouseEvent.mousePosition.Y == 20 && g_mouseEvent.buttonState == FROM_LEFT_1ST_BUTTON_PRESSED)
+    {
+        //Gamemap.setstage(5);
+        //Entitylayer.setstage(5);
+        //Reset();
+        //g_eGameState = S_GAME;
+    }
+    if (g_mouseEvent.mousePosition.X >= 37 && g_mouseEvent.mousePosition.X <= 40 && g_mouseEvent.mousePosition.Y == 23 && g_mouseEvent.buttonState == FROM_LEFT_1ST_BUTTON_PRESSED || g_skKeyEvent[K_ESCAPE].keyReleased)
+    {
+        g_eGameState = S_MAINMENU;
     }
 }
 
@@ -580,9 +640,9 @@ void moveCharacter()
     }
     if (g_skKeyEvent[K_SPACE].keyDown)
     {
-        Beep(1000, 30);
-        Beep(500, 50);
-        Beep(1500, 20);
+        Beep(1500, 10);
+        //Beep(500, 50);
+        //Beep(1500, 20);
         int iX = g_sChar.m_cLocation.X;
         int iY = g_sChar.m_cLocation.Y;
         for (int i = 0; i < 50; i++)
@@ -716,6 +776,8 @@ void render()
         break;
     case S_GAMEOVER: renderGameover();
         break;
+    case S_LEVEL: renderLevelselect();
+        break;
     case S_GAME:  renderGame();
         break;
     }
@@ -804,6 +866,24 @@ void renderGameover()
         }
     }
 }
+void renderLevelselect()
+{
+    string line;
+    COORD c;
+    ifstream mapfile("Levelselect.txt");
+    for (int i = 0; i < 25; i++)
+    {
+        getline(mapfile, line);
+        char linearray[200];
+        strcpy(linearray, line.c_str());
+        for (int j = 0; j < 80; j++)
+        {
+            c.X = j;
+            c.Y = i;
+            g_Console.writeToBuffer(c, linearray[j], 0x0C);
+        }
+    }
+}
 void renderGame()
 {
     renderMap();        // renders the map to the buffer first
@@ -873,13 +953,11 @@ void renderMap()
 
 void renderCharacter()
 {
-    // Draw the location of the character
     WORD charColor = 0x0A;
     if (g_sChar.m_bActive)
     {
         charColor = 0x0F;
     }
-    //g_Console.writeToBuffer(g_sChar.m_cLocation, (char)1, charColor);
     g_Console.writeToBuffer(PlayerChar.getXY(), char(1), 0x0F);
 }
 
