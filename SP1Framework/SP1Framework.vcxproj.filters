@@ -118,5 +118,11 @@
     <Text Include="Stage0_3.txt">
       <Filter>Resource Files</Filter>
     </Text>
+    <Text Include="Mainmenu.txt">
+      <Filter>Resource Files</Filter>
+    </Text>
+    <Text Include="Stagetemplate.txt">
+      <Filter>Resource Files</Filter>
+    </Text>
   </ItemGroup>
 </Project>

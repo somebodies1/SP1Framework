@@ -3,7 +3,7 @@
 maps::maps()
 {
     mapno = 0;
-    stageno = 1;
+    stageno = 0;
     setcurrent(mapno);
     setstage(stageno);
 }
