@@ -151,5 +151,20 @@
     <Text Include="Stage3_3.txt">
       <Filter>Resource Files</Filter>
     </Text>
+    <Text Include="Stage5_1.txt">
+      <Filter>Resource Files</Filter>
+    </Text>
+    <Text Include="Stage5_2.txt">
+      <Filter>Resource Files</Filter>
+    </Text>
+    <Text Include="Stage5_3.txt">
+      <Filter>Resource Files</Filter>
+    </Text>
+    <Text Include="Stage5_4.txt">
+      <Filter>Resource Files</Filter>
+    </Text>
+    <Text Include="BossSprite.txt">
+      <Filter>Resource Files</Filter>
+    </Text>
   </ItemGroup>
 </Project>

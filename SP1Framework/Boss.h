@@ -1,17 +1,16 @@
 #pragma once
+#include <fstream>
 #include "Entity.h"
 class Boss : public Entity
 {
 private:
-	int hp, mp;
+	int Phase;
+	static char sprite1[3][10];
 public:
 	Boss();
 	~Boss();
-	void spawnBoss(int h, int m);
-	void setHP(int h);
-	void setMP(int m);
-
-	int getHP(void);
-	int getMP(void);
+	void printboss(maps& gamemap);
+	void removeboss(maps& gamemap);
+	void moveboss(int direction, int steps, maps& gamemap);
 };
 

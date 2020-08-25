@@ -19,7 +19,6 @@ maps Entitylayer; //Layer for the enitites so they can overlap with map objects
 int enemyno = 0;  //index of enemy spawned per map, set to 0 and increased for each enemy spawned per map. Reset to 0 when it enters a new map
 char spawnedmaps[3] = {' ', ' ', ' '}; //Keeps track to the current map to check if a new map has been loaded by the end of a function
 SGameChar   g_sChar;
-Pew g_pew;
 Entity* amt[10][10] = { { nullptr, nullptr, nullptr, nullptr, nullptr,nullptr, nullptr, nullptr, nullptr, nullptr }, // the total entities in a stage
     { nullptr, nullptr, nullptr, nullptr, nullptr,nullptr, nullptr, nullptr, nullptr, nullptr },
     { nullptr, nullptr, nullptr, nullptr, nullptr,nullptr, nullptr, nullptr, nullptr, nullptr },
@@ -31,14 +30,12 @@ Entity* amt[10][10] = { { nullptr, nullptr, nullptr, nullptr, nullptr,nullptr, n
     { nullptr, nullptr, nullptr, nullptr, nullptr,nullptr, nullptr, nullptr, nullptr, nullptr },// right now the maximum for enemies 10 per map, 3 maps per stage
     { nullptr, nullptr, nullptr, nullptr, nullptr,nullptr, nullptr, nullptr, nullptr, nullptr }};                  // can be increased and the adding of nullptr can be a for loop
 bullet* bulletlist[50]; // maximum of 50 bullets at a time
-
+Boss boss;
 EGAMESTATES g_eGameState = S_MAINMENU; // initial state
 
 // Console object
 Console g_Console(80, 25, "SP1 Framework");
 bool initialload = true; // The initial load of the map
-bool isFiring = false;
-bool bulletmoving = false;
 //bool spawned[5] = { false, false, false ,false, false };
 
 
@@ -331,15 +328,9 @@ void updateGame(double g_dElapsedTime)       // gameplay logic
     renderMap();
     processUserInput(); // checks if you should change  states or do something else with the game, e.g. pause, exit
     moveEntities(g_dElapsedTime);
-    moveCharacter();    // moves the character, collision detection, physics, etc
-    movePew();                    // sound can be played here too.
-    //Charactergravity();
+    moveCharacter();    // moves the character, collision detection, physics, etc       
+                        // sound can be played here too.
 
-    if (isFiring==true)
-    {
-        renderPew();
-        //g_pew.m_cLocation.X++;
-    }
     if (PlayerChar.getHP() <= 0)
     {
         g_eGameState = S_GAMEOVER;       
@@ -452,52 +443,6 @@ void updateLevelselect()
     }
 }
 
-void movePew()
-{
-    if (isFiring == true)
-    {
-        //PlayerChar.minusammo();
-        int iX = g_pew.m_cLocation.X;
-        int iY = g_pew.m_cLocation.Y;
-
-        if (PlayerChar.fireright==false)
-        {
-            if (Gamemap.getchar(iY, iX - 1) != ' ' && Gamemap.getchar(iY, iX - 1) != 'H')
-            {
-                isFiring = false;
-                bulletmoving = false;
-                g_pew.m_cLocation.X = PlayerChar.getXY().X - 1;
-                g_pew.m_cLocation.Y = PlayerChar.getXY().Y;
-            }
-            else
-            {
-                g_pew.m_cLocation.X--;
-                
-
-
-            }
-        }
-        else
-        {
-            if (Gamemap.getchar(iY, iX + 1) != ' ' && Gamemap.getchar(iY, iX + 1) != 'H')
-            {
-                isFiring = false;
-                bulletmoving = false;
-                g_pew.m_cLocation.X = PlayerChar.getXY().X + 1;
-                g_pew.m_cLocation.Y = PlayerChar.getXY().Y;
-            }
-            else
-            {
-                g_pew.m_cLocation.X++;
-
-            }
-        }
-
-        
-    }
-    //Sleep(1000);
-    //isFiring = false;
-}
 
 void Reset() {
     for (int i = 0; i < 3; i++) //reset spawned map status
@@ -641,18 +586,22 @@ void moveCharacter()
     if (g_skKeyEvent[K_UP].keyDown)
     {
         direction = 1;
+        boss.moveboss(1, 1, Entitylayer);
     }
     if (g_skKeyEvent[K_LEFT].keyDown)
     {
         direction = 2;
+        boss.moveboss(2, 1, Entitylayer);
     }    
     if (g_skKeyEvent[K_DOWN].keyDown)
     {
         direction = 3;
+        boss.moveboss(3, 1, Entitylayer);
     }
     if (g_skKeyEvent[K_RIGHT].keyDown)
     {
         direction = 4;
+        boss.moveboss(4, 1, Entitylayer);
     }
     if (g_skKeyEvent[K_SPACE].keyDown)
     {
@@ -685,49 +634,6 @@ void moveCharacter()
             }
 
         }
-        
-
-//==========================================================================================================
-    //    if (PlayerChar.fireright == false)
-    //    {
-    //        if (Gamemap.getchar(iY, iX - 1) == ' ')
-    //        {
-    //            if (bulletmoving != true)
-    //            {
-    //                g_pew.m_cLocation.X = PlayerChar.getXY().X - 1;
-    //                g_pew.m_cLocation.Y = PlayerChar.getXY().Y;
-
-    //                //PlayerChar.getXY().X;
-    //            }
-
-    //        }
-    //    }
-    //    else
-    //    {
-    //        if (Gamemap.getchar(iY, iX + 1) == ' ')
-    //        {
-    //            if (bulletmoving != true)
-    //            {
-    //                g_pew.m_cLocation.X = PlayerChar.getXY().X + 1;
-    //                g_pew.m_cLocation.Y = PlayerChar.getXY().Y;
-
-    //                //PlayerChar.getXY().X;
-    //            }
-
-    //        }
-    //    }
-    //    
-    //    //Potentially where the shooting code goes
-    //    //You can but the direction facing in the above movement codes, make the faced direction a data member of the player object
-    //}
-    //if (g_skKeyEvent[K_SPACE].keyReleased)
-    //{
-    //    if (isFiring != true)
-    //    {
-    //        isFiring = true;
-    //        bulletmoving = true;
-    //    }
-//========================================================================================================================================================
     }
     char mapaction = PlayerChar.moveplayer(Gamemap, Entitylayer, direction);
     if (mapaction =='M' || initialload) //This if statement is to check whether the is a map change since the map changing code is in the moveplayer code
@@ -913,11 +819,6 @@ void renderGame()
     renderEntities();   // renders the entities a layer above
     renderCharacter();  // renders the player a layer above
     renderPlayerUI(PlayerChar); //renders the resource indicators a layer above
-    if (isFiring == true)
-    {
-        renderPew();
-
-    }// renders the character into the buffer
 }
 
 void renderMap()
@@ -981,12 +882,6 @@ void renderCharacter()
     g_Console.writeToBuffer(PlayerChar.getXY(), char(1), 0x0F);
 }
 
-void renderPew()
-{
-    WORD charColor = 0x0F;
-
-    g_Console.writeToBuffer(g_pew.m_cLocation, '-', charColor);
-}
 
 void spawnEnemy() //TODO: Set it so that when map changes, the enemies would be deleted and become nullptr for future use
 {  
@@ -1049,112 +944,6 @@ void spawnEnemy() //TODO: Set it so that when map changes, the enemies would be 
             }
         }
     }
-  /*if (g_eGameState == S_GAME)
-    {
-        if (Gamemap.getmapno() == 0 && spawnedmaps[0] == ' ')
-        {
-            for (int i = 0; i < 2; i++)
-            {
-                if (amt[i] != nullptr)
-                {
-                    delete amt[i];
-                    amt[i] = nullptr;
-                }
-                amt[i] = new Entity;
-                amt[i]->spawnEntity(2, 2);
-                if (i == 0)
-                {
-                    amt[i]->setX(32);
-                    amt[i]->setY(22);
-                }
-                if (i == 1)
-                {
-                    amt[i]->setX(33);
-                    amt[i]->setY(22);
-                }
-                amt[i]->addtomap('Z', Gamemap);
-                //if (spawned[i] == false) //Only happen once
-                //{
-                //    amt[i] = new Entity;
-                //    amt[i]->spawnEntity(2, 2);
-                //    if (i == 0)
-                //    {
-                //        amt[i]->setX(32);
-                //        amt[i]->setY(22);
-                //    }
-                //    if (i == 1)
-                //    {
-                //        amt[i]->setX(33);
-                //        amt[i]->setY(22);
-                //    }
-                //    spawned[i] = true;
-                //    amt[i]->addtomap('Z', Gamemap);
-                //}
-                if (i == 0)
-                {
-                    spawnedmaps[i] = '0';
-                }
-                else
-                {
-                    spawnedmaps[i] = ' ';
-                }
-            }
-        }
-        if (Gamemap.getmapno() == 1 && spawnedmaps[1] == ' ')
-        {
-            for (int i = 2; i < 5; i++)
-            {
-                for (int i = 0; i < 3; i++)
-                {
-                    if (i == 1)
-                    {
-                        spawnedmaps[i] = '1';
-                    }
-                    else
-                    {
-                        spawnedmaps[i] = ' ';
-                    }
-                }
-                if (amt[i] != nullptr)
-                {
-                    delete amt[i];
-                    amt[i] = nullptr;
-                }
-                else
-                {
-                    amt[i] = new Entity;
-                    amt[i]->spawnEntity(2, 2);
-                    if (i == 2)
-                    {
-                        amt[i]->setX(31);
-                        amt[i]->setY(22);
-                    }
-                    if (i == 3)
-                    {
-                        amt[i]->setX(33);
-                        amt[i]->setY(22);
-                    }
-                    if (i == 4)
-                    {
-                        amt[i]->setX(35);
-                        amt[i]->setY(22);
-                    }
-                    amt[i]->addtomap('Z', Gamemap);
-                }
-            }
-            for (int i = 0; i < 3; i++)
-            {
-                if (i == 1)
-                {
-                    spawnedmaps[i] = '1';
-                }
-                else
-                {
-                    spawnedmaps[i] = ' ';
-                }
-            }
-        }
-    }*/
 }
 void renderFramerate()
 {

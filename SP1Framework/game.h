@@ -8,6 +8,7 @@
 #include "SpeedyMob.h"
 #include "SlowMob.h"
 #include "StationaryMob.h"
+#include "Boss.h"
 #include "Framework\timer.h"
 
 extern CStopWatch g_swTimer;
@@ -61,11 +62,6 @@ struct SGameChar
     bool  m_bActive;
 };
 
-struct Pew
-{
-    COORD m_cLocation;
-    bool  m_bActive;
-};
 
 void init(void);      // initialize your variables, allocate memory, etc
 void getInput(void);      // get input from player
@@ -81,7 +77,6 @@ void updatePauseMenu();     // Pause menu logic
 void updateGameover();      // Game over screen logic
 void updateLevelselect();   // 
 void moveCharacter();       // moves the character, collision detection, physics, etc
-void movePew();
 void moveEntities(double dt);
 void processUserInput();    // checks if you should change states or do something else with the game, e.g. pause, exit
 void clearScreen();         // clears the current screen and draw from scratch 
@@ -95,7 +90,6 @@ void renderMap();           // renders the map to the buffer first
 void renderCharacter();     // renders the character into the buffer
 void renderPlayerUI(player player); //Displays information from player object
 void renderEntities();      // renders entites on top of the map
-void renderPew();
 void spawnEnemy();
 void renderFramerate();     // renders debug information, frame rate, elapsed time, etc
 void renderToScreen();      // dump the contents of the buffer to the screen, one frame worth of game
