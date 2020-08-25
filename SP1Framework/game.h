@@ -6,6 +6,8 @@
 #include "maps.h"
 #include "Mob.h"
 #include "SpeedyMob.h"
+#include "SlowMob.h"
+#include "StationaryMob.h"
 #include "Framework\timer.h"
 
 extern CStopWatch g_swTimer;

@@ -6,6 +6,6 @@ public:
 	SpeedyMob();
 	~SpeedyMob();
 	void spawnSpeedyMob(int h, int m);
-    char move(double time, char ent, maps& Gamemap);
+    char move(double time, char ent, maps& gamemap);
 };
 

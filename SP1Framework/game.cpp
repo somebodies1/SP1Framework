@@ -542,7 +542,7 @@ void moveEntities(double g_dElapsedTime)
                 if (bulletlist[i] != nullptr)
                 {
                     bullethit = bulletlist[i]->move(g_dElapsedTime, '-', Entitylayer); //This function also causes the bullet to move so it can only be called once
-                    if (bullethit == 'Z' || bullethit == 'K')
+                    if (bullethit == 'Z' || bullethit == 'K' || bullethit == '#' || bullethit == 'L')
                     {
                         for (int enemyindex = 0; enemyindex < 10; enemyindex++)
                         {
@@ -763,7 +763,8 @@ void moveCharacter()
         Gamemap.setstage(Gamemap.getstageno() + 1);
         Entitylayer.setstage(Entitylayer.getstageno() + 1);
     }
-    if (PlayerChar.collisioncheck(Entitylayer) == 'Z' || PlayerChar.collisioncheck(Entitylayer) == 'K') // collision work, just have to put something here
+    if (PlayerChar.collisioncheck(Entitylayer) == 'Z' || PlayerChar.collisioncheck(Entitylayer) == 'K' 
+        || PlayerChar.collisioncheck(Entitylayer) == '#' || PlayerChar.collisioncheck(Entitylayer) == 'L') // collision work, just have to put something here
     {
         PlayerChar.setHP(PlayerChar.getHP() - 1);
     }
@@ -956,7 +957,8 @@ void renderMap()
             {
                 g_Console.writeToBuffer(c, Gamemap.getchar(j, i), 0x01);
             }
-            else if (Gamemap.getchar(j, i) == 'Z' || Gamemap.getchar(j, i) == 'K') // add the rest of the entities here in with or statments
+            else if (Gamemap.getchar(j, i) == 'Z' || Gamemap.getchar(j, i) == 'K' 
+                || Gamemap.getchar(j,i) == '#' || Gamemap.getchar(j,i) == 'L') // add the rest of the entities here in with or statments
             {
                 Gamemap.setchar(' ', i, j);
                 g_Console.writeToBuffer(c, ' ', 0x0F);
@@ -1013,6 +1015,32 @@ void spawnEnemy() //TODO: Set it so that when map changes, the enemies would be 
                 if (amt[Entitylayer.getmapno()][enemyno] == nullptr) //if the index is empty, fill it
                 {
                     amt[Entitylayer.getmapno()][enemyno] = new SpeedyMob;
+                    amt[Entitylayer.getmapno()][enemyno]->spawnEntity(i, j);
+                    g_Console.writeToBuffer(c, Entitylayer.getchar(j, i), 0x0C);
+                    Entitylayer.setchar(' ', i, j);
+                }
+                enemyno++;
+            }
+            if (Entitylayer.getchar(j, i) == '#')
+            {
+                c.X = i;
+                c.Y = j;
+                if (amt[Entitylayer.getmapno()][enemyno] == nullptr) //if the index is empty, fill it
+                {
+                    amt[Entitylayer.getmapno()][enemyno] = new SlowMob;
+                    amt[Entitylayer.getmapno()][enemyno]->spawnEntity(i, j);
+                    g_Console.writeToBuffer(c, Entitylayer.getchar(j, i), 0x0C);
+                    Entitylayer.setchar(' ', i, j);
+                }
+                enemyno++;
+            }
+            if (Entitylayer.getchar(j, i) == 'L')
+            {
+                c.X = i;
+                c.Y = j;
+                if (amt[Entitylayer.getmapno()][enemyno] == nullptr) //if the index is empty, fill it
+                {
+                    amt[Entitylayer.getmapno()][enemyno] = new StationaryMob;
                     amt[Entitylayer.getmapno()][enemyno]->spawnEntity(i, j);
                     g_Console.writeToBuffer(c, Entitylayer.getchar(j, i), 0x0C);
                     Entitylayer.setchar(' ', i, j);
@@ -1176,6 +1204,14 @@ void renderEntities()
                 g_Console.writeToBuffer(c, Entitylayer.getchar(j, i), 0x08);
             }
             if (Entitylayer.getchar(j, i) == 'K')
+            {
+                g_Console.writeToBuffer(c, Entitylayer.getchar(j, i), 0x08);
+            }
+            if (Entitylayer.getchar(j, i) == '#')
+            {
+                g_Console.writeToBuffer(c, Entitylayer.getchar(j, i), 0x08);
+            }
+            if (Entitylayer.getchar(j, i) == 'L')
             {
                 g_Console.writeToBuffer(c, Entitylayer.getchar(j, i), 0x08);
             }

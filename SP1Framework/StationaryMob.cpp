@@ -2,8 +2,9 @@
 
 StationaryMob::StationaryMob()
 {
-	hp = 1;
+	hp = 2;
 	mp = 1;
+	type = 'L';
 }
 
 StationaryMob::~StationaryMob()
@@ -16,22 +17,8 @@ void StationaryMob::spawnStationaryMob(int h, int m)
 	mp = m;
 }
 
-void StationaryMob::setHP(int h)
+char StationaryMob::move(double time, char ent, maps& gamemap)
 {
-	hp = h;
-}
-
-void StationaryMob::setMP(int m)
-{
-	mp = m;
-}
-
-int StationaryMob::getHP()
-{
-	return hp;
-}
-
-int StationaryMob::getMP()
-{
-	return mp;
+	gamemap.setchar(ent, C.X, C.Y);
+	return 0;
 }
