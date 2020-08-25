@@ -337,6 +337,7 @@ void updateGame(double g_dElapsedTime)       // gameplay logic
     {
         g_eGameState = S_GAMEOVER;       
     }
+    
 }
 
 void updateMainMenu()
@@ -448,6 +449,7 @@ void movePew()
 {
     if (isFiring == true)
     {
+        //PlayerChar.minusammo();
         int iX = g_pew.m_cLocation.X;
         int iY = g_pew.m_cLocation.Y;
 
@@ -463,6 +465,8 @@ void movePew()
             else
             {
                 g_pew.m_cLocation.X--;
+                
+
 
             }
         }
@@ -640,30 +644,36 @@ void moveCharacter()
     }
     if (g_skKeyEvent[K_SPACE].keyDown)
     {
-        Beep(1500, 10);
-        //Beep(500, 50);
-        //Beep(1500, 20);
-        int iX = g_sChar.m_cLocation.X;
-        int iY = g_sChar.m_cLocation.Y;
-        for (int i = 0; i < 50; i++)
+        if (PlayerChar.get_ammo()>=1)
         {
-            if (bulletlist[i] == nullptr)
+            Beep(1500, 10);
+            PlayerChar.set_ammo(PlayerChar.get_ammo() - 1);
+            //Beep(500, 50);
+            //Beep(1500, 20);
+            int iX = g_sChar.m_cLocation.X;
+            int iY = g_sChar.m_cLocation.Y;
+            for (int i = 0; i < 50; i++)
             {
-                if (PlayerChar.getdirection() == 1 && Entitylayer.getchar(PlayerChar.getXY().Y, PlayerChar.getXY().X - 1) == ' ' || Entitylayer.getchar(PlayerChar.getXY().Y, PlayerChar.getXY().X - 1) == 'H')
+                if (bulletlist[i] == nullptr)
                 {
-                    bulletlist[i] = new bullet(PlayerChar.getdirection(), PlayerChar.getXY().X - 1, PlayerChar.getXY().Y);
-                    Entitylayer.setchar('-', PlayerChar.getXY().X - 1, PlayerChar.getXY().Y); 
-                    g_Console.writeToBuffer(bulletlist[i]->getXY(),'-', 0x06);
+                    if (PlayerChar.getdirection() == 1 && Entitylayer.getchar(PlayerChar.getXY().Y, PlayerChar.getXY().X - 1) == ' ' || Entitylayer.getchar(PlayerChar.getXY().Y, PlayerChar.getXY().X - 1) == 'H')
+                    {
+                        bulletlist[i] = new bullet(PlayerChar.getdirection(), PlayerChar.getXY().X - 1, PlayerChar.getXY().Y);
+                        Entitylayer.setchar('-', PlayerChar.getXY().X - 1, PlayerChar.getXY().Y);
+                        g_Console.writeToBuffer(bulletlist[i]->getXY(), '-', 0x06);
+                    }
+                    if (PlayerChar.getdirection() == 2 && Entitylayer.getchar(PlayerChar.getXY().Y, PlayerChar.getXY().X + 1) == ' ' || Entitylayer.getchar(PlayerChar.getXY().Y, PlayerChar.getXY().X + 1) == 'H')
+                    {
+                        bulletlist[i] = new bullet(PlayerChar.getdirection(), PlayerChar.getXY().X + 1, PlayerChar.getXY().Y);
+                        Entitylayer.setchar('-', PlayerChar.getXY().X + 1, PlayerChar.getXY().Y);
+                        g_Console.writeToBuffer(bulletlist[i]->getXY(), '-', 0x06);
+                    }
+                    break;
                 }
-                if (PlayerChar.getdirection() == 2 && Entitylayer.getchar(PlayerChar.getXY().Y, PlayerChar.getXY().X + 1) == ' ' || Entitylayer.getchar(PlayerChar.getXY().Y, PlayerChar.getXY().X + 1) == 'H')
-                {
-                    bulletlist[i] = new bullet(PlayerChar.getdirection(), PlayerChar.getXY().X + 1, PlayerChar.getXY().Y);
-                    Entitylayer.setchar('-', PlayerChar.getXY().X + 1, PlayerChar.getXY().Y);
-                    g_Console.writeToBuffer(bulletlist[i]->getXY(), '-', 0x06);
-                }
-                break;
             }
+
         }
+        
 
 //==========================================================================================================
     //    if (PlayerChar.fireright == false)

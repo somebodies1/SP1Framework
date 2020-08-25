@@ -40,7 +40,13 @@ void player::set_ammo(int a)
 
 int player::get_ammo(void)
 {
-	return ammo;
+	return this->ammo;
+}
+
+void player::minusammo() 
+{
+    ammo--;
+    set_ammo(ammo);
 }
 
 char player::moveplayer( maps &Gamemap, maps &Entitylayer, int direction)
