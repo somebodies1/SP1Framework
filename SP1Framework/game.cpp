@@ -2,6 +2,7 @@
 //
 //
 #include "game.h"
+#include "Mob.h"
 #include "Framework\console.h"
 #include <iostream>
 #include <iomanip>
@@ -20,9 +21,9 @@ int enemyno = 0;  //index of enemy spawned per map, set to 0 and increased for e
 char spawnedmaps[3] = {' ', ' ', ' '}; //Keeps track to the current map to check if a new map has been loaded by the end of a function
 SGameChar   g_sChar;
 Pew g_pew;
-Entity* amt[3][5] = { { nullptr, nullptr, nullptr, nullptr, nullptr }, // the total entities in a stage
-    { nullptr, nullptr, nullptr, nullptr, nullptr },                   // right now the maximum for enemies 5 per map, 3 maps per stage
-    { nullptr, nullptr, nullptr, nullptr, nullptr }};                  // can be increased and the adding of nullptr can be a for loop
+Entity* amt[3][10] = { { nullptr, nullptr, nullptr, nullptr, nullptr,nullptr, nullptr, nullptr, nullptr, nullptr }, // the total entities in a stage
+    { nullptr, nullptr, nullptr, nullptr, nullptr,nullptr, nullptr, nullptr, nullptr, nullptr },                   // right now the maximum for enemies 5 per map, 3 maps per stage
+    { nullptr, nullptr, nullptr, nullptr, nullptr,nullptr, nullptr, nullptr, nullptr, nullptr }};                  // can be increased and the adding of nullptr can be a for loop
 bullet* bulletlist[50]; // maximum of 50 bullets at a time
 
 EGAMESTATES g_eGameState = S_MAINMENU; // initial state
@@ -87,7 +88,7 @@ void shutdown(void)
     //Preventing memory leaks
     for (int i = 0; i < 3; i++)
     {
-        for (int j = 0; j < 5; j++)
+        for (int j = 0; j < 10; j++)
         {
             if (amt[i][j] != nullptr)
             {
@@ -501,7 +502,7 @@ void Reset() {
     initialload = true; //resets variable that loads the initial map once
     for (int i = 0; i < 3; i++) // reset enemies
     {
-        for (int j = 0; j < 5; j++)
+        for (int j = 0; j < 10; j++)
         {
             if (amt[i][j] != nullptr)
             {
@@ -529,7 +530,7 @@ void moveEntities(double g_dElapsedTime)
     {
         if (fmod(g_dElapsedTime, 0.2) <= 0.02) // Moving the enemies
         {
-            for (int i = 0; i < 5; i++)
+            for (int i = 0; i < 10; i++)
             {
                 if (amt[Entitylayer.getmapno()][i] != nullptr)
                 {
@@ -547,7 +548,7 @@ void moveEntities(double g_dElapsedTime)
                     bullethit = bulletlist[i]->move('-', Entitylayer); //This function also causes the bullet to move so it can only be called once
                     if (bullethit == 'Z')
                     {
-                        for (int enemyindex = 0; enemyindex < 5; enemyindex++)
+                        for (int enemyindex = 0; enemyindex < 10; enemyindex++)
                         {
                             if (amt[Entitylayer.getmapno()][enemyindex] != nullptr) // When the indexes before are nullptr, it crashes, so this line is added
                             {
@@ -991,7 +992,7 @@ void spawnEnemy() //TODO: Set it so that when map changes, the enemies would be 
                 c.Y = j;
                 if (amt[Entitylayer.getmapno()][enemyno] == nullptr) //if the index is empty, fill it
                 {
-                    amt[Entitylayer.getmapno()][enemyno] = new Entity;
+                    amt[Entitylayer.getmapno()][enemyno] = new Mob;
                     amt[Entitylayer.getmapno()][enemyno]->spawnEntity(i, j);
                     g_Console.writeToBuffer(c, Entitylayer.getchar(j, i), 0x08);
                     Entitylayer.setchar(' ', i, j);
