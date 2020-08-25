@@ -17,8 +17,21 @@ void SlowMob::spawnSlowMob(int h, int m)
 	mp = m;
 }
 
-char SlowMob::move(double time, char ent, maps& gamemap)
+char SlowMob::move(double time, char ent, maps& gamemap, COORD Player)
 {
+	SHORT leftx = Player.X - C.X;
+	SHORT rightx = C.X - Player.X;
+	SHORT topy = Player.Y - C.Y;
+	SHORT boty = C.Y - Player.Y;
+
+	if (leftx < 0 && leftx > -6 && topy < 4 && boty < 4)
+	{
+		direction = 1;
+	}
+	if (rightx < 0 && rightx > -6 && topy < 4 && boty < 4)
+	{
+		direction = 2;
+	}
 	if (fmod(time, 0.2) < 0.01)
 	{
 		if (direction == 1)

@@ -17,7 +17,7 @@ void StationaryMob::spawnStationaryMob(int h, int m)
 	mp = m;
 }
 
-char StationaryMob::move(double time, char ent, maps& gamemap)
+char StationaryMob::move(double time, char ent, maps& gamemap, COORD Player)
 {
 	gamemap.setchar(ent, C.X, C.Y);
 	return 0;

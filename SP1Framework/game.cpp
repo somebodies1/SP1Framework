@@ -538,7 +538,7 @@ void moveEntities(double g_dElapsedTime)
             {
                 if (amt[Entitylayer.getmapno()][i]->getHP() > 0)
                 {
-                    amt[Entitylayer.getmapno()][i]->move(g_dElapsedTime, amt[Entitylayer.getmapno()][i]->gettype(), Entitylayer); //This move function is using polymorphism and moving based on the move code of the child class
+                    amt[Entitylayer.getmapno()][i]->move(g_dElapsedTime, amt[Entitylayer.getmapno()][i]->gettype(), Entitylayer, PlayerChar.getXY()); //This move function is using polymorphism and moving based on the move code of the child class
                 }                                              //Move also can return a char, although it doesn't return anything now
                 else// deletes enemies when their healh goes below 0
                 {
