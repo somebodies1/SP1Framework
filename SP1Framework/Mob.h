@@ -13,5 +13,5 @@ public:
 	int getHP(void);
 	int getMP(void);
 
-	char move(double time, char ent, maps& Gamemap);
+	char move(double time, char ent, maps& Gamemap, COORD Player);
 };

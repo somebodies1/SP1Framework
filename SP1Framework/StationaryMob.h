@@ -9,6 +9,6 @@ public:
 	~StationaryMob();
 
 	void spawnStationaryMob(int h, int m);
-	char move(double time, char ent, maps& gamemap);
+	char move(double time, char ent, maps& gamemap, COORD Player);
 };
 

@@ -33,7 +33,7 @@ public:
 	COORD getXY(void);
 	int getID(void);
 	void addtomap(char add, maps& Gamemap);
-	virtual char move(double time, char ent, maps& Gamemap);
+	virtual char move(double time, char ent, maps& Gamemap, COORD Player);
 	char collisioncheck(maps& gamemap);
 };
 

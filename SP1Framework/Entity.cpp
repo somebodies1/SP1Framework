@@ -106,7 +106,7 @@ void Entity::addtomap(char add, maps& Gamemap)
 	}
 }
 
-char Entity::move(double time, char ent, maps& gamemap)
+char Entity::move(double time, char ent, maps& gamemap, COORD Player)
 {
 	if (direction == 1)
 	{
