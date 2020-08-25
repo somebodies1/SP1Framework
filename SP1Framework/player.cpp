@@ -6,7 +6,7 @@ player::player()
     direction = 2;
 	hp = 10;
 	mp = 5;
-	ammo = 10;
+	ammo = 100;
     C.X = 1;
     C.Y = 22;
     m_bActive = true;

@@ -19,7 +19,7 @@ void SpeedyMob::spawnSpeedyMob(int h, int m)
 
 char SpeedyMob::move(double time, char ent, maps& gamemap)
 {
-	if (fmod(time, 0.2) < 0.05)
+	if (fmod(time, 0.2) < 0.1)
 	{
 		if (direction == 1)
 		{
