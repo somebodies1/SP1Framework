@@ -19,5 +19,6 @@ public:
 	int get_ammo(void);
 	char moveplayer(maps &gamemap, maps &entitylayer, int direction);  // The 2 layer are entered as passby parameters to updated 
 	bool fireright = true;
+	void minusammo();
 };
 
