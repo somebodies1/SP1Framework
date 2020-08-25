@@ -2,7 +2,6 @@
 //
 //
 #include "game.h"
-#include "Mob.h"
 #include "Framework\console.h"
 #include <iostream>
 #include <iomanip>
@@ -397,49 +396,49 @@ void updateGameover()
 
 void updateLevelselect()
 {
-    if (g_mouseEvent.mousePosition.X >= 36 && g_mouseEvent.mousePosition.X <= 43 && g_mouseEvent.mousePosition.Y == 14 && g_mouseEvent.buttonState == FROM_LEFT_1ST_BUTTON_PRESSED)
+    if (g_mouseEvent.mousePosition.X >= 36 && g_mouseEvent.mousePosition.X <= 43 && g_mouseEvent.mousePosition.Y == 13 && g_mouseEvent.buttonState == FROM_LEFT_1ST_BUTTON_PRESSED)
     {
         Gamemap.setstage(0);
         Entitylayer.setstage(0);
         Reset();
         g_eGameState = S_GAME;
     }
-    if (g_mouseEvent.mousePosition.X >= 36 && g_mouseEvent.mousePosition.X <= 43 && g_mouseEvent.mousePosition.Y == 16 && g_mouseEvent.buttonState == FROM_LEFT_1ST_BUTTON_PRESSED)
+    if (g_mouseEvent.mousePosition.X >= 36 && g_mouseEvent.mousePosition.X <= 43 && g_mouseEvent.mousePosition.Y == 15 && g_mouseEvent.buttonState == FROM_LEFT_1ST_BUTTON_PRESSED)
     {
         Gamemap.setstage(1);
         Entitylayer.setstage(1);
         Reset();
         g_eGameState = S_GAME;
     }
-    if (g_mouseEvent.mousePosition.X >= 36 && g_mouseEvent.mousePosition.X <= 43 && g_mouseEvent.mousePosition.Y == 17 && g_mouseEvent.buttonState == FROM_LEFT_1ST_BUTTON_PRESSED)
+    if (g_mouseEvent.mousePosition.X >= 36 && g_mouseEvent.mousePosition.X <= 43 && g_mouseEvent.mousePosition.Y == 16 && g_mouseEvent.buttonState == FROM_LEFT_1ST_BUTTON_PRESSED)
     {
         Gamemap.setstage(2);
         Entitylayer.setstage(2);
         Reset();
         g_eGameState = S_GAME;
     }
-    if (g_mouseEvent.mousePosition.X >= 36 && g_mouseEvent.mousePosition.X <= 43 && g_mouseEvent.mousePosition.Y == 18 && g_mouseEvent.buttonState == FROM_LEFT_1ST_BUTTON_PRESSED)
+    if (g_mouseEvent.mousePosition.X >= 36 && g_mouseEvent.mousePosition.X <= 43 && g_mouseEvent.mousePosition.Y == 17 && g_mouseEvent.buttonState == FROM_LEFT_1ST_BUTTON_PRESSED)
     {
         Gamemap.setstage(3);
         Entitylayer.setstage(3);
         Reset();
         g_eGameState = S_GAME;
     }
-    if (g_mouseEvent.mousePosition.X >= 36 && g_mouseEvent.mousePosition.X <= 43 && g_mouseEvent.mousePosition.Y == 19 && g_mouseEvent.buttonState == FROM_LEFT_1ST_BUTTON_PRESSED)
+    if (g_mouseEvent.mousePosition.X >= 36 && g_mouseEvent.mousePosition.X <= 43 && g_mouseEvent.mousePosition.Y == 18 && g_mouseEvent.buttonState == FROM_LEFT_1ST_BUTTON_PRESSED)
     {
         //Gamemap.setstage(4);
         //Entitylayer.setstage(4);
         //Reset();
         //g_eGameState = S_GAME;
     }
-    if (g_mouseEvent.mousePosition.X >= 36 && g_mouseEvent.mousePosition.X <= 43 && g_mouseEvent.mousePosition.Y == 20 && g_mouseEvent.buttonState == FROM_LEFT_1ST_BUTTON_PRESSED)
+    if (g_mouseEvent.mousePosition.X >= 36 && g_mouseEvent.mousePosition.X <= 43 && g_mouseEvent.mousePosition.Y == 19 && g_mouseEvent.buttonState == FROM_LEFT_1ST_BUTTON_PRESSED)
     {
         //Gamemap.setstage(5);
         //Entitylayer.setstage(5);
         //Reset();
         //g_eGameState = S_GAME;
     }
-    if (g_mouseEvent.mousePosition.X >= 37 && g_mouseEvent.mousePosition.X <= 40 && g_mouseEvent.mousePosition.Y == 23 && g_mouseEvent.buttonState == FROM_LEFT_1ST_BUTTON_PRESSED || g_skKeyEvent[K_ESCAPE].keyReleased)
+    if (g_mouseEvent.mousePosition.X >= 37 && g_mouseEvent.mousePosition.X <= 40 && g_mouseEvent.mousePosition.Y == 22 && g_mouseEvent.buttonState == FROM_LEFT_1ST_BUTTON_PRESSED || g_skKeyEvent[K_ESCAPE].keyReleased)
     {
         g_eGameState = S_MAINMENU;
     }
@@ -523,17 +522,7 @@ void Reset() {
 void moveEntities(double g_dElapsedTime)
 {
     if (g_eGameState == S_GAME)
-    {
-        if (fmod(g_dElapsedTime, 0.2) <= 0.02) // Moving the enemies
-        {
-            for (int i = 0; i < 10; i++)
-            {
-                if (amt[Entitylayer.getmapno()][i] != nullptr)
-                {
-                    amt[Entitylayer.getmapno()][i]->move('Z', Entitylayer);
-                }
-            }
-        }
+    {   //bullet moves first
         char bullethit; //What the bullet hits, may be ' ' when nothing
         if (true)//speed for bullets here
         {
@@ -541,8 +530,8 @@ void moveEntities(double g_dElapsedTime)
             {
                 if (bulletlist[i] != nullptr)
                 {
-                    bullethit = bulletlist[i]->move('-', Entitylayer); //This function also causes the bullet to move so it can only be called once
-                    if (bullethit == 'Z')
+                    bullethit = bulletlist[i]->move(g_dElapsedTime, '-', Entitylayer); //This function also causes the bullet to move so it can only be called once
+                    if (bullethit == 'Z' || bullethit == 'K')
                     {
                         for (int enemyindex = 0; enemyindex < 10; enemyindex++)
                         {
@@ -550,34 +539,33 @@ void moveEntities(double g_dElapsedTime)
                             {
                                 if (bulletlist[i]->getdirection() == 1)
                                 {
-                                    if (amt[Entitylayer.getmapno()][enemyindex]->getXY().X == bulletlist[i]->getXY().X - 1 && amt[Entitylayer.getmapno()][enemyindex]->getXY().Y == bulletlist[i]->getXY().Y) //deletes enemy upon contact, to ba changed
+                                    if (amt[Entitylayer.getmapno()][enemyindex]->getXY().X == bulletlist[i]->getXY().X - 1 && amt[Entitylayer.getmapno()][enemyindex]->getXY().Y == bulletlist[i]->getXY().Y) // If statement find the enitity that the bullet collides with
                                     {
-                                        delete amt[Entitylayer.getmapno()][enemyindex];
-                                        amt[Entitylayer.getmapno()][enemyindex] = nullptr;
-                                        Entitylayer.setchar(' ', bulletlist[i]->getXY().X - 1, bulletlist[i]->getXY().Y);
+                                        //delete amt[Entitylayer.getmapno()][enemyindex];
+                                        //amt[Entitylayer.getmapno()][enemyindex] = nullptr;
+                                        //Entitylayer.setchar(' ', bulletlist[i]->getXY().X - 1, bulletlist[i]->getXY().Y);
                                         Entitylayer.setchar(' ', bulletlist[i]->getXY().X, bulletlist[i]->getXY().Y);
                                         delete bulletlist[i];
                                         bulletlist[i] = nullptr;
+                                        amt[Entitylayer.getmapno()][enemyindex]->setHP(amt[Entitylayer.getmapno()][enemyindex]->getHP()-1); //Reduces health by one
                                         break;
                                     }
                                 }
                                 else if (bulletlist[i]->getdirection() == 2)
                                 {
-                                    if (amt[Entitylayer.getmapno()][enemyindex]->getXY().X == bulletlist[i]->getXY().X + 1 && amt[Entitylayer.getmapno()][enemyindex]->getXY().Y == bulletlist[i]->getXY().Y) //deletes enemy upon contact, to ba changed
+                                    if (amt[Entitylayer.getmapno()][enemyindex]->getXY().X == bulletlist[i]->getXY().X + 1 && amt[Entitylayer.getmapno()][enemyindex]->getXY().Y == bulletlist[i]->getXY().Y)
                                     {
-                                        delete amt[Entitylayer.getmapno()][enemyindex];
-                                        amt[Entitylayer.getmapno()][enemyindex] = nullptr;
-                                        Entitylayer.setchar(' ', bulletlist[i]->getXY().X + 1, bulletlist[i]->getXY().Y);
                                         Entitylayer.setchar(' ', bulletlist[i]->getXY().X, bulletlist[i]->getXY().Y);
                                         delete bulletlist[i];
                                         bulletlist[i] = nullptr;
+                                        amt[Entitylayer.getmapno()][enemyindex]->setHP(amt[Entitylayer.getmapno()][enemyindex]->getHP()-1);
                                         break;
                                     }
                                 }
                             }
                         }
                     }
-                    if ( bullethit == '=' || bullethit == '1' || bullethit == '+')
+                    if ( bullethit == '=' || bullethit == '1' || bullethit == '<' || bullethit == '>')
                     {
 
                         Entitylayer.setchar(' ', bulletlist[i]->getXY().X, bulletlist[i]->getXY().Y);
@@ -587,6 +575,22 @@ void moveEntities(double g_dElapsedTime)
                     
                 }
             }
+        }
+        for (int i = 0; i < 10; i++) //For loop that loops though all the enemy types for the
+        {
+            if (amt[Entitylayer.getmapno()][i] != nullptr)
+            {
+                if (amt[Entitylayer.getmapno()][i]->getHP() > 0)
+                {
+                    amt[Entitylayer.getmapno()][i]->move(g_dElapsedTime, amt[Entitylayer.getmapno()][i]->gettype(), Entitylayer); //This move function is using polymorphism and moving based on the move code of the child class
+                }                                              //Move also can return a char, although it doesn't return anything now
+                else// deletes enemies when their healh goes below 0
+                {
+                    Entitylayer.setchar(' ', amt[Entitylayer.getmapno()][i]->getXY().X, amt[Entitylayer.getmapno()][i]->getXY().Y);
+                    delete amt[Entitylayer.getmapno()][i];
+                    amt[Entitylayer.getmapno()][i] = nullptr;
+                }
+            }                                                                                                                 
         }
     }
 }
@@ -742,7 +746,7 @@ void moveCharacter()
         Gamemap.setstage(Gamemap.getstageno() + 1);
         Entitylayer.setstage(Entitylayer.getstageno() + 1);
     }
-    if (PlayerChar.collisioncheck(Entitylayer) == 'Z') // collision work, just have to put something here
+    if (PlayerChar.collisioncheck(Entitylayer) == 'Z' || PlayerChar.collisioncheck(Entitylayer) == 'K') // collision work, just have to put something here
     {
         PlayerChar.setHP(PlayerChar.getHP() - 1);
     }
@@ -935,11 +939,7 @@ void renderMap()
             {
                 g_Console.writeToBuffer(c, Gamemap.getchar(j, i), 0x01);
             }
-            else if (Gamemap.getchar(j, i) == 'K')
-            {
-                g_Console.writeToBuffer(c, Gamemap.getchar(j, i), 0x0A);
-            }
-            else if (Gamemap.getchar(j, i) == 'Z') // add the rest of the entities here in with or statments
+            else if (Gamemap.getchar(j, i) == 'Z' || Gamemap.getchar(j, i) == 'K') // add the rest of the entities here in with or statments
             {
                 Gamemap.setchar(' ', i, j);
                 g_Console.writeToBuffer(c, ' ', 0x0F);
@@ -985,6 +985,19 @@ void spawnEnemy() //TODO: Set it so that when map changes, the enemies would be 
                     amt[Entitylayer.getmapno()][enemyno] = new Mob;
                     amt[Entitylayer.getmapno()][enemyno]->spawnEntity(i, j);
                     g_Console.writeToBuffer(c, Entitylayer.getchar(j, i), 0x08);
+                    Entitylayer.setchar(' ', i, j);
+                }
+                enemyno++;
+            }
+            if (Entitylayer.getchar(j, i) == 'K')
+            {
+                c.X = i;
+                c.Y = j;
+                if (amt[Entitylayer.getmapno()][enemyno] == nullptr) //if the index is empty, fill it
+                {
+                    amt[Entitylayer.getmapno()][enemyno] = new SpeedyMob;
+                    amt[Entitylayer.getmapno()][enemyno]->spawnEntity(i, j);
+                    g_Console.writeToBuffer(c, Entitylayer.getchar(j, i), 0x0C);
                     Entitylayer.setchar(' ', i, j);
                 }
                 enemyno++;
@@ -1145,10 +1158,14 @@ void renderEntities()
             {
                 g_Console.writeToBuffer(c, Entitylayer.getchar(j, i), 0x08);
             }
+            if (Entitylayer.getchar(j, i) == 'K')
+            {
+                g_Console.writeToBuffer(c, Entitylayer.getchar(j, i), 0x08);
+            }
             //Add more if statments for the other type of enemies, and make the other enemies different letters
             if(Entitylayer.getchar(j, i) == '-')
             {
-                g_Console.writeToBuffer(c, Entitylayer.getchar(j, i), 0x08);
+                g_Console.writeToBuffer(c, Entitylayer.getchar(j, i), 0x0F);
             }
         }
     }

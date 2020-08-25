@@ -4,6 +4,8 @@
 #include "player.h"
 #include "Entity.h"
 #include "maps.h"
+#include "Mob.h"
+#include "SpeedyMob.h"
 #include "Framework\timer.h"
 
 extern CStopWatch g_swTimer;

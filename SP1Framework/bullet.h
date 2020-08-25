@@ -16,6 +16,6 @@ public:
 	void set_damage(int dmg);
 	int get_damage(void);
 	static int getbulletnumber();
-	char move(char ent, maps& Gamemap); //Also doubles as a collisions detection
+	char move(double time, char ent, maps& Gamemap); //Also doubles as a collisions detection
 };
 

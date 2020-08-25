@@ -4,6 +4,7 @@ int Entity::count = 0;
 Entity* counter[5] = { nullptr, nullptr, nullptr, nullptr, nullptr };
 Entity::Entity()
 {
+	type = ' ';
 	hp = 1;
 	mp = 1;
 	x = 0;
@@ -72,6 +73,11 @@ int Entity::getdirection(void)
 	return direction;
 }
 
+char Entity::gettype(void)
+{
+	return type;
+}
+
 SHORT Entity::X(void)
 {
 	return this->C.X;
@@ -100,7 +106,7 @@ void Entity::addtomap(char add, maps& Gamemap)
 	}
 }
 
-void Entity::move(char ent, maps& gamemap)
+char Entity::move(double time, char ent, maps& gamemap)
 {
 	if (direction == 1)
 	{
@@ -128,6 +134,7 @@ void Entity::move(char ent, maps& gamemap)
 			direction = 1;
 		}
 	}
+	return 0;
 }
 
 char Entity::collisioncheck(maps& gamemap)

@@ -2,8 +2,6 @@
 #include "Entity.h"
 class Mob : public Entity
 {
-private:
-	int hp, mp;
 public:
 	Mob();
 	~Mob();
@@ -14,4 +12,6 @@ public:
 
 	int getHP(void);
 	int getMP(void);
+
+	char move(double time, char ent, maps& Gamemap);
 };

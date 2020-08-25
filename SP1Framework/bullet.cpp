@@ -54,26 +54,29 @@ int bullet::getbulletnumber()
 	return bulletnumber;
 }
 
-char bullet::move(char ent, maps& gamemap)
+char bullet::move(double time, char ent, maps& gamemap)
 {
-	if (direction == 1)
+	if (fmod(time, 0.2) <= 1) // Moving the enemies
 	{
-		if (gamemap.getchar(C.Y, (C.X - 1)) != '1' && gamemap.getchar(C.Y, (C.X - 1)) != '=')
+		if (direction == 1)
 		{
-			gamemap.setchar(' ', C.X, C.Y);
-			C.X -= 1;
-			gamemap.setchar(ent, C.X, C.Y);
-			return gamemap.getchar(C.Y, (C.X - 1));
+			if (gamemap.getchar(C.Y, (C.X - 1)) != '1' && gamemap.getchar(C.Y, (C.X - 1)) != '=')
+			{
+				gamemap.setchar(' ', C.X, C.Y);
+				C.X -= 1;
+				gamemap.setchar(ent, C.X, C.Y);
+				return gamemap.getchar(C.Y, (C.X - 1));
+			}
 		}
-	}
-	else if (direction == 2)
-	{
-		if (gamemap.getchar(C.Y, (C.X + 1)) != '1' && gamemap.getchar(C.Y, (C.X + 1)) != '=')
+		else if (direction == 2)
 		{
-			gamemap.setchar(' ', C.X, C.Y);
-			C.X += 1;
-			gamemap.setchar(ent, C.X, C.Y);
-			return gamemap.getchar(C.Y, (C.X + 1));
+			if (gamemap.getchar(C.Y, (C.X + 1)) != '1' && gamemap.getchar(C.Y, (C.X + 1)) != '=')
+			{
+				gamemap.setchar(' ', C.X, C.Y);
+				C.X += 1;
+				gamemap.setchar(ent, C.X, C.Y);
+				return gamemap.getchar(C.Y, (C.X + 1));
+			}
 		}
 	}
 }

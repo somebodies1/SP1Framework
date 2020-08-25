@@ -5,6 +5,7 @@
 class Entity
 {
 protected:
+	char type;
 	static int enemyTotal;
 	static int count;
 	int direction; //1 for left, 2 for right
@@ -26,12 +27,13 @@ public:
 	int getHP(void);
 	int getMP(void);
 	int getdirection(void);
+	char gettype(void);
 	SHORT X(void);
 	SHORT Y(void);
 	COORD getXY(void);
 	int getID(void);
 	void addtomap(char add, maps& Gamemap);
-	void move(char ent, maps& Gamemap);
+	virtual char move(double time, char ent, maps& Gamemap);
 	char collisioncheck(maps& gamemap);
 };
 

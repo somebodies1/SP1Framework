@@ -4,6 +4,7 @@ SpeedyMob::SpeedyMob()
 {
 	hp = 1;
 	mp = 1;
+	type = 'K';
 }
 
 SpeedyMob::~SpeedyMob()
@@ -16,22 +17,37 @@ void SpeedyMob::spawnSpeedyMob(int h, int m)
 	mp = m;
 }
 
-void SpeedyMob::setHP(int h)
+char SpeedyMob::move(double time, char ent, maps& gamemap)
 {
-	hp = h;
+	if (fmod(time, 0.2) < 0.05)
+	{
+		if (direction == 1)
+		{
+			if (gamemap.getchar(C.Y, (C.X - 1)) != '1' && gamemap.getchar(C.Y, (C.X - 1)) != '=' && gamemap.getchar(C.Y + 1, C.X - 1) != ' ')
+			{
+				gamemap.setchar(' ', C.X, C.Y);
+				C.X -= 1;
+				gamemap.setchar(ent, C.X, C.Y);
+			}
+			else
+			{
+				direction = 2;
+			}
+		}
+		else if (direction == 2)
+		{
+			if (gamemap.getchar(C.Y, (C.X + 1)) != '1' && gamemap.getchar(C.Y, (C.X + 1)) != '=' && gamemap.getchar(C.Y + 1, C.X + 1) != ' ')
+			{
+				gamemap.setchar(' ', C.X, C.Y);
+				C.X += 1;
+				gamemap.setchar(ent, C.X, C.Y);
+			}
+			else
+			{
+				direction = 1;
+			}
+		}
+	}
+	return 0;
 }
 
-void SpeedyMob::setMP(int m)
-{
-	mp = m;
-}
-
-int SpeedyMob::getHP(void)
-{
-	return hp;
-}
-
-int SpeedyMob::getMP(void)
-{
-	return mp;
-}
