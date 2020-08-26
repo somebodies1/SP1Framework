@@ -120,6 +120,9 @@
     <Text Include="Stage3_1.txt" />
     <Text Include="Stage3_2.txt" />
     <Text Include="Stage3_3.txt" />
+    <Text Include="Stage4_1.txt" />
+    <Text Include="Stage4_2.txt" />
+    <Text Include="Stage4_3.txt" />
     <Text Include="Stagetemplate.txt" />
     <Text Include="Pausemenu.txt" />
     <Text Include="Gameover.txt" />

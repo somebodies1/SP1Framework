@@ -4,9 +4,9 @@
 player::player()
 {
     direction = 2;
-	hp = 10;
-	mp = 5;
-	ammo = 100;
+	hp = 9999;
+	mp = 0;
+	ammo = 9999;
     C.X = 1;
     C.Y = 22;
     m_bActive = true;

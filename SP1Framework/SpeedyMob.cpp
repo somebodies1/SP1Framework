@@ -3,12 +3,12 @@
 SpeedyMob::SpeedyMob()
 {
 	hp = 1;
-	mp = 1;
 	type = 'K';
 }
 
 SpeedyMob::~SpeedyMob()
 {
+	mp += 30;
 }
 
 void SpeedyMob::spawnSpeedyMob(int h, int m)
@@ -36,7 +36,7 @@ char SpeedyMob::move(double time, char ent, maps& gamemap, COORD Player)
 	{
 		if (direction == 1)
 		{
-			if (gamemap.getchar(C.Y, (C.X - 1)) != '1' && gamemap.getchar(C.Y, (C.X - 1)) != '=' && gamemap.getchar(C.Y + 1, C.X - 1) != ' ')
+			if (gamemap.getchar(C.Y, (C.X - 1)) != '1' && gamemap.getchar(C.Y, (C.X - 1)) != '=' && gamemap.getchar(C.Y + 1, C.X - 1) != ' ' && gamemap.getchar(C.Y + 1, C.X - 1) != '/')
 			{
 				gamemap.setchar(' ', C.X, C.Y);
 				C.X -= 1;

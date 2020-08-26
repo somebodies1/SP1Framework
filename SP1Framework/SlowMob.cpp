@@ -3,12 +3,12 @@
 SlowMob::SlowMob()
 {
 	hp = 5;
-	mp = 1;
 	type = '#';
 }
 
 SlowMob::~SlowMob()
 {
+	mp += 30;
 }
 
 void SlowMob::spawnSlowMob(int h, int m)
@@ -36,7 +36,7 @@ char SlowMob::move(double time, char ent, maps& gamemap, COORD Player)
 	{
 		if (direction == 1)
 		{
-			if (gamemap.getchar(C.Y, (C.X - 1)) != '1' && gamemap.getchar(C.Y, (C.X - 1)) != '=' && gamemap.getchar(C.Y + 1, C.X - 1) != ' ')
+			if (gamemap.getchar(C.Y, (C.X - 1)) != '1' && gamemap.getchar(C.Y, (C.X - 1)) != '=' && gamemap.getchar(C.Y + 1, C.X - 1) != ' ' && gamemap.getchar(C.Y + 1, C.X - 1) != '/')
 			{
 				gamemap.setchar(' ', C.X, C.Y);
 				C.X -= 1;

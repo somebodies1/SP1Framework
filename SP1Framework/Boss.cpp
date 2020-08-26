@@ -2,15 +2,16 @@
 
 Boss::Boss()
 {
-	hp = 40;
+	hp = 30;
     sprite = 1;
+    phase = 1;
     C.X = 64;
     C.Y = 20;
 }
 
 Boss::~Boss()
 {
-
+    mp += 300;
 }
 
 void Boss::setsprite(int num)
@@ -25,6 +26,16 @@ void Boss::setsprite(int num)
 int Boss::getsprite()
 {
     return sprite;
+}
+
+void Boss::setphase(int num)
+{
+    phase = num;
+}
+
+int Boss::getphase()
+{
+    return phase;
 }
 
 void Boss::printboss(maps& gamemap)

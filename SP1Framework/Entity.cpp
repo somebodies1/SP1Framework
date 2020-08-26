@@ -1,7 +1,11 @@
 #include "Entity.h"
 int Entity::enemyTotal = 5;
 int Entity::count = 0;
-Entity* counter[5] = { nullptr, nullptr, nullptr, nullptr, nullptr };
+int Entity::mp = 0;
+void Entity::setscore(int num)
+{
+	mp = num;
+}
 Entity::Entity()
 {
 	type = ' ';
@@ -12,15 +16,6 @@ Entity::Entity()
 	C.X = 0;
 	C.Y = 0;
 	direction = 1;
-	if (enemyTotal > count)
-	{
-		if (counter[count] != nullptr)
-		{
-			counter[count] = new Entity;
-			count++;
-		}
-	}
-	this->id = count;
 }
 
 Entity::~Entity()
@@ -65,7 +60,7 @@ int Entity::getHP(void)
 
 int Entity::getMP(void)
 {
-	return this->mp;
+	return mp;
 }
 
 int Entity::getdirection(void)

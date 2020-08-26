@@ -2,8 +2,6 @@
 #include "Entity.h"
 class SlowMob : public Entity
 {
-private:
-
 public:
 	SlowMob();
 	~SlowMob();

@@ -6,14 +6,17 @@ class Entity
 {
 protected:
 	char type;
+	static int score;
 	static int enemyTotal;
 	static int count;
 	int direction; //1 for left, 2 for right
-	int hp, mp;
+	int hp;
+	static int mp;
 	int x, y;
 	int id;
 	COORD C;
 public:
+	static void setscore(int num);
 	Entity();
 	~Entity();
 	void spawnEntity(int x, int y);

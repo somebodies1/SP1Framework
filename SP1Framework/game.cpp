@@ -524,6 +524,16 @@ void moveEntities(double g_dElapsedTime)
                             }
                         }
                     }
+                    if (bullethit == '|' || bullethit == '\\' || bullethit == '/')
+                    {
+                        Entitylayer.setchar(' ', bulletlist[i]->getXY().X, bulletlist[i]->getXY().Y);
+                        delete bulletlist[i];
+                        bulletlist[i] = nullptr;
+                        if (boss != nullptr)
+                        {
+                            boss->setHP(boss->getHP() - 1);
+                        }
+                    }
                     if ( bullethit == '=' || bullethit == '1' || bullethit == '<' || bullethit == '>')
                     {
 
@@ -664,7 +674,7 @@ void moveCharacter()
                     boss = nullptr;
                 }
                 boss = new Boss;
-                boss->moveboss(0, Gamemap);
+                boss->moveboss(0, Entitylayer);
             }
         }
         if (initialload)
@@ -682,6 +692,10 @@ void moveCharacter()
         || PlayerChar.collisioncheck(Entitylayer) == '#' || PlayerChar.collisioncheck(Entitylayer) == 'L') // collision work, just have to put something here
     {
         PlayerChar.setHP(PlayerChar.getHP() - 1);
+    }
+    if (PlayerChar.getXY().Y >= 24) //If the player falls of the map, it dies
+    {
+        PlayerChar.setHP(0);
     }
 }
 
@@ -893,46 +907,169 @@ void renderCharacter()
 
 void updateBoss(double time)
 {
-    if (fmod(time, 0.2) < 0.05)
+    if (boss != nullptr)
     {
-        if (boss != nullptr)
+        int currentphase = boss->getsprite();
+        int chance = rand() % 1000;
+        if (fmod(time, 0.2) < 0.01 && boss->getphase() == 1) //phase 1 speed and movement
         {
-            if (boss->getXY().Y <= 2)
+            if (boss != nullptr)
             {
-                boss->setdirection(3);
+                if (boss->getXY().Y <= 2)
+                {
+                    boss->setdirection(3);
+                }
+                else if (boss->getXY().Y >= 20)
+                {
+                    boss->setdirection(1);
+                }
+                //int bossdirect = rand() % 4 - 1;
+                boss->moveboss(1, Entitylayer);
             }
-            else if (boss->getXY().Y >= 20)
-            {
-                boss->setdirection(1);
-            }
-            //int bossdirect = rand() % 4 - 1;
-            boss->moveboss(1, Gamemap);
         }
-    }
-    if (fmod(time, 0.2) < 0.01)
-    {
-        bossSpawn();
+        if (fmod(time, 0.2) < 0.04 && boss->getphase() == 2) //Phase 2 the boss will move in more erratic directions
+        {
+            if (boss != nullptr)
+            {
+                if (boss->getXY().Y <= 2)
+                {
+                    boss->setdirection(3);
+                }
+                else if (boss->getXY().Y >= 20)
+                {
+                    boss->setdirection(1);
+                }
+                //int bossdirect = rand() % 4 - 1;
+                boss->moveboss(1, Entitylayer);
+            }
+            if (chance > 950)
+            {
+                if (boss->getdirection() == 1)
+                {
+                    boss->setdirection(3);
+                }
+                else
+                {
+                    boss->setdirection(1);
+                }
+            }
+        }
+        if (fmod(time, 0.2) < 0.06 && boss->getphase() == 3) //Move faster and more eratically
+        {
+            if (boss != nullptr)
+            {
+                if (boss->getXY().Y <= 2)
+                {
+                    boss->setdirection(3);
+                }
+                else if (boss->getXY().Y >= 20)
+                {
+                    boss->setdirection(1);
+                }
+                //int bossdirect = rand() % 4 - 1;
+                boss->moveboss(1, Entitylayer);
+            }
+            if (chance > 850)
+            {
+                if (boss->getdirection() == 1)
+                {
+                    boss->setdirection(3);
+                }
+                else
+                {
+                    boss->setdirection(1);
+                }
+            }
+        }
+        if (fmod(time, 0.2) < 0.004)
+        {
+            if (chance > 500);
+            {
+                bossSpawn();
+                boss->setsprite(currentphase);
+            }
+        }
+        if (boss->getHP() <= 20)
+        {
+            boss->setsprite(4);
+            boss->setphase(2);
+        }
+        if (boss->getHP() <= 10)
+        {
+            boss->setsprite(5);
+            boss->setphase(3);
+        }
+        if (boss->getHP() <= 0)
+        {
+            boss->setsprite(3);
+            boss->setdirection(3);
+            while (boss->getXY().Y < 23)
+            {             
+                boss->moveboss(1, Entitylayer);
+                Beep(1500, 200);
+                Beep(2000, 50);
+            }
+            boss->printboss(Gamemap);
+            delete boss;
+            boss = nullptr;
+            //Boss kills all other mobs when it dies
+            for (int i = 0; i < 10; i++)
+            {
+                for (int j = 0; j < 50; j++)
+                {
+                    if (amt[i][j] != nullptr)
+                    {
+                        Entitylayer.setchar(' ', amt[i][j]->getXY().X, amt[i][j]->getXY().Y);
+                        delete amt[i][j];
+                        amt[i][j] = nullptr;
+                    }
+                }
+            }
+        }
     }
 }
 
 void bossSpawn()
 {
     COORD c;
-    int iX = boss->getXY().X - 1;
+    int iX = boss->getXY().X - 2;
     int iY = boss->getXY().Y + 1;
     c.X = iX;
     c.Y = iY;
+    int type = rand() % 3 + 1;
     for (int i = 0; i < 50; i++)
     {
         if (Entitylayer.getchar(iY, iX) == ' ')
         {
-            if (amt[Entitylayer.getmapno()][i] == nullptr) //if the index is empty, fill it
+            if (boss->getphase() >= 1 && type == 1)
             {
-                amt[Entitylayer.getmapno()][i] = new Mob;
-                amt[Entitylayer.getmapno()][i]->spawnEntity(iX, iY);
-                Entitylayer.setchar('Z', iX, iY);
-                g_Console.writeToBuffer(c, Entitylayer.getchar(iY, iX), 0x08);
-                break;
+                if (amt[Entitylayer.getmapno()][i] == nullptr) //if the index is empty, fill it
+                {
+                    Beep(2000, 100);
+                    amt[Entitylayer.getmapno()][i] = new Mob;
+                    amt[Entitylayer.getmapno()][i]->spawnEntity(iX, iY);
+                    break;
+                }
+            }
+            if (boss->getphase() >= 2 && type == 2)
+            {
+                if (amt[Entitylayer.getmapno()][i] == nullptr) //if the index is empty, fill it
+                {
+                    Beep(3000, 100);
+                    amt[Entitylayer.getmapno()][i] = new SpeedyMob;
+                    amt[Entitylayer.getmapno()][i]->spawnEntity(iX, iY);
+                    break;
+                }
+            }
+            if (boss->getphase() >= 3 && type == 3)
+            {
+                if (amt[Entitylayer.getmapno()][i] == nullptr) //if the index is empty, fill it
+                {
+                    Beep(1000, 100);
+                    amt[Entitylayer.getmapno()][i] = new SlowMob;
+                    amt[Entitylayer.getmapno()][i]->spawnEntity(iX, iY);
+                    break;
+                }
             }
         }
     }
@@ -1046,22 +1183,32 @@ void renderEntities()
             c.Y = j; 
             if (Entitylayer.getchar(j, i) == 'Z')
             {
-                g_Console.writeToBuffer(c, Entitylayer.getchar(j, i), 0x08);
+                g_Console.writeToBuffer(c, Entitylayer.getchar(j, i), 0x0B);
             }
             if (Entitylayer.getchar(j, i) == 'K')
             {
-                g_Console.writeToBuffer(c, Entitylayer.getchar(j, i), 0x08);
+                g_Console.writeToBuffer(c, Entitylayer.getchar(j, i), 0x0B);
             }
             if (Entitylayer.getchar(j, i) == '#')
             {
-                g_Console.writeToBuffer(c, Entitylayer.getchar(j, i), 0x08);
+                g_Console.writeToBuffer(c, Entitylayer.getchar(j, i), 0x0B);
             }
             if (Entitylayer.getchar(j, i) == 'L')
             {
-                g_Console.writeToBuffer(c, Entitylayer.getchar(j, i), 0x08);
+                g_Console.writeToBuffer(c, Entitylayer.getchar(j, i), 0x0B);
             }
             //Add more if statments for the other type of enemies, and make the other enemies different letters
             if(Entitylayer.getchar(j, i) == '-')
+            {
+                g_Console.writeToBuffer(c, Entitylayer.getchar(j, i), 0x0F);
+            }
+            else if (Entitylayer.getchar(j, i) == 'o' || Entitylayer.getchar(j, i) == '/' ||
+                Entitylayer.getchar(j, i) == '|' || Entitylayer.getchar(j, i) == '\\' ||
+                Entitylayer.getchar(j, i) == '<' || Entitylayer.getchar(j, i) == ':' ||
+                Entitylayer.getchar(j, i) == 'D' || Entitylayer.getchar(j, i) == '(' ||
+                Entitylayer.getchar(j, i) == 'O' || Entitylayer.getchar(j, i) == ')' ||
+                Entitylayer.getchar(j, i) == '_' || Entitylayer.getchar(j, i) == ':' || 
+                Entitylayer.getchar(j, i) == '`' || Entitylayer.getchar(j, i) == 'X') //Boss characters
             {
                 g_Console.writeToBuffer(c, Entitylayer.getchar(j, i), 0x0F);
             }
