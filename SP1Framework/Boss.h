@@ -13,6 +13,6 @@ public:
 	int getsprite();
 	void printboss(maps& gamemap);
 	void removeboss(maps& gamemap);
-	void moveboss(int direction, int steps, maps& gamemap);
+	void moveboss(int steps, maps& gamemap);
 };
 

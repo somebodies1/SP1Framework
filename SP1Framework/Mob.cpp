@@ -83,6 +83,12 @@ char Mob::move(double time, char ent, maps& gamemap, COORD Player)
 			}
 		}
 	}
+	if (gamemap.getchar(C.Y + 1, C.X) == ' ')
+	{
+		gamemap.setchar(' ', C.X, C.Y);
+		C.Y += 1;
+		gamemap.setchar(ent, C.X, C.Y);
+	}
 	return 0;
 }
 

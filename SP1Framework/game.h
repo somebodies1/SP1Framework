@@ -76,6 +76,7 @@ void updateMainMenu();      // main menu logic
 void updatePauseMenu();     // Pause menu logic
 void updateGameover();      // Game over screen logic
 void updateLevelselect();   // 
+void updateBoss(double time);
 void moveCharacter();       // moves the character, collision detection, physics, etc
 void moveEntities(double dt);
 void processUserInput();    // checks if you should change states or do something else with the game, e.g. pause, exit
@@ -91,6 +92,7 @@ void renderCharacter();     // renders the character into the buffer
 void renderPlayerUI(player player); //Displays information from player object
 void renderEntities();      // renders entites on top of the map
 void spawnEnemy();
+void bossSpawn();
 void renderFramerate();     // renders debug information, frame rate, elapsed time, etc
 void renderToScreen();      // dump the contents of the buffer to the screen, one frame worth of game
 void renderInputEvents();   // renders the status of input events

@@ -3,9 +3,9 @@
 Boss::Boss()
 {
 	hp = 40;
-    sprite = 2;
-    C.X = 4;
-    C.Y = 4;
+    sprite = 1;
+    C.X = 64;
+    C.Y = 20;
 }
 
 Boss::~Boss()
@@ -85,7 +85,7 @@ void Boss::removeboss(maps& gamemap)
     }
 }
 
-void Boss::moveboss(int direction, int steps, maps& gamemap)
+void Boss::moveboss(int steps, maps& gamemap)
 {
     removeboss(gamemap);
     switch (direction)

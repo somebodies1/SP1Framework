@@ -3,6 +3,8 @@
 //
 #include "game.h"
 #include "Framework\console.h"
+#include <random>
+#include <windows.h>
 #include <iostream>
 #include <iomanip>
 #include <sstream>
@@ -19,18 +21,9 @@ maps Entitylayer; //Layer for the enitites so they can overlap with map objects
 int enemyno = 0;  //index of enemy spawned per map, set to 0 and increased for each enemy spawned per map. Reset to 0 when it enters a new map
 char spawnedmaps[10] = {' ',' ',' ',' ',' ',' ',' ',' ', ' ',' '}; //Keeps track to the current map to check if a new map has been loaded by the end of a function
 SGameChar   g_sChar;
-Entity* amt[10][10] = { { nullptr, nullptr, nullptr, nullptr, nullptr,nullptr, nullptr, nullptr, nullptr, nullptr }, // the total entities in a stage
-    { nullptr, nullptr, nullptr, nullptr, nullptr,nullptr, nullptr, nullptr, nullptr, nullptr },
-    { nullptr, nullptr, nullptr, nullptr, nullptr,nullptr, nullptr, nullptr, nullptr, nullptr },
-    { nullptr, nullptr, nullptr, nullptr, nullptr,nullptr, nullptr, nullptr, nullptr, nullptr },
-    { nullptr, nullptr, nullptr, nullptr, nullptr,nullptr, nullptr, nullptr, nullptr, nullptr },
-    { nullptr, nullptr, nullptr, nullptr, nullptr,nullptr, nullptr, nullptr, nullptr, nullptr },
-    { nullptr, nullptr, nullptr, nullptr, nullptr,nullptr, nullptr, nullptr, nullptr, nullptr },
-    { nullptr, nullptr, nullptr, nullptr, nullptr,nullptr, nullptr, nullptr, nullptr, nullptr },
-    { nullptr, nullptr, nullptr, nullptr, nullptr,nullptr, nullptr, nullptr, nullptr, nullptr },// right now the maximum for enemies 10 per map, 3 maps per stage
-    { nullptr, nullptr, nullptr, nullptr, nullptr,nullptr, nullptr, nullptr, nullptr, nullptr }};                  // can be increased and the adding of nullptr can be a for loop
+Boss* boss = nullptr;
+Entity* amt[10][50]; // can be increased and the adding of nullptr can be a for loop
 bullet* bulletlist[50]; // maximum of 50 bullets at a time
-Boss boss;
 EGAMESTATES g_eGameState = S_MAINMENU; // initial state
 
 // Console object
@@ -48,6 +41,13 @@ bool initialload = true; // The initial load of the map
 //--------------------------------------------------------------
 void init(void)
 {
+    for (int i = 0; i < 10; i++)
+    {
+        for (int j = 0; j < 50; j++)
+        {
+            amt[i][j] = nullptr;
+        }
+    }
     // Set precision for floating point output
     g_dElapsedTime = 0.0;
 
@@ -91,7 +91,7 @@ void shutdown(void)
     //Preventing memory leaks
     for (int i = 0; i < 10; i++)
     {
-        for (int j = 0; j < 10; j++)
+        for (int j = 0; j < 50; j++)
         {
             if (amt[i][j] != nullptr)
             {
@@ -335,7 +335,10 @@ void updateGame(double g_dElapsedTime)       // gameplay logic
     {
         g_eGameState = S_GAMEOVER;       
     }
-    
+    if (Gamemap.getstageno() == 5 && Gamemap.getmapno() == 3)
+    {
+            updateBoss(g_dElapsedTime);
+    }
 }
 
 void updateMainMenu()
@@ -453,7 +456,7 @@ void Reset() {
     initialload = true; //resets variable that loads the initial map once
     for (int i = 0; i < 10; i++) // reset enemies
     {
-        for (int j = 0; j < 10; j++)
+        for (int j = 0; j < 50; j++)
         {
             if (amt[i][j] != nullptr)
             {
@@ -489,7 +492,7 @@ void moveEntities(double g_dElapsedTime)
                     bullethit = bulletlist[i]->move(g_dElapsedTime, '-', Entitylayer); //This function also causes the bullet to move so it can only be called once
                     if (bullethit == 'Z' || bullethit == 'K' || bullethit == '#' || bullethit == 'L')
                     {
-                        for (int enemyindex = 0; enemyindex < 10; enemyindex++)
+                        for (int enemyindex = 0; enemyindex < 50; enemyindex++)
                         {
                             if (amt[Entitylayer.getmapno()][enemyindex] != nullptr) // When the indexes before are nullptr, it crashes, so this line is added
                             {
@@ -532,7 +535,7 @@ void moveEntities(double g_dElapsedTime)
                 }
             }
         }
-        for (int i = 0; i < 10; i++) //For loop that loops though all the enemy types for the
+        for (int i = 0; i < 50; i++) //For loop that loops though all the enemy types for the
         {
             if (amt[Entitylayer.getmapno()][i] != nullptr)
             {
@@ -586,27 +589,21 @@ void moveCharacter()
     if (g_skKeyEvent[K_UP].keyDown)
     {
         direction = 1;
-        boss.moveboss(1, 1, Gamemap);
     }
     if (g_skKeyEvent[K_LEFT].keyDown)
     {
         direction = 2;
-        boss.moveboss(2, 1, Gamemap);
     }    
     if (g_skKeyEvent[K_DOWN].keyDown)
     {
         direction = 3;
-        boss.moveboss(3, 1, Gamemap);
     }
     if (g_skKeyEvent[K_RIGHT].keyDown)
     {
         direction = 4;
-        boss.moveboss(4, 1, Gamemap);
     }
     if (g_skKeyEvent[K_SPACE].keyDown)
     {
-        boss.setsprite(boss.getsprite() + 1);
-        boss.moveboss(1, 0, Gamemap);
         if (PlayerChar.get_ammo()>=1)
         {
             Beep(1500, 10);
@@ -659,6 +656,16 @@ void moveCharacter()
             Gamemap.setinitial(Gamemap.getmapno());
             Entitylayer.setinitial(Entitylayer.getmapno());
             spawnEnemy();
+            if (Gamemap.getstageno() == 5 && (Gamemap.getmapno() == 3))
+            {
+                if (boss != nullptr)
+                {
+                    delete boss;
+                    boss = nullptr;
+                }
+                boss = new Boss;
+                boss->moveboss(0, Gamemap);
+            }
         }
         if (initialload)
         {
@@ -884,6 +891,53 @@ void renderCharacter()
     g_Console.writeToBuffer(PlayerChar.getXY(), char(1), 0x0F);
 }
 
+void updateBoss(double time)
+{
+    if (fmod(time, 0.2) < 0.05)
+    {
+        if (boss != nullptr)
+        {
+            if (boss->getXY().Y <= 2)
+            {
+                boss->setdirection(3);
+            }
+            else if (boss->getXY().Y >= 20)
+            {
+                boss->setdirection(1);
+            }
+            //int bossdirect = rand() % 4 - 1;
+            boss->moveboss(1, Gamemap);
+        }
+    }
+    if (fmod(time, 0.2) < 0.01)
+    {
+        bossSpawn();
+    }
+}
+
+void bossSpawn()
+{
+    COORD c;
+    int iX = boss->getXY().X - 1;
+    int iY = boss->getXY().Y + 1;
+    c.X = iX;
+    c.Y = iY;
+    for (int i = 0; i < 50; i++)
+    {
+        if (Entitylayer.getchar(iY, iX) == ' ')
+        {
+            if (amt[Entitylayer.getmapno()][i] == nullptr) //if the index is empty, fill it
+            {
+                amt[Entitylayer.getmapno()][i] = new Mob;
+                amt[Entitylayer.getmapno()][i]->spawnEntity(iX, iY);
+                Entitylayer.setchar('Z', iX, iY);
+                g_Console.writeToBuffer(c, Entitylayer.getchar(iY, iX), 0x08);
+                break;
+            }
+        }
+    }
+    enemyno++;
+}
 
 void spawnEnemy() //TODO: Set it so that when map changes, the enemies would be deleted and become nullptr for future use
 {  

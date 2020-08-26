@@ -24,11 +24,11 @@ char SpeedyMob::move(double time, char ent, maps& gamemap, COORD Player)
 	SHORT topy = Player.Y - C.Y;
 	SHORT boty = C.Y - Player.Y;
 
-	if (leftx < 0 && leftx > -6 && topy < 3 && boty < 3)
+	if (leftx < 0 && leftx > -10 && topy < 2 && boty < 2)
 	{
 		direction = 1;
 	}
-	if (rightx < 0 && rightx > -6 && topy < 3 && boty < 3)
+	if (rightx < 0 && rightx > -10 && topy < 2 && boty < 2)
 	{
 		direction = 2;
 	}
@@ -60,6 +60,12 @@ char SpeedyMob::move(double time, char ent, maps& gamemap, COORD Player)
 				direction = 1;
 			}
 		}
+	}
+	if (gamemap.getchar(C.Y + 1, C.X) == ' ')
+	{
+		gamemap.setchar(' ', C.X, C.Y);
+		C.Y += 1;
+		gamemap.setchar(ent, C.X, C.Y);
 	}
 	return 0;
 }
