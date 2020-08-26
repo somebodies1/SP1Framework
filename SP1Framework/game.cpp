@@ -17,7 +17,7 @@ player PlayerChar; //create player object
 maps Gamemap;     //Layer for the map
 maps Entitylayer; //Layer for the enitites so they can overlap with map objects
 int enemyno = 0;  //index of enemy spawned per map, set to 0 and increased for each enemy spawned per map. Reset to 0 when it enters a new map
-char spawnedmaps[3] = {' ', ' ', ' '}; //Keeps track to the current map to check if a new map has been loaded by the end of a function
+char spawnedmaps[10] = {' ',' ',' ',' ',' ',' ',' ',' ', ' ',' '}; //Keeps track to the current map to check if a new map has been loaded by the end of a function
 SGameChar   g_sChar;
 Entity* amt[10][10] = { { nullptr, nullptr, nullptr, nullptr, nullptr,nullptr, nullptr, nullptr, nullptr, nullptr }, // the total entities in a stage
     { nullptr, nullptr, nullptr, nullptr, nullptr,nullptr, nullptr, nullptr, nullptr, nullptr },
@@ -89,7 +89,7 @@ void shutdown(void)
     colour(FOREGROUND_BLUE | FOREGROUND_GREEN | FOREGROUND_RED);
 
     //Preventing memory leaks
-    for (int i = 0; i < 3; i++)
+    for (int i = 0; i < 10; i++)
     {
         for (int j = 0; j < 10; j++)
         {
@@ -432,10 +432,10 @@ void updateLevelselect()
     }
     if (g_mouseEvent.mousePosition.X >= 36 && g_mouseEvent.mousePosition.X <= 43 && g_mouseEvent.mousePosition.Y == 19 && g_mouseEvent.buttonState == FROM_LEFT_1ST_BUTTON_PRESSED)
     {
-        //Gamemap.setstage(5);
-        //Entitylayer.setstage(5);
-        //Reset();
-        //g_eGameState = S_GAME;
+        Gamemap.setstage(5);
+        Entitylayer.setstage(5);
+        Reset();
+        g_eGameState = S_GAME;
     }
     if (g_mouseEvent.mousePosition.X >= 37 && g_mouseEvent.mousePosition.X <= 40 && g_mouseEvent.mousePosition.Y == 22 && g_mouseEvent.buttonState == FROM_LEFT_1ST_BUTTON_PRESSED || g_skKeyEvent[K_ESCAPE].keyReleased)
     {
@@ -445,13 +445,13 @@ void updateLevelselect()
 
 
 void Reset() {
-    for (int i = 0; i < 3; i++) //reset spawned map status
+    for (int i = 0; i < 10; i++) //reset spawned map status
     {
         spawnedmaps[i] = ' ';
         
     }
     initialload = true; //resets variable that loads the initial map once
-    for (int i = 0; i < 3; i++) // reset enemies
+    for (int i = 0; i < 10; i++) // reset enemies
     {
         for (int j = 0; j < 10; j++)
         {
@@ -586,25 +586,27 @@ void moveCharacter()
     if (g_skKeyEvent[K_UP].keyDown)
     {
         direction = 1;
-        boss.moveboss(1, 1, Entitylayer);
+        boss.moveboss(1, 1, Gamemap);
     }
     if (g_skKeyEvent[K_LEFT].keyDown)
     {
         direction = 2;
-        boss.moveboss(2, 1, Entitylayer);
+        boss.moveboss(2, 1, Gamemap);
     }    
     if (g_skKeyEvent[K_DOWN].keyDown)
     {
         direction = 3;
-        boss.moveboss(3, 1, Entitylayer);
+        boss.moveboss(3, 1, Gamemap);
     }
     if (g_skKeyEvent[K_RIGHT].keyDown)
     {
         direction = 4;
-        boss.moveboss(4, 1, Entitylayer);
+        boss.moveboss(4, 1, Gamemap);
     }
     if (g_skKeyEvent[K_SPACE].keyDown)
     {
+        boss.setsprite(boss.getsprite() + 1);
+        boss.moveboss(1, 0, Gamemap);
         if (PlayerChar.get_ammo()>=1)
         {
             Beep(1500, 10);

@@ -106,6 +106,31 @@ void maps::setinitial(int mapnum)
         }
         break;
     }
+    case 5:
+    {
+        switch (mapnum)
+        {
+        case 0:
+        {
+            filename = "Stage5_1.txt";
+            break;
+        }
+        case 1:
+        {
+            filename = "Stage5_2.txt";
+            break;
+        }
+        case 2:
+        {
+            filename = "Stage5_3.txt";
+            break;
+        }
+        case 3:
+            filename = "Stage5_4.txt";
+            break;
+        }
+        break;
+    }
     }
 
     ifstream mapfile(filename);
