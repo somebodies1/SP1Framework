@@ -151,11 +151,13 @@ void keyboardHandler(const KEY_EVENT_RECORD& keyboardEvent)
     {
         //case S_SPLASHSCREEN: // don't handle anything for the splash screen
         //    break;
-    case S_MAINMENU: mainmenuKBHandler(keyboardEvent); // handle menu keyboard event
+    case S_MAINMENU: mainmenuKBHandler(keyboardEvent); // handle menu keyboard event (Escape and space)
         break;
     case S_PAUSE: pausemenuKBHandler(keyboardEvent);
         break;
     case S_GAMEOVER:mainmenuKBHandler(keyboardEvent);
+        break;
+    case S_STAGECOMPLETE: mainmenuKBHandler(keyboardEvent);
         break;
     case S_LEVEL: pausemenuKBHandler(keyboardEvent);
         break;
@@ -193,6 +195,8 @@ void mouseHandler(const MOUSE_EVENT_RECORD& mouseEvent)
     case S_GAMEOVER: gameplayMouseHandler(mouseEvent);
         break;
     case S_LEVEL: gameplayMouseHandler(mouseEvent);
+        break;
+    case S_STAGECOMPLETE: gameplayMouseHandler(mouseEvent);
         break;
     case S_GAME: gameplayMouseHandler(mouseEvent); // handle gameplay mouse event
         break;
@@ -311,6 +315,8 @@ void update(double dt)
     case S_GAMEOVER: updateGameover();
         break;
     case S_LEVEL: updateLevelselect();
+        break;
+    case S_STAGECOMPLETE: updateStagecomplete();
         break;
     case S_GAME: updateGame(g_dElapsedTime); // gameplay logic when we are in the game
         break;
@@ -446,6 +452,33 @@ void updateLevelselect()
     }
 }
 
+void updateStagecomplete()
+{
+    if (g_mouseEvent.mousePosition.X >= 36 && g_mouseEvent.mousePosition.X <= 46 && g_mouseEvent.mousePosition.Y == 18 && g_mouseEvent.buttonState == FROM_LEFT_1ST_BUTTON_PRESSED)
+    {
+        Reset();
+        g_eGameState = S_MAINMENU;
+    }
+    if (g_mouseEvent.mousePosition.X >= 38 && g_mouseEvent.mousePosition.X <= 42 && g_mouseEvent.mousePosition.Y == 17 && g_mouseEvent.buttonState == FROM_LEFT_1ST_BUTTON_PRESSED || g_skKeyEvent[K_SPACE].keyDown)
+    {
+        Reset();
+        if (Gamemap.getstageno() < 5)
+        {
+            Gamemap.setstage(Gamemap.getstageno() + 1);
+            Entitylayer.setstage(Entitylayer.getstageno() + 1);
+            g_eGameState = S_GAME;
+        }
+        else
+        {
+            g_eGameState = S_MAINMENU;
+        }
+    }
+    if (g_mouseEvent.mousePosition.X >= 38 && g_mouseEvent.mousePosition.X <= 42 && g_mouseEvent.mousePosition.Y == 19 && g_mouseEvent.buttonState == FROM_LEFT_1ST_BUTTON_PRESSED || g_skKeyEvent[K_ESCAPE].keyDown)
+    {
+        g_bQuitGame = true;
+    }
+}
+
 
 void Reset() {
     for (int i = 0; i < 10; i++) //reset spawned map status
@@ -545,7 +578,7 @@ void moveEntities(double g_dElapsedTime)
                 }
             }
         }
-        for (int i = 0; i < 50; i++) //For loop that loops though all the enemy types for the
+        for (int i = 0; i < 50; i++) //For loop that loops though all the enemy types for the movement
         {
             if (amt[Entitylayer.getmapno()][i] != nullptr)
             {
@@ -553,7 +586,7 @@ void moveEntities(double g_dElapsedTime)
                 {
                     amt[Entitylayer.getmapno()][i]->move(g_dElapsedTime, amt[Entitylayer.getmapno()][i]->gettype(), Entitylayer, PlayerChar.getXY()); //This move function is using polymorphism and moving based on the move code of the child class
                 }                                              //Move also can return a char, although it doesn't return anything now
-                else// deletes enemies when their healh goes below 0
+                else                                           // deletes enemies when their healh goes below 0
                 {
                     Entitylayer.setchar(' ', amt[Entitylayer.getmapno()][i]->getXY().X, amt[Entitylayer.getmapno()][i]->getXY().Y);
                     delete amt[Entitylayer.getmapno()][i];
@@ -628,14 +661,14 @@ void moveCharacter()
                 {
                     if (PlayerChar.getdirection() == 1 && Entitylayer.getchar(PlayerChar.getXY().Y, PlayerChar.getXY().X - 1) == ' ' || Entitylayer.getchar(PlayerChar.getXY().Y, PlayerChar.getXY().X - 1) == 'H')
                     {
-                        bulletlist[i] = new bullet(PlayerChar.getdirection(), PlayerChar.getXY().X - 1, PlayerChar.getXY().Y);
-                        Entitylayer.setchar('-', PlayerChar.getXY().X - 1, PlayerChar.getXY().Y);
+                        bulletlist[i] = new bullet(PlayerChar.getdirection(), PlayerChar.getXY().X, PlayerChar.getXY().Y);
+                        Entitylayer.setchar('-', PlayerChar.getXY().X, PlayerChar.getXY().Y);
                         g_Console.writeToBuffer(bulletlist[i]->getXY(), '-', 0x06);
                     }
                     if (PlayerChar.getdirection() == 2 && Entitylayer.getchar(PlayerChar.getXY().Y, PlayerChar.getXY().X + 1) == ' ' || Entitylayer.getchar(PlayerChar.getXY().Y, PlayerChar.getXY().X + 1) == 'H')
                     {
-                        bulletlist[i] = new bullet(PlayerChar.getdirection(), PlayerChar.getXY().X + 1, PlayerChar.getXY().Y);
-                        Entitylayer.setchar('-', PlayerChar.getXY().X + 1, PlayerChar.getXY().Y);
+                        bulletlist[i] = new bullet(PlayerChar.getdirection(), PlayerChar.getXY().X , PlayerChar.getXY().Y);
+                        Entitylayer.setchar('-', PlayerChar.getXY().X, PlayerChar.getXY().Y);
                         g_Console.writeToBuffer(bulletlist[i]->getXY(), '-', 0x06);
                     }
                     break;
@@ -684,9 +717,7 @@ void moveCharacter()
     }
     else if (mapaction == 'S') // S for stage change
     {
-        Reset(); // Resets the map initialiser values and entity arrays
-        Gamemap.setstage(Gamemap.getstageno() + 1);
-        Entitylayer.setstage(Entitylayer.getstageno() + 1);
+        g_eGameState = S_STAGECOMPLETE;
     }
     if (PlayerChar.collisioncheck(Entitylayer) == 'Z' || PlayerChar.collisioncheck(Entitylayer) == 'K' 
         || PlayerChar.collisioncheck(Entitylayer) == '#' || PlayerChar.collisioncheck(Entitylayer) == 'L') // collision work, just have to put something here
@@ -730,6 +761,8 @@ void render()
         break;
     case S_LEVEL: renderLevelselect();
         break;
+    case S_STAGECOMPLETE: renderStagecomplete();
+        break; 
     case S_GAME:  renderGame();
         break;
     }
@@ -835,6 +868,29 @@ void renderLevelselect()
             g_Console.writeToBuffer(c, linearray[j], 0x0C);
         }
     }
+}
+void renderStagecomplete()
+{
+    string line;
+    COORD c;
+    ifstream mapfile("StageComplete.txt");
+    std::ostringstream ss;
+    for (int i = 0; i < 25; i++)
+    {
+        getline(mapfile, line);
+        char linearray[200];
+        strcpy(linearray, line.c_str());
+        for (int j = 0; j < 80; j++)
+        {
+            c.X = j;
+            c.Y = i;
+            g_Console.writeToBuffer(c, linearray[j], 0x0E);
+        }
+    }
+    c.X = 42;
+    c.Y = 15;
+    ss << PlayerChar.getscore();
+     g_Console.writeToBuffer(c, ss.str(), 0x0C);
 }
 void renderGame()
 {
@@ -1008,6 +1064,8 @@ void updateBoss(double time)
                 boss->moveboss(1, Entitylayer);
                 Beep(1500, 200);
                 Beep(2000, 50);
+                Beep(1000, 100);
+                Sleep(1000);
             }
             boss->printboss(Gamemap);
             delete boss;
@@ -1166,7 +1224,7 @@ void renderPlayerUI(player player)
 {
     COORD c;
     std::ostringstream ss;
-    ss << "Health "<<(char)3<<":" << player.getHP() << " Ammo: " << player.get_ammo() << " Energy: " << player.getMP();
+    ss << "Health "<<(char)3<<":" << player.getHP() << " Ammo: " << player.get_ammo() << " Score: " << player.getscore();
     c.X = 0;
     c.Y = g_Console.getConsoleSize().Y - 1;
     g_Console.writeToBuffer(c, ss.str());

@@ -11,7 +11,7 @@ Boss::Boss()
 
 Boss::~Boss()
 {
-    mp += 300;
+    score += 300;
 }
 
 void Boss::setsprite(int num)

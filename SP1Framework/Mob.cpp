@@ -8,14 +8,9 @@ Mob::Mob()
 
 Mob::~Mob()
 {
-	mp += 20;
+	score += 20;
 }
 
-void Mob::spawnMob(int h, int m)
-{
-	hp = h;
-	mp = m;
-}
 
 char Mob::move(double time, char ent, maps& gamemap, COORD Player)
 {

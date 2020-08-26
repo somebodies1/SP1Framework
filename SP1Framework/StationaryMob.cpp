@@ -3,18 +3,12 @@
 StationaryMob::StationaryMob()
 {
 	hp = 2;
-	mp = 1;
 	type = 'L';
 }
 
 StationaryMob::~StationaryMob()
 {
-}
-
-void StationaryMob::spawnStationaryMob(int h, int m)
-{
-	hp = h;
-	mp = m;
+	score += 10;
 }
 
 char StationaryMob::move(double time, char ent, maps& gamemap, COORD Player)

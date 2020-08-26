@@ -8,14 +8,9 @@ SlowMob::SlowMob()
 
 SlowMob::~SlowMob()
 {
-	mp += 30;
+	score += 30;
 }
 
-void SlowMob::spawnSlowMob(int h, int m)
-{
-	hp = h;
-	mp = m;
-}
 
 char SlowMob::move(double time, char ent, maps& gamemap, COORD Player)
 {

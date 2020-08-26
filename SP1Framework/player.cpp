@@ -5,7 +5,7 @@ player::player()
 {
     direction = 2;
 	hp = 9999;
-	mp = 0;
+	score = 0;
 	ammo = 9999;
     C.X = 1;
     C.Y = 22;
@@ -15,7 +15,6 @@ player::player()
 player::player(int iX, int iY)
 {
     hp = 1;
-    mp = 1;
     ammo = 1;
     C.X = iX;
     C.Y = iY;
@@ -24,13 +23,6 @@ player::player(int iX, int iY)
 player::~player()
 {
 	//blank intentionally
-}
-
-void player::spawn_player(int h, int m, int a)
-{
-	hp = h;
-	mp = m;
-	ammo = a;
 }
 
 void player::set_ammo(int a)

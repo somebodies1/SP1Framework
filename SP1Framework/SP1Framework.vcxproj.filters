@@ -175,5 +175,8 @@
     <Text Include="Stage4_3.txt">
       <Filter>Resource Files</Filter>
     </Text>
+    <Text Include="StageComplete.txt">
+      <Filter>Resource Files</Filter>
+    </Text>
   </ItemGroup>
 </Project>

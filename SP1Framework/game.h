@@ -52,6 +52,7 @@ enum EGAMESTATES
     S_PAUSE,
     S_GAMEOVER,
     S_LEVEL,
+    S_STAGECOMPLETE,
     S_COUNT
 };
 
@@ -75,7 +76,8 @@ void updateGame(double dt); // gameplay logic
 void updateMainMenu();      // main menu logic
 void updatePauseMenu();     // Pause menu logic
 void updateGameover();      // Game over screen logic
-void updateLevelselect();   // 
+void updateLevelselect();
+void updateStagecomplete();
 void updateBoss(double time);
 void moveCharacter();       // moves the character, collision detection, physics, etc
 void moveEntities(double dt);
@@ -87,6 +89,7 @@ void renderMainMenu();      // renders the menu stuff
 void renderPauseMenu();     // renders the pause menu
 void renderGameover();      // renders gameover screen
 void renderLevelselect();   // render level select screen
+void renderStagecomplete(); // render stage complete screen
 void renderMap();           // renders the map to the buffer first
 void renderCharacter();     // renders the character into the buffer
 void renderPlayerUI(player player); //Displays information from player object

@@ -8,13 +8,7 @@ SpeedyMob::SpeedyMob()
 
 SpeedyMob::~SpeedyMob()
 {
-	mp += 30;
-}
-
-void SpeedyMob::spawnSpeedyMob(int h, int m)
-{
-	hp = h;
-	mp = m;
+	score += 30;
 }
 
 char SpeedyMob::move(double time, char ent, maps& gamemap, COORD Player)

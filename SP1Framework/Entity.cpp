@@ -1,16 +1,15 @@
 #include "Entity.h"
 int Entity::enemyTotal = 5;
 int Entity::count = 0;
-int Entity::mp = 0;
+int Entity::score = 0;
 void Entity::setscore(int num)
 {
-	mp = num;
+	score = num;
 }
 Entity::Entity()
 {
 	type = ' ';
 	hp = 1;
-	mp = 1;
 	x = 0;
 	y = 0;
 	C.X = 0;
@@ -33,11 +32,6 @@ void Entity::setHP(int h)
 	this->hp = h;
 }
 
-void Entity::setMP(int m)
-{
-	this->mp = m;
-}
-
 void Entity::setX(SHORT x)
 {
 	this->C.X = x;
@@ -58,9 +52,9 @@ int Entity::getHP(void)
 	return this->hp;
 }
 
-int Entity::getMP(void)
+int Entity::getscore(void)
 {
-	return mp;
+	return score;
 }
 
 int Entity::getdirection(void)
@@ -86,11 +80,6 @@ SHORT Entity::Y(void)
 COORD Entity::getXY(void)
 {
 	return this->C;
-}
-
-int Entity::getID(void)
-{
-	return this->id;
 }
 
 void Entity::addtomap(char add, maps& Gamemap)
