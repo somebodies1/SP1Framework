@@ -106,6 +106,28 @@ void maps::setinitial(int mapnum)
         }
         break;
     }
+    case 4:
+    {
+        switch (mapnum)
+        {
+        case 0:
+        {
+            filename = "Stage4_1.txt";
+            break;
+        }
+        case 1:
+        {
+            filename = "Stage4_2.txt";
+            break;
+        }
+        case 2:
+        {
+            filename = "Stage4_3.txt";
+            break;
+        }
+        }
+        break;
+    }
     case 5:
     {
         switch (mapnum)
@@ -200,7 +222,11 @@ void maps::setchar(char add, int x, int y)
     }
     else if (mapno == 4)
     {
-        stage[3][y][x] = current[y][x];
+        stage[4][y][x] = current[y][x];
+    }
+    else if (mapno == 5)
+    {
+        stage[5][y][x] = current[y][x];
     }
 }
 

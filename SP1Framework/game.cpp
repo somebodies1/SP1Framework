@@ -425,10 +425,10 @@ void updateLevelselect()
     }
     if (g_mouseEvent.mousePosition.X >= 36 && g_mouseEvent.mousePosition.X <= 43 && g_mouseEvent.mousePosition.Y == 18 && g_mouseEvent.buttonState == FROM_LEFT_1ST_BUTTON_PRESSED)
     {
-        //Gamemap.setstage(4);
-        //Entitylayer.setstage(4);
-        //Reset();
-        //g_eGameState = S_GAME;
+        Gamemap.setstage(4);
+        Entitylayer.setstage(4);
+        Reset();
+        g_eGameState = S_GAME;
     }
     if (g_mouseEvent.mousePosition.X >= 36 && g_mouseEvent.mousePosition.X <= 43 && g_mouseEvent.mousePosition.Y == 19 && g_mouseEvent.buttonState == FROM_LEFT_1ST_BUTTON_PRESSED)
     {
