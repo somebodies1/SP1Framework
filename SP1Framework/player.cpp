@@ -61,7 +61,7 @@ char player::moveplayer( maps &Gamemap, maps &Entitylayer, int direction)
             Gamemap.setcurrent(Gamemap.getmapno());
             Entitylayer.setmapno(Entitylayer.getmapno() - 1);
             Entitylayer.setcurrent(Entitylayer.getmapno());
-            C.Y += 22;
+            C.Y += 21;
             return 'M';
             
         }
