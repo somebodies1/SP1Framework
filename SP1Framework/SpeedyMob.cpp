@@ -8,7 +8,7 @@ SpeedyMob::SpeedyMob()
 
 SpeedyMob::~SpeedyMob()
 {
-	score += 30;
+	score += 80;
 }
 
 char SpeedyMob::move(double time, char ent, maps& gamemap, COORD Player)

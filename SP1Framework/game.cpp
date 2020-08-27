@@ -579,7 +579,7 @@ void Reset() {
     PlayerChar  = player();
 }
 
-void Printtxt(string file)
+void Printtxt(string file, WORD colour)
 {
     string line;
     COORD c;
@@ -593,7 +593,7 @@ void Printtxt(string file)
         {
             c.X = j;
             c.Y = i;
-            g_Console.writeToBuffer(c, linearray[j], 0x0B);
+            g_Console.writeToBuffer(c, linearray[j], colour);
         }
     }
 }
@@ -921,7 +921,7 @@ void renderSplashScreen()  // renders the splash screen
 
 void renderMainMenu()  // renders the main menu
 {
-    Printtxt("Mainmenu.txt");
+    Printtxt("Mainmenu.txt", 0x0B);
     if (menupointer == 0)
     {
         g_Console.writeToBuffer(36,19,'>', 0x0C);
@@ -938,7 +938,7 @@ void renderMainMenu()  // renders the main menu
 
 void renderPauseMenu()  // renders the main menu
 {
-    Printtxt("Pausemenu.txt");
+    Printtxt("Pausemenu.txt", 0x0B);
     if (menupointer == 0)
     {
         g_Console.writeToBuffer(34, 16, '>', 0x0C);
@@ -954,7 +954,7 @@ void renderPauseMenu()  // renders the main menu
 }
 void renderGameover()
 {
-    Printtxt("Gameover.txt");
+    Printtxt("Gameover.txt", 0x0C);
     if (menupointer == 0)
     {
         g_Console.writeToBuffer(34, 18, '>', 0x0C);
@@ -970,7 +970,7 @@ void renderGameover()
 }
 void renderLevelselect()
 {
-    Printtxt("Levelselect.txt");
+    Printtxt("Levelselect.txt",0x0A);
     if (menupointer == 0)
     {
         g_Console.writeToBuffer(34, 13, '>', 0x0C);
@@ -986,7 +986,7 @@ void renderLevelselect()
 }
 void renderStagecomplete()
 {
-    Printtxt("StageComplete.txt");
+    Printtxt("StageComplete.txt",0x0B);
     COORD c;
     std::ostringstream ss;
     c.X = 42;

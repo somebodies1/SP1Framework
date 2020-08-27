@@ -8,7 +8,7 @@ Mob::Mob()
 
 Mob::~Mob()
 {
-	score += 20;
+	score += 50;
 }
 
 

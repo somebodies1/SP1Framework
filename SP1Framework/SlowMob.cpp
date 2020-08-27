@@ -8,7 +8,7 @@ SlowMob::SlowMob()
 
 SlowMob::~SlowMob()
 {
-	score += 30;
+	score += 80;
 }
 
 

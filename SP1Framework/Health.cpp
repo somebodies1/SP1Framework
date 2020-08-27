@@ -8,7 +8,7 @@ Health::Health()
 
 Health::~Health()
 {
-
+	score += 10;
 }
 
 char Health::move(double time, char ent, maps& gamemap, COORD Player)

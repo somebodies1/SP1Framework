@@ -8,7 +8,7 @@ Ammobox::Ammobox()
 
 Ammobox::~Ammobox()
 {
-
+	score += 10;
 }
 
 char Ammobox::move(double time, char ent, maps& gamemap, COORD Player)
