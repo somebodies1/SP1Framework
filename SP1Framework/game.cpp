@@ -815,7 +815,7 @@ void moveCharacter()
             {
                 if (amt[Entitylayer.getmapno()][i]->gettype() == '%' && (amt[Entitylayer.getmapno()][i]->getXY().X <= PlayerChar.getXY().X + 1 && amt[Entitylayer.getmapno()][i]->getXY().X >= PlayerChar.getXY().X - 1) && (amt[Entitylayer.getmapno()][i]->getXY().Y <= PlayerChar.getXY().Y + 1 && amt[Entitylayer.getmapno()][i]->getXY().Y >= PlayerChar.getXY().Y - 1))
                 {
-                    PlayerChar.set_ammo(PlayerChar.get_ammo() + 10);
+                    PlayerChar.set_ammo(PlayerChar.get_ammo() + 20);
                     if (PlayerChar.get_ammo() > 50)
                         PlayerChar.set_ammo(50);
                     Entitylayer.setchar(' ', amt[Entitylayer.getmapno()][i]->getXY().X, amt[Entitylayer.getmapno()][i]->getXY().Y);
@@ -834,7 +834,7 @@ void moveCharacter()
             {
                 if (amt[Entitylayer.getmapno()][i]->gettype() == '+' && (amt[Entitylayer.getmapno()][i]->getXY().X <= PlayerChar.getXY().X + 1 && amt[Entitylayer.getmapno()][i]->getXY().X >= PlayerChar.getXY().X - 1) && (amt[Entitylayer.getmapno()][i]->getXY().Y <= PlayerChar.getXY().Y + 1 && amt[Entitylayer.getmapno()][i]->getXY().Y >= PlayerChar.getXY().Y - 1))
                 {
-                    PlayerChar.setHP(PlayerChar.getHP() + 10);
+                    PlayerChar.setHP(PlayerChar.getHP() + 20);
                     if (PlayerChar.getHP() > 100)
                         PlayerChar.setHP(100);
                     Entitylayer.setchar(' ', amt[Entitylayer.getmapno()][i]->getXY().X, amt[Entitylayer.getmapno()][i]->getXY().Y);
