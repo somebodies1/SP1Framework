@@ -70,6 +70,7 @@ void update(double dt); // update the game and the state of the game
 void render(void);      // renders the current state of the game to the console
 void shutdown(void);      // do clean up, free memory
 void Reset(void);         // Resets map statuses
+void Printtxt(string file);
 
 void splashScreenWait();    // waits for time to pass in splash screen
 void updateGame(double dt); // gameplay logic
@@ -106,7 +107,6 @@ void mouseHandler(const MOUSE_EVENT_RECORD& mouseEvent);      // define this fun
 
 void gameplayKBHandler(const KEY_EVENT_RECORD& keyboardEvent);   // handles keyboard events for gameplay 
 void gameplayMouseHandler(const MOUSE_EVENT_RECORD& mouseEvent); // handles mouse events
-void mainmenuKBHandler(const KEY_EVENT_RECORD& keyboardEvent);   // handles keyboard events for menu
-void pausemenuKBHandler(const KEY_EVENT_RECORD& keyboardEvent);  // handles keyboard events for pause menu
+void menuKBHandler(const KEY_EVENT_RECORD& keyboardEvent);   // handles keyboard events for menu
 
 #endif // _GAME_H

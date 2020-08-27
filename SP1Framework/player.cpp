@@ -4,7 +4,7 @@
 player::player()
 {
     direction = 2;
-	hp = 9999;
+	hp = 100;
 	score = 0;
 	ammo = 9999;
     C.X = 1;
