@@ -523,7 +523,7 @@ void moveEntities(double g_dElapsedTime)
                 if (bulletlist[i] != nullptr)
                 {
                     bullethit = bulletlist[i]->move(g_dElapsedTime, '-', Entitylayer); //This function also causes the bullet to move so it can only be called once
-                    if (bullethit == 'Z' || bullethit == 'K' || bullethit == '#' || bullethit == 'L')
+                    if (bullethit == 'Z' || bullethit == 'K' || bullethit == 'F' || bullethit == 'L')
                     {
                         for (int enemyindex = 0; enemyindex < 50; enemyindex++)
                         {
@@ -720,7 +720,7 @@ void moveCharacter()
         g_eGameState = S_STAGECOMPLETE;
     }
     if (PlayerChar.collisioncheck(Entitylayer) == 'Z' || PlayerChar.collisioncheck(Entitylayer) == 'K' 
-        || PlayerChar.collisioncheck(Entitylayer) == '#' || PlayerChar.collisioncheck(Entitylayer) == 'L') // collision work, just have to put something here
+        || PlayerChar.collisioncheck(Entitylayer) == 'F' || PlayerChar.collisioncheck(Entitylayer) == 'L') // collision work, just have to put something here
     {
         PlayerChar.setHP(PlayerChar.getHP() - 1);
     }
@@ -938,7 +938,7 @@ void renderMap()
                 g_Console.writeToBuffer(c, Gamemap.getchar(j, i), 0x01);
             }
             else if (Gamemap.getchar(j, i) == 'Z' || Gamemap.getchar(j, i) == 'K' 
-                || Gamemap.getchar(j,i) == '#' || Gamemap.getchar(j,i) == 'L') // add the rest of the entities here in with or statments
+                || Gamemap.getchar(j,i) == 'F' || Gamemap.getchar(j,i) == 'L') // add the rest of the entities here in with or statments
             {
                 Gamemap.setchar(' ', i, j);
                 g_Console.writeToBuffer(c, ' ', 0x0F);
@@ -1167,7 +1167,7 @@ void spawnEnemy() //TODO: Set it so that when map changes, the enemies would be 
                 }
                 enemyno++;
             }
-            if (Entitylayer.getchar(j, i) == '#')
+            if (Entitylayer.getchar(j, i) == 'F')
             {
                 c.X = i;
                 c.Y = j;
@@ -1247,7 +1247,7 @@ void renderEntities()
             {
                 g_Console.writeToBuffer(c, Entitylayer.getchar(j, i), 0x0B);
             }
-            if (Entitylayer.getchar(j, i) == '#')
+            if (Entitylayer.getchar(j, i) == 'F')
             {
                 g_Console.writeToBuffer(c, Entitylayer.getchar(j, i), 0x0B);
             }
