@@ -1038,7 +1038,7 @@ void renderStagecomplete()
 }
 void renderCredit()
 {
-    Printtxt("Credit.txt");
+    Printtxt("Credit.txt",0x08);
     if (menupointer == 0)
     {
         g_Console.writeToBuffer(22, 34, '>', 0x0c);
