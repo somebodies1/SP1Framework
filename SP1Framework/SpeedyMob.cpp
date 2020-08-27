@@ -18,11 +18,11 @@ char SpeedyMob::move(double time, char ent, maps& gamemap, COORD Player)
 	SHORT topy = Player.Y - C.Y;
 	SHORT boty = C.Y - Player.Y;
 
-	if (leftx < 0 && leftx > -10 && topy < 2 && boty < 2)
+	if (leftx < 0 && leftx > -10 && topy < 3 && boty < 3)
 	{
 		direction = 1;
 	}
-	if (rightx < 0 && rightx > -10 && topy < 2 && boty < 2)
+	if (rightx < 0 && rightx > -10 && topy < 3 && boty < 3)
 	{
 		direction = 2;
 	}

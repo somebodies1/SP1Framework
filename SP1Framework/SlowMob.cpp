@@ -19,11 +19,11 @@ char SlowMob::move(double time, char ent, maps& gamemap, COORD Player)
 	SHORT topy = Player.Y - C.Y;
 	SHORT boty = C.Y - Player.Y;
 
-	if (leftx < 0 && leftx > -4 && topy < 3 && boty < 3)
+	if (leftx < 0 && leftx > -4 && topy < 5 && boty < 5)
 	{
 		direction = 1;
 	}
-	if (rightx < 0 && rightx > -4 && topy < 3 && boty < 3)
+	if (rightx < 0 && rightx > -4 && topy < 5 && boty < 5)
 	{
 		direction = 2;
 	}
