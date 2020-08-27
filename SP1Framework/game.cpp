@@ -1037,7 +1037,14 @@ void updateBoss(double time)
                 }
             }
         }
-        if (fmod(time, 0.2) < 0.004)
+        if (boss->getphase() >= 3 && fmod(time, 0.2) < 0.008) //Phase 3 spawns enemies in the lane of the player
+        {
+            if (boss->getXY().Y == PlayerChar.getXY().Y - 2) //when boss is in the same lane as player
+            {
+                bossSpawn(); // increase the chance of spawning to guarenteed
+            }
+        }
+        if (fmod(time, 0.2) < 0.004) //Enemy spawning timer here
         {
             if (chance > 500);
             {
@@ -1064,8 +1071,6 @@ void updateBoss(double time)
                 boss->moveboss(1, Entitylayer);
                 Beep(1500, 200);
                 Beep(2000, 50);
-                Beep(1000, 100);
-                Sleep(1000);
             }
             boss->printboss(Gamemap);
             delete boss;
@@ -1119,7 +1124,7 @@ void bossSpawn()
                     break;
                 }
             }
-            if (boss->getphase() >= 3 && type == 3)
+            if (boss->getphase() >= 2 && type == 3)
             {
                 if (amt[Entitylayer.getmapno()][i] == nullptr) //if the index is empty, fill it
                 {
