@@ -788,13 +788,16 @@ void moveCharacter()
         {
             if (amt[Entitylayer.getmapno()][i] != nullptr)
             {
-                PlayerChar.set_ammo(PlayerChar.get_ammo() + 10);
-                if (PlayerChar.get_ammo() > 50)
-                    PlayerChar.set_ammo(50);
-                Entitylayer.setchar(' ', amt[Entitylayer.getmapno()][i]->getXY().X, amt[Entitylayer.getmapno()][i]->getXY().Y);
-                delete amt[Entitylayer.getmapno()][i];
-                amt[Entitylayer.getmapno()][i] = nullptr;
-                break;
+                if (amt[Entitylayer.getmapno()][i]->gettype() == '%')
+                {
+                    PlayerChar.set_ammo(PlayerChar.get_ammo() + 20);
+                    if (PlayerChar.get_ammo() > 50)
+                        PlayerChar.set_ammo(50);
+                    Entitylayer.setchar(' ', amt[Entitylayer.getmapno()][i]->getXY().X, amt[Entitylayer.getmapno()][i]->getXY().Y);
+                    delete amt[Entitylayer.getmapno()][i];
+                    amt[Entitylayer.getmapno()][i] = nullptr;
+                    break;
+                }
             }
         }
     }
@@ -804,13 +807,16 @@ void moveCharacter()
         {
             if (amt[Entitylayer.getmapno()][i] != nullptr)
             {
-                PlayerChar.setHP(PlayerChar.getHP() + 10);
-                if (PlayerChar.getHP() > 100)
-                    PlayerChar.setHP(100);
-                Entitylayer.setchar(' ', amt[Entitylayer.getmapno()][i]->getXY().X, amt[Entitylayer.getmapno()][i]->getXY().Y);
-                delete amt[Entitylayer.getmapno()][i];
-                amt[Entitylayer.getmapno()][i] = nullptr;
-                break;
+                if (amt[Entitylayer.getmapno()][i]->gettype() == '+')
+                {
+                    PlayerChar.setHP(PlayerChar.getHP() + 20);
+                    if (PlayerChar.getHP() > 100)
+                        PlayerChar.setHP(100);
+                    Entitylayer.setchar(' ', amt[Entitylayer.getmapno()][i]->getXY().X, amt[Entitylayer.getmapno()][i]->getXY().Y);
+                    delete amt[Entitylayer.getmapno()][i];
+                    amt[Entitylayer.getmapno()][i] = nullptr;
+                    break;
+                }
             }
         }
     }
