@@ -675,7 +675,32 @@ void moveEntities(double g_dElapsedTime)
                 }                                              //Move also can return a char, although it doesn't return anything now
                 else                                           // deletes enemies when their healh goes below 0
                 {
+                    int chance = rand() % 100 + 1; //srand is in main
                     Entitylayer.setchar(' ', amt[Entitylayer.getmapno()][i]->getXY().X, amt[Entitylayer.getmapno()][i]->getXY().Y);
+                    if (chance > 70 || (chance > 10 && PlayerChar.get_ammo() < 10)) // ~30% chance or 90% when low on ammo
+                    {
+                        for (int j = 0; j < 50; j++) 
+                        {
+                            if (amt[Entitylayer.getmapno()][j] == nullptr)
+                            {
+                                amt[Entitylayer.getmapno()][j] = new Ammobox;
+                                amt[Entitylayer.getmapno()][j]->spawnEntity(amt[Entitylayer.getmapno()][i]->getXY().X, amt[Entitylayer.getmapno()][i]->getXY().Y); //Spawns ammobox where enemy died
+                                break;
+                            }
+                        }
+                    }
+                    else if (chance < 10) // ~10% chance
+                    {
+                        for (int j = 0; j < 50; j++)
+                        {
+                            if (amt[Entitylayer.getmapno()][j] == nullptr)
+                            {
+                                amt[Entitylayer.getmapno()][j] = new Health;
+                                amt[Entitylayer.getmapno()][j]->spawnEntity(amt[Entitylayer.getmapno()][i]->getXY().X, amt[Entitylayer.getmapno()][i]->getXY().Y); //Spawns ammobox where enemy died
+                                break;
+                            }
+                        }
+                    }
                     delete amt[Entitylayer.getmapno()][i];
                     amt[Entitylayer.getmapno()][i] = nullptr;
                 }
@@ -784,33 +809,39 @@ void moveCharacter()
     }
     else if (PlayerChar.collisioncheck(Entitylayer) == '%')
     {
-        for (int i = 0; i < 50; i++) //For loop that loops though all the enemy types for the movement
+        for (int i = 0; i < 50; i++) //For loop that loops though all the entites
         {
             if (amt[Entitylayer.getmapno()][i] != nullptr)
             {
-                PlayerChar.set_ammo(PlayerChar.get_ammo() + 10);
-                if (PlayerChar.get_ammo() > 50)
-                    PlayerChar.set_ammo(50);
-                Entitylayer.setchar(' ', amt[Entitylayer.getmapno()][i]->getXY().X, amt[Entitylayer.getmapno()][i]->getXY().Y);
-                delete amt[Entitylayer.getmapno()][i];
-                amt[Entitylayer.getmapno()][i] = nullptr;
-                break;
+                if (amt[Entitylayer.getmapno()][i]->gettype() == '%' && (amt[Entitylayer.getmapno()][i]->getXY().X <= PlayerChar.getXY().X + 1 && amt[Entitylayer.getmapno()][i]->getXY().X >= PlayerChar.getXY().X - 1) && (amt[Entitylayer.getmapno()][i]->getXY().Y <= PlayerChar.getXY().Y + 1 && amt[Entitylayer.getmapno()][i]->getXY().Y >= PlayerChar.getXY().Y - 1))
+                {
+                    PlayerChar.set_ammo(PlayerChar.get_ammo() + 10);
+                    if (PlayerChar.get_ammo() > 50)
+                        PlayerChar.set_ammo(50);
+                    Entitylayer.setchar(' ', amt[Entitylayer.getmapno()][i]->getXY().X, amt[Entitylayer.getmapno()][i]->getXY().Y);
+                    delete amt[Entitylayer.getmapno()][i];
+                    amt[Entitylayer.getmapno()][i] = nullptr;
+                    break;
+                }
             }
         }
     }
     else if (PlayerChar.collisioncheck(Entitylayer) == '+')
     {
-        for (int i = 0; i < 50; i++) //For loop that loops though all the enemy types for the movement
+        for (int i = 0; i < 50; i++)
         {
             if (amt[Entitylayer.getmapno()][i] != nullptr)
             {
-                PlayerChar.setHP(PlayerChar.getHP() + 10);
-                if (PlayerChar.getHP() > 100)
-                    PlayerChar.setHP(100);
-                Entitylayer.setchar(' ', amt[Entitylayer.getmapno()][i]->getXY().X, amt[Entitylayer.getmapno()][i]->getXY().Y);
-                delete amt[Entitylayer.getmapno()][i];
-                amt[Entitylayer.getmapno()][i] = nullptr;
-                break;
+                if (amt[Entitylayer.getmapno()][i]->gettype() == '+' && (amt[Entitylayer.getmapno()][i]->getXY().X <= PlayerChar.getXY().X + 1 && amt[Entitylayer.getmapno()][i]->getXY().X >= PlayerChar.getXY().X - 1) && (amt[Entitylayer.getmapno()][i]->getXY().Y <= PlayerChar.getXY().Y + 1 && amt[Entitylayer.getmapno()][i]->getXY().Y >= PlayerChar.getXY().Y - 1))
+                {
+                    PlayerChar.setHP(PlayerChar.getHP() + 10);
+                    if (PlayerChar.getHP() > 100)
+                        PlayerChar.setHP(100);
+                    Entitylayer.setchar(' ', amt[Entitylayer.getmapno()][i]->getXY().X, amt[Entitylayer.getmapno()][i]->getXY().Y);
+                    delete amt[Entitylayer.getmapno()][i];
+                    amt[Entitylayer.getmapno()][i] = nullptr;
+                    break;
+                }
             }
         }
     }
@@ -1097,7 +1128,6 @@ void updateBoss(double time)
                 {
                     boss->setdirection(1);
                 }
-                //int bossdirect = rand() % 4 - 1;
                 boss->moveboss(1, Entitylayer);
             }
             if (chance > 850)

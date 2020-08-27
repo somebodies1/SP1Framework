@@ -125,19 +125,19 @@ char Entity::collisioncheck(maps& gamemap)
 {
 	int iX = C.X;
 	int iY = C.Y;
-	if (gamemap.getchar(iY - 1,iX) != ' ' && gamemap.getchar(iY - 1, iX) != '=' && gamemap.getchar(iY - 1, iX) != 'H')
+	if (gamemap.getchar(iY - 1,iX) != ' ' && gamemap.getchar(iY - 1, iX) != '=' && gamemap.getchar(iY - 1, iX) != 'H' && gamemap.getchar(iY - 1, iX) != '1')
 	{
 		return gamemap.getchar(iY - 1, iX);
 	}
-	else if (gamemap.getchar(iY, iX - 1) != ' ' && gamemap.getchar(iY, iX - 1) != '=' && gamemap.getchar(iY, iX - 1) != 'H')
+	else if (gamemap.getchar(iY, iX - 1) != ' ' && gamemap.getchar(iY, iX - 1) != '=' && gamemap.getchar(iY, iX - 1) != 'H' && gamemap.getchar(iY, iX - 1) != '1')
 	{
 		return gamemap.getchar(iY, iX - 1);
 	}
-	else if (gamemap.getchar(iY + 1, iX) != ' ' && gamemap.getchar(iY + 1, iX) != '=' && gamemap.getchar(iY + 1, iX) != 'H')
+	else if (gamemap.getchar(iY + 1, iX) != ' ' && gamemap.getchar(iY + 1, iX) != '=' && gamemap.getchar(iY + 1, iX) != 'H' && gamemap.getchar(iY + 1, iX) != '1')
 	{
 		return gamemap.getchar(iY + 1, iX);
 	}
-	else if (gamemap.getchar(iY, iX + 1) != ' ' && gamemap.getchar(iY, iX + 1) != '=' && gamemap.getchar(iY, iX + 1) != 'H')
+	else if (gamemap.getchar(iY, iX + 1) != ' ' && gamemap.getchar(iY, iX + 1) != '=' && gamemap.getchar(iY, iX + 1) != 'H' && gamemap.getchar(iY, iX + 1) != '1')
 	{
 		return gamemap.getchar(iY, iX + 1);
 	}
