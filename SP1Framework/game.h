@@ -9,6 +9,8 @@
 #include "SlowMob.h"
 #include "StationaryMob.h"
 #include "Boss.h"
+#include "Ammobox.h"
+#include "Health.h"
 #include "Framework\timer.h"
 
 extern CStopWatch g_swTimer;

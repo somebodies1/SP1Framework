@@ -724,6 +724,38 @@ void moveCharacter()
     {
         PlayerChar.setHP(PlayerChar.getHP() - 1);
     }
+    else if (PlayerChar.collisioncheck(Entitylayer) == '%')
+    {
+        for (int i = 0; i < 50; i++) //For loop that loops though all the enemy types for the movement
+        {
+            if (amt[Entitylayer.getmapno()][i] != nullptr)
+            {
+                PlayerChar.set_ammo(PlayerChar.get_ammo() + 10);
+                if (PlayerChar.get_ammo() > 50)
+                    PlayerChar.set_ammo(50);
+                Entitylayer.setchar(' ', amt[Entitylayer.getmapno()][i]->getXY().X, amt[Entitylayer.getmapno()][i]->getXY().Y);
+                delete amt[Entitylayer.getmapno()][i];
+                amt[Entitylayer.getmapno()][i] = nullptr;
+                break;
+            }
+        }
+    }
+    else if (PlayerChar.collisioncheck(Entitylayer) == '+')
+    {
+        for (int i = 0; i < 50; i++) //For loop that loops though all the enemy types for the movement
+        {
+            if (amt[Entitylayer.getmapno()][i] != nullptr)
+            {
+                PlayerChar.setHP(PlayerChar.getHP() + 10);
+                if (PlayerChar.getHP() > 100)
+                    PlayerChar.setHP(100);
+                Entitylayer.setchar(' ', amt[Entitylayer.getmapno()][i]->getXY().X, amt[Entitylayer.getmapno()][i]->getXY().Y);
+                delete amt[Entitylayer.getmapno()][i];
+                amt[Entitylayer.getmapno()][i] = nullptr;
+                break;
+            }
+        }
+    }
     if (PlayerChar.getXY().Y >= 24) //If the player falls of the map, it dies
     {
         PlayerChar.setHP(0);
@@ -939,6 +971,16 @@ void renderMap()
             }
             else if (Gamemap.getchar(j, i) == 'Z' || Gamemap.getchar(j, i) == 'K' 
                 || Gamemap.getchar(j,i) == '#' || Gamemap.getchar(j,i) == 'L') // add the rest of the entities here in with or statments
+            {
+                Gamemap.setchar(' ', i, j);
+                g_Console.writeToBuffer(c, ' ', 0x0F);
+            }
+            else if (Gamemap.getchar(j, i) == '%')
+            {
+                Gamemap.setchar(' ', i, j);
+                g_Console.writeToBuffer(c, ' ', 0x0F);
+            }
+            else if (Gamemap.getchar(j, i) == '+')
             {
                 Gamemap.setchar(' ', i, j);
                 g_Console.writeToBuffer(c, ' ', 0x0F);
@@ -1198,9 +1240,37 @@ void spawnEnemy() //TODO: Set it so that when map changes, the enemies would be 
                 }
                 enemyno++;
             }
+            if (Entitylayer.getchar(j, i) == '%')
+            {
+                c.X = i;
+                c.Y = j;
+                if (amt[Entitylayer.getmapno()][enemyno] == nullptr) //if the index is empty, fill it
+                {
+                    amt[Entitylayer.getmapno()][enemyno] = new Ammobox;
+                    amt[Entitylayer.getmapno()][enemyno]->spawnEntity(i, j);
+                    g_Console.writeToBuffer(c, Entitylayer.getchar(j, i), 0x0C);
+                    Entitylayer.setchar(' ', i, j);
+                }
+                enemyno++;
+            }
+
+            if (Entitylayer.getchar(j, i) == '+')
+            {
+                c.X = i;
+                c.Y = j;
+                if (amt[Entitylayer.getmapno()][enemyno] == nullptr) //if the index is empty, fill it
+                {
+                    amt[Entitylayer.getmapno()][enemyno] = new Health;
+                    amt[Entitylayer.getmapno()][enemyno]->spawnEntity(i, j);
+                    g_Console.writeToBuffer(c, Entitylayer.getchar(j, i), 0x0C);
+                    Entitylayer.setchar(' ', i, j);
+                }
+                enemyno++;
+            }
         }
     }
 }
+
 void renderFramerate()
 {
     COORD c;
@@ -1259,6 +1329,14 @@ void renderEntities()
             if (Entitylayer.getchar(j, i) == 'L')
             {
                 g_Console.writeToBuffer(c, Entitylayer.getchar(j, i), 0x0B);
+            }
+            if (Entitylayer.getchar(j, i) == '%')
+            {
+                g_Console.writeToBuffer(c, Entitylayer.getchar(j, i), 0x0F);
+            }
+            if (Entitylayer.getchar(j, i) == '+')
+            {
+                g_Console.writeToBuffer(c, Entitylayer.getchar(j, i), 0x0F);
             }
             //Add more if statments for the other type of enemies, and make the other enemies different letters
             if(Entitylayer.getchar(j, i) == '-')
