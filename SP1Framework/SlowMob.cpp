@@ -62,5 +62,9 @@ char SlowMob::move(double time, char ent, maps& gamemap, COORD Player)
 		C.Y += 1;
 		gamemap.setchar(ent, C.X, C.Y);
 	}
+	if (C.Y >= 24)
+	{
+		hp = 0;
+	}
 	return 0;
 }
