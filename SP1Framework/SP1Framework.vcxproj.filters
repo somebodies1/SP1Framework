@@ -190,5 +190,8 @@
     <Text Include="StageComplete.txt">
       <Filter>Resource Files</Filter>
     </Text>
+    <Text Include="Credit.txt">
+      <Filter>Resource Files</Filter>
+    </Text>
   </ItemGroup>
 </Project>
