@@ -14,9 +14,9 @@
                                                                                     
                                                                                     
                                                                                     
-                                   [MAIN MENU]                                            
+                                   [CONTINUE]                                            
                                                                                     
-                                   [CONTINUE]                                                 
+                                   [MAIN MENU]                                                 
                                                                                     
                                      [QUIT]                                                 
                                                                                     

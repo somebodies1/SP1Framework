@@ -5,7 +5,7 @@
 1                                                                              1
 1                                                                              1
 1                                                                              1
-1                       You can only go up by using ladders                    1
+1              You can only go up and down by using ladders                    1
 1                                                                              1
 1                                                                              1
 1                                                                              1

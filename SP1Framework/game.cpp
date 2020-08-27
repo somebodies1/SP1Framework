@@ -24,6 +24,7 @@ SGameChar   g_sChar;
 Boss* boss = nullptr;
 Entity* amt[10][50]; // can be increased and the adding of nullptr can be a for loop
 bullet* bulletlist[50]; // maximum of 50 bullets at a time
+int menupointer = 0; //initialise the menu pointer that allows the keyboard menu interaction
 EGAMESTATES g_eGameState = S_MAINMENU; // initial state
 
 // Console object
@@ -151,15 +152,15 @@ void keyboardHandler(const KEY_EVENT_RECORD& keyboardEvent)
     {
         //case S_SPLASHSCREEN: // don't handle anything for the splash screen
         //    break;
-    case S_MAINMENU: mainmenuKBHandler(keyboardEvent); // handle menu keyboard event (Escape and space)
+    case S_MAINMENU: menuKBHandler(keyboardEvent); // handle menu keyboard event (Escape and space)
         break;
-    case S_PAUSE: pausemenuKBHandler(keyboardEvent);
+    case S_PAUSE: menuKBHandler(keyboardEvent);
         break;
-    case S_GAMEOVER:mainmenuKBHandler(keyboardEvent);
+    case S_GAMEOVER:menuKBHandler(keyboardEvent);
         break;
-    case S_STAGECOMPLETE: mainmenuKBHandler(keyboardEvent);
+    case S_STAGECOMPLETE: menuKBHandler(keyboardEvent);
         break;
-    case S_LEVEL: pausemenuKBHandler(keyboardEvent);
+    case S_LEVEL: menuKBHandler(keyboardEvent);
         break;
     case S_GAME: gameplayKBHandler(keyboardEvent); // handle gameplay keyboard event 
         break;
@@ -236,13 +237,15 @@ void gameplayKBHandler(const KEY_EVENT_RECORD& keyboardEvent)
     }
 }
 
-void mainmenuKBHandler(const KEY_EVENT_RECORD& keyboardEvent)  //KB inputs when inside main menu
+void menuKBHandler(const KEY_EVENT_RECORD& keyboardEvent)  //KB inputs when inside main menu
 {
     EKEYS key = K_COUNT;
     switch (keyboardEvent.wVirtualKeyCode)
     {
     case VK_SPACE: key = K_SPACE; break;
     case VK_ESCAPE: key = K_ESCAPE; break;
+    case 0x57: key = K_UP; break;
+    case 0x53: key = K_DOWN; break;
     }
     if (key != K_COUNT)
     {
@@ -251,19 +254,6 @@ void mainmenuKBHandler(const KEY_EVENT_RECORD& keyboardEvent)  //KB inputs when 
     }
 }
 
-void pausemenuKBHandler(const KEY_EVENT_RECORD& keyboardEvent)  //KB inputs when inside pause menu
-{
-    EKEYS key = K_COUNT;
-    switch (keyboardEvent.wVirtualKeyCode)
-    {
-    case VK_ESCAPE: key = K_ESCAPE; break;
-    }
-    if (key != K_COUNT)
-    {
-        g_skKeyEvent[key].keyDown = keyboardEvent.bKeyDown;
-        g_skKeyEvent[key].keyReleased = !keyboardEvent.bKeyDown;
-    }
-}
 
 //--------------------------------------------------------------
 // Purpose  : This is the mouse handler in the game state. Whenever there is a mouse event in the game state, this function will be called.
@@ -349,15 +339,32 @@ void updateGame(double g_dElapsedTime)       // gameplay logic
 
 void updateMainMenu()
 {
-    if (g_mouseEvent.mousePosition.X >= 38 && g_mouseEvent.mousePosition.X <= 42 && g_mouseEvent.mousePosition.Y == 19 && g_mouseEvent.buttonState == FROM_LEFT_1ST_BUTTON_PRESSED || g_skKeyEvent[K_SPACE].keyDown)
+    if (g_skKeyEvent[K_UP].keyReleased) // moves the menu cursor
+    {
+        menupointer -= 1;
+        if (menupointer < 0 )
+        {
+            menupointer = 2;
+        }
+    }
+    if (g_skKeyEvent[K_DOWN].keyReleased) // moves the menu cursor
+    {
+        menupointer += 1;
+        if (menupointer > 2)
+        {
+            menupointer = 0;
+        }
+    }
+    if (g_mouseEvent.mousePosition.X >= 38 && g_mouseEvent.mousePosition.X <= 42 && g_mouseEvent.mousePosition.Y == 19 && g_mouseEvent.buttonState == FROM_LEFT_1ST_BUTTON_PRESSED || menupointer == 0 && g_skKeyEvent[K_SPACE].keyReleased)
     {
         g_eGameState = S_GAME;
     }
-    if (g_mouseEvent.mousePosition.X >= 37 && g_mouseEvent.mousePosition.X <= 42 && g_mouseEvent.mousePosition.Y == 20 && g_mouseEvent.buttonState == FROM_LEFT_1ST_BUTTON_PRESSED)
+    if (g_mouseEvent.mousePosition.X >= 37 && g_mouseEvent.mousePosition.X <= 42 && g_mouseEvent.mousePosition.Y == 20 && g_mouseEvent.buttonState == FROM_LEFT_1ST_BUTTON_PRESSED || menupointer == 1 && g_skKeyEvent[K_SPACE].keyReleased)
     {
+        menupointer = 0;
         g_eGameState = S_LEVEL;
     }
-    if (g_mouseEvent.mousePosition.X >= 38 && g_mouseEvent.mousePosition.X <= 41 && g_mouseEvent.mousePosition.Y == 21 && g_mouseEvent.buttonState == FROM_LEFT_1ST_BUTTON_PRESSED || g_skKeyEvent[K_ESCAPE].keyReleased)
+    if (g_mouseEvent.mousePosition.X >= 38 && g_mouseEvent.mousePosition.X <= 41 && g_mouseEvent.mousePosition.Y == 21 && g_mouseEvent.buttonState == FROM_LEFT_1ST_BUTTON_PRESSED || menupointer == 2 && g_skKeyEvent[K_SPACE].keyReleased || g_skKeyEvent[K_ESCAPE].keyReleased)
     {
         g_bQuitGame = true;
     }
@@ -365,20 +372,32 @@ void updateMainMenu()
 
 void updatePauseMenu()
 {
-    if (g_skKeyEvent[K_ESCAPE].keyReleased)
+    if (g_skKeyEvent[K_UP].keyReleased) // moves the menu cursor
     {
-        g_eGameState = S_GAME;
+        menupointer -= 1;
+        if (menupointer < 0)
+        {
+            menupointer = 2;
+        }
     }
-    if (g_mouseEvent.mousePosition.X >= 36 && g_mouseEvent.mousePosition.X <= 44 && g_mouseEvent.mousePosition.Y == 16 && g_mouseEvent.buttonState == FROM_LEFT_1ST_BUTTON_PRESSED)
+    if (g_skKeyEvent[K_DOWN].keyReleased) // moves the menu cursor
+    {
+        menupointer += 1;
+        if (menupointer > 2)
+        {
+            menupointer = 0;
+        }
+    }
+    if (g_mouseEvent.mousePosition.X >= 36 && g_mouseEvent.mousePosition.X <= 43 && g_mouseEvent.mousePosition.Y == 18 && g_mouseEvent.buttonState == FROM_LEFT_1ST_BUTTON_PRESSED || g_skKeyEvent[K_SPACE].keyReleased && menupointer == 1)
     {
         Reset();
         g_eGameState = S_MAINMENU;
     }
-    if (g_mouseEvent.mousePosition.X >= 36 && g_mouseEvent.mousePosition.X <= 43 && g_mouseEvent.mousePosition.Y == 18 && g_mouseEvent.buttonState == FROM_LEFT_1ST_BUTTON_PRESSED)
+    if (g_mouseEvent.mousePosition.X >= 36 && g_mouseEvent.mousePosition.X <= 44 && g_mouseEvent.mousePosition.Y == 16 && g_mouseEvent.buttonState == FROM_LEFT_1ST_BUTTON_PRESSED || g_skKeyEvent[K_SPACE].keyReleased && menupointer == 0 || g_skKeyEvent[K_ESCAPE].keyReleased)
     {
         g_eGameState = S_GAME;
     }
-    if (g_mouseEvent.mousePosition.X >= 38 && g_mouseEvent.mousePosition.X <= 41 && g_mouseEvent.mousePosition.Y == 20 && g_mouseEvent.buttonState == FROM_LEFT_1ST_BUTTON_PRESSED)
+    if (g_mouseEvent.mousePosition.X >= 38 && g_mouseEvent.mousePosition.X <= 41 && g_mouseEvent.mousePosition.Y == 20 && g_mouseEvent.buttonState == FROM_LEFT_1ST_BUTTON_PRESSED || g_skKeyEvent[K_SPACE].keyReleased && menupointer == 2)
     {
         g_bQuitGame = true;
     }
@@ -386,17 +405,33 @@ void updatePauseMenu()
 
 void updateGameover()
 {
-    if (g_mouseEvent.mousePosition.X >= 34 && g_mouseEvent.mousePosition.X <= 44 && g_mouseEvent.mousePosition.Y == 20 && g_mouseEvent.buttonState == FROM_LEFT_1ST_BUTTON_PRESSED)
+    if (g_skKeyEvent[K_UP].keyReleased) // moves the menu cursor
+    {
+        menupointer -= 1;
+        if (menupointer < 0)
+        {
+            menupointer = 2;
+        }
+    }
+    if (g_skKeyEvent[K_DOWN].keyReleased) // moves the menu cursor
+    {
+        menupointer += 1;
+        if (menupointer > 2)
+        {
+            menupointer = 0;
+        }
+    }
+    if (g_mouseEvent.mousePosition.X >= 34 && g_mouseEvent.mousePosition.X <= 44 && g_mouseEvent.mousePosition.Y == 20 && g_mouseEvent.buttonState == FROM_LEFT_1ST_BUTTON_PRESSED || g_skKeyEvent[K_SPACE].keyReleased && menupointer == 1)
     {
         Reset();
         g_eGameState = S_MAINMENU;
     }
-    if (g_mouseEvent.mousePosition.X >= 36 && g_mouseEvent.mousePosition.X <= 41 && g_mouseEvent.mousePosition.Y == 18 && g_mouseEvent.buttonState == FROM_LEFT_1ST_BUTTON_PRESSED || g_skKeyEvent[K_SPACE].keyDown)
+    if (g_mouseEvent.mousePosition.X >= 36 && g_mouseEvent.mousePosition.X <= 41 && g_mouseEvent.mousePosition.Y == 18 && g_mouseEvent.buttonState == FROM_LEFT_1ST_BUTTON_PRESSED || g_skKeyEvent[K_SPACE].keyReleased && menupointer == 0)
     {
         Reset();
         g_eGameState = S_GAME;
     }
-    if (g_mouseEvent.mousePosition.X >= 36 && g_mouseEvent.mousePosition.X <= 40 && g_mouseEvent.mousePosition.Y == 22 && g_mouseEvent.buttonState == FROM_LEFT_1ST_BUTTON_PRESSED || g_skKeyEvent[K_ESCAPE].keyDown)
+    if (g_mouseEvent.mousePosition.X >= 36 && g_mouseEvent.mousePosition.X <= 40 && g_mouseEvent.mousePosition.Y == 22 && g_mouseEvent.buttonState == FROM_LEFT_1ST_BUTTON_PRESSED || g_skKeyEvent[K_SPACE].keyReleased && menupointer == 2 || g_skKeyEvent[K_ESCAPE].keyReleased)
     {
         g_bQuitGame = true;
     }
@@ -404,49 +439,65 @@ void updateGameover()
 
 void updateLevelselect()
 {
-    if (g_mouseEvent.mousePosition.X >= 36 && g_mouseEvent.mousePosition.X <= 43 && g_mouseEvent.mousePosition.Y == 13 && g_mouseEvent.buttonState == FROM_LEFT_1ST_BUTTON_PRESSED)
+    if (g_skKeyEvent[K_UP].keyReleased) // moves the menu cursor
+    {
+        menupointer -= 1;
+        if (menupointer < 0)
+        {
+            menupointer = 6;
+        }
+    }
+    if (g_skKeyEvent[K_DOWN].keyReleased) // moves the menu cursor
+    {
+        menupointer += 1;
+        if (menupointer > 6)
+        {
+            menupointer = 0;
+        }
+    }
+    if (g_mouseEvent.mousePosition.X >= 36 && g_mouseEvent.mousePosition.X <= 43 && g_mouseEvent.mousePosition.Y == 13 && g_mouseEvent.buttonState == FROM_LEFT_1ST_BUTTON_PRESSED || g_skKeyEvent[K_SPACE].keyReleased && menupointer == 0)
     {
         Gamemap.setstage(0);
         Entitylayer.setstage(0);
         Reset();
         g_eGameState = S_GAME;
     }
-    if (g_mouseEvent.mousePosition.X >= 36 && g_mouseEvent.mousePosition.X <= 43 && g_mouseEvent.mousePosition.Y == 15 && g_mouseEvent.buttonState == FROM_LEFT_1ST_BUTTON_PRESSED)
+    if (g_mouseEvent.mousePosition.X >= 36 && g_mouseEvent.mousePosition.X <= 43 && g_mouseEvent.mousePosition.Y == 15 && g_mouseEvent.buttonState == FROM_LEFT_1ST_BUTTON_PRESSED || g_skKeyEvent[K_SPACE].keyReleased && menupointer == 1)
     {
         Gamemap.setstage(1);
         Entitylayer.setstage(1);
         Reset();
         g_eGameState = S_GAME;
     }
-    if (g_mouseEvent.mousePosition.X >= 36 && g_mouseEvent.mousePosition.X <= 43 && g_mouseEvent.mousePosition.Y == 16 && g_mouseEvent.buttonState == FROM_LEFT_1ST_BUTTON_PRESSED)
+    if (g_mouseEvent.mousePosition.X >= 36 && g_mouseEvent.mousePosition.X <= 43 && g_mouseEvent.mousePosition.Y == 16 && g_mouseEvent.buttonState == FROM_LEFT_1ST_BUTTON_PRESSED || g_skKeyEvent[K_SPACE].keyReleased && menupointer == 2)
     {
         Gamemap.setstage(2);
         Entitylayer.setstage(2);
         Reset();
         g_eGameState = S_GAME;
     }
-    if (g_mouseEvent.mousePosition.X >= 36 && g_mouseEvent.mousePosition.X <= 43 && g_mouseEvent.mousePosition.Y == 17 && g_mouseEvent.buttonState == FROM_LEFT_1ST_BUTTON_PRESSED)
+    if (g_mouseEvent.mousePosition.X >= 36 && g_mouseEvent.mousePosition.X <= 43 && g_mouseEvent.mousePosition.Y == 17 && g_mouseEvent.buttonState == FROM_LEFT_1ST_BUTTON_PRESSED || g_skKeyEvent[K_SPACE].keyReleased && menupointer == 3)
     {
         Gamemap.setstage(3);
         Entitylayer.setstage(3);
         Reset();
         g_eGameState = S_GAME;
     }
-    if (g_mouseEvent.mousePosition.X >= 36 && g_mouseEvent.mousePosition.X <= 43 && g_mouseEvent.mousePosition.Y == 18 && g_mouseEvent.buttonState == FROM_LEFT_1ST_BUTTON_PRESSED)
+    if (g_mouseEvent.mousePosition.X >= 36 && g_mouseEvent.mousePosition.X <= 43 && g_mouseEvent.mousePosition.Y == 18 && g_mouseEvent.buttonState == FROM_LEFT_1ST_BUTTON_PRESSED || g_skKeyEvent[K_SPACE].keyReleased && menupointer == 4)
     {
         Gamemap.setstage(4);
         Entitylayer.setstage(4);
         Reset();
         g_eGameState = S_GAME;
     }
-    if (g_mouseEvent.mousePosition.X >= 36 && g_mouseEvent.mousePosition.X <= 43 && g_mouseEvent.mousePosition.Y == 19 && g_mouseEvent.buttonState == FROM_LEFT_1ST_BUTTON_PRESSED)
+    if (g_mouseEvent.mousePosition.X >= 36 && g_mouseEvent.mousePosition.X <= 43 && g_mouseEvent.mousePosition.Y == 19 && g_mouseEvent.buttonState == FROM_LEFT_1ST_BUTTON_PRESSED || g_skKeyEvent[K_SPACE].keyReleased && menupointer == 5)
     {
         Gamemap.setstage(5);
         Entitylayer.setstage(5);
         Reset();
         g_eGameState = S_GAME;
     }
-    if (g_mouseEvent.mousePosition.X >= 37 && g_mouseEvent.mousePosition.X <= 40 && g_mouseEvent.mousePosition.Y == 22 && g_mouseEvent.buttonState == FROM_LEFT_1ST_BUTTON_PRESSED || g_skKeyEvent[K_ESCAPE].keyReleased)
+    if (g_mouseEvent.mousePosition.X >= 37 && g_mouseEvent.mousePosition.X <= 40 && g_mouseEvent.mousePosition.Y == 22 && g_mouseEvent.buttonState == FROM_LEFT_1ST_BUTTON_PRESSED || g_skKeyEvent[K_ESCAPE].keyReleased || g_skKeyEvent[K_SPACE].keyReleased && menupointer == 6)
     {
         g_eGameState = S_MAINMENU;
     }
@@ -454,12 +505,28 @@ void updateLevelselect()
 
 void updateStagecomplete()
 {
-    if (g_mouseEvent.mousePosition.X >= 36 && g_mouseEvent.mousePosition.X <= 46 && g_mouseEvent.mousePosition.Y == 18 && g_mouseEvent.buttonState == FROM_LEFT_1ST_BUTTON_PRESSED)
+    if (g_skKeyEvent[K_UP].keyReleased) // moves the menu cursor
+    {
+        menupointer -= 1;
+        if (menupointer < 0)
+        {
+            menupointer = 2;
+        }
+    }
+    if (g_skKeyEvent[K_DOWN].keyReleased) // moves the menu cursor
+    {
+        menupointer += 1;
+        if (menupointer > 2)
+        {
+            menupointer = 0;
+        }
+    }
+    if (g_mouseEvent.mousePosition.X >= 36 && g_mouseEvent.mousePosition.X <= 46 && g_mouseEvent.mousePosition.Y == 18 && g_mouseEvent.buttonState == FROM_LEFT_1ST_BUTTON_PRESSED || g_skKeyEvent[K_SPACE].keyReleased && menupointer == 1)
     {
         Reset();
         g_eGameState = S_MAINMENU;
     }
-    if (g_mouseEvent.mousePosition.X >= 38 && g_mouseEvent.mousePosition.X <= 42 && g_mouseEvent.mousePosition.Y == 17 && g_mouseEvent.buttonState == FROM_LEFT_1ST_BUTTON_PRESSED || g_skKeyEvent[K_SPACE].keyDown)
+    if (g_mouseEvent.mousePosition.X >= 38 && g_mouseEvent.mousePosition.X <= 42 && g_mouseEvent.mousePosition.Y == 17 && g_mouseEvent.buttonState == FROM_LEFT_1ST_BUTTON_PRESSED || g_skKeyEvent[K_SPACE].keyReleased && menupointer == 0)
     {
         Reset();
         if (Gamemap.getstageno() < 5)
@@ -470,10 +537,11 @@ void updateStagecomplete()
         }
         else
         {
+            menupointer = 0;
             g_eGameState = S_MAINMENU;
         }
     }
-    if (g_mouseEvent.mousePosition.X >= 38 && g_mouseEvent.mousePosition.X <= 42 && g_mouseEvent.mousePosition.Y == 19 && g_mouseEvent.buttonState == FROM_LEFT_1ST_BUTTON_PRESSED || g_skKeyEvent[K_ESCAPE].keyDown)
+    if (g_mouseEvent.mousePosition.X >= 38 && g_mouseEvent.mousePosition.X <= 42 && g_mouseEvent.mousePosition.Y == 19 && g_mouseEvent.buttonState == FROM_LEFT_1ST_BUTTON_PRESSED || g_skKeyEvent[K_ESCAPE].keyDown || g_skKeyEvent[K_SPACE].keyReleased && menupointer == 2)
     {
         g_bQuitGame = true;
     }
@@ -511,6 +579,25 @@ void Reset() {
     PlayerChar  = player();
 }
 
+void Printtxt(string file)
+{
+    string line;
+    COORD c;
+    ifstream mapfile(file);
+    for (int i = 0; i < 25; i++)
+    {
+        getline(mapfile, line);
+        char linearray[200];
+        strcpy(linearray, line.c_str());
+        for (int j = 0; j < 80; j++)
+        {
+            c.X = j;
+            c.Y = i;
+            g_Console.writeToBuffer(c, linearray[j], 0x0B);
+        }
+    }
+}
+
 void moveEntities(double g_dElapsedTime)
 {
     if (g_eGameState == S_GAME)
@@ -523,7 +610,7 @@ void moveEntities(double g_dElapsedTime)
                 if (bulletlist[i] != nullptr)
                 {
                     bullethit = bulletlist[i]->move(g_dElapsedTime, '-', Entitylayer); //This function also causes the bullet to move so it can only be called once
-                    if (bullethit == 'Z' || bullethit == 'K' || bullethit == '#' || bullethit == 'L')
+                    if (bullethit == 'Z' || bullethit == 'K' || bullethit == 'F' || bullethit == 'L')
                     {
                         for (int enemyindex = 0; enemyindex < 50; enemyindex++)
                         {
@@ -599,35 +686,6 @@ void moveEntities(double g_dElapsedTime)
 
 void moveCharacter()
 {
-    // Remnaints of the bullet code for salvageing 
-    //===================================================
-    
-    //        if (g_skKeyEvent[K_SPACE].keyDown)
-    //        {
-    //            Beep(1000, 30);
-    //            Beep(500, 50);
-    //            Beep(1500, 20);
-    //            g_sChar.m_bActive = !g_sChar.m_bActive;
-    //            if (Gamemap[iY][iX + 1] == ' ')
-    //            {
-    //                if (bulletmoving!=true)
-    //                {
-    //                    g_pew.m_cLocation.X = g_sChar.m_cLocation.X + 1;
-    //                    g_pew.m_cLocation.Y = g_sChar.m_cLocation.Y;
-    //                }
-    //                
-    //            }
-    //        }
-
-    //        if (g_skKeyEvent[K_SPACE].keyReleased)
-    //        {
-    //            if (isFiring!=true)
-    //            {
-    //                isFiring = true;
-    //                bulletmoving = true;
-
-    //            }
-
     int direction = 0;
     if (g_skKeyEvent[K_UP].keyDown)
     {
@@ -720,7 +778,7 @@ void moveCharacter()
         g_eGameState = S_STAGECOMPLETE;
     }
     if (PlayerChar.collisioncheck(Entitylayer) == 'Z' || PlayerChar.collisioncheck(Entitylayer) == 'K' 
-        || PlayerChar.collisioncheck(Entitylayer) == '#' || PlayerChar.collisioncheck(Entitylayer) == 'L') // collision work, just have to put something here
+        || PlayerChar.collisioncheck(Entitylayer) == 'F' || PlayerChar.collisioncheck(Entitylayer) == 'L') // collision work, just have to put something here
     {
         PlayerChar.setHP(PlayerChar.getHP() - 1);
     }
@@ -830,99 +888,90 @@ void renderSplashScreen()  // renders the splash screen
 
 void renderMainMenu()  // renders the main menu
 {
-    string line;
-    COORD c;
-    ifstream mapfile("Mainmenu.txt");
-    for (int i = 0; i < 25; i++)
+    Printtxt("Mainmenu.txt");
+    if (menupointer == 0)
     {
-        getline(mapfile, line); 
-        char linearray[200]; 
-        strcpy(linearray, line.c_str()); 
-        for (int j = 0; j < 80; j++)
-        {
-            c.X = j;
-            c.Y = i;
-            g_Console.writeToBuffer(c, linearray[j], 0x0B);
-        }
+        g_Console.writeToBuffer(36,19,'>', 0x0C);
+    }
+    else if (menupointer == 1)
+    {
+        g_Console.writeToBuffer(35, 20, '>', 0x0C);
+    }
+    else if (menupointer == 2)
+    {
+        g_Console.writeToBuffer(36, 21, '>', 0x0C);
     }
 }
 
 void renderPauseMenu()  // renders the main menu
 {
-    string line;
-    COORD c;
-    ifstream mapfile("Pausemenu.txt");
-    for (int i = 0; i < 25; i++)
+    Printtxt("Pausemenu.txt");
+    if (menupointer == 0)
     {
-        getline(mapfile, line);
-        char linearray[200];
-        strcpy(linearray, line.c_str());
-        for (int j = 0; j < 80; j++)
-        {
-            c.X = j;
-            c.Y = i;
-            g_Console.writeToBuffer(c, linearray[j], 0x0E);
-        }
+        g_Console.writeToBuffer(34, 16, '>', 0x0C);
+    }
+    else if (menupointer == 1)
+    {
+        g_Console.writeToBuffer(34, 18, '>', 0x0C);
+    }
+    else if (menupointer == 2)
+    {
+        g_Console.writeToBuffer(36, 20, '>', 0x0C);
     }
 }
 void renderGameover()
 {
-    string line;
-    COORD c;
-    ifstream mapfile("Gameover.txt");
-    for (int i = 0; i < 25; i++)
+    Printtxt("Gameover.txt");
+    if (menupointer == 0)
     {
-        getline(mapfile, line);
-        char linearray[200];
-        strcpy(linearray, line.c_str());
-        for (int j = 0; j < 80; j++)
-        {
-            c.X = j;
-            c.Y = i;
-            g_Console.writeToBuffer(c, linearray[j], 0x09);
-        }
+        g_Console.writeToBuffer(34, 18, '>', 0x0C);
+    }
+    else if (menupointer == 1)
+    {
+        g_Console.writeToBuffer(32, 20, '>', 0x0C);
+    }
+    else if (menupointer == 2)
+    {
+        g_Console.writeToBuffer(34, 22, '>', 0x0C);
     }
 }
 void renderLevelselect()
 {
-    string line;
-    COORD c;
-    ifstream mapfile("Levelselect.txt");
-    for (int i = 0; i < 25; i++)
+    Printtxt("Levelselect.txt");
+    if (menupointer == 0)
     {
-        getline(mapfile, line);
-        char linearray[200];
-        strcpy(linearray, line.c_str());
-        for (int j = 0; j < 80; j++)
-        {
-            c.X = j;
-            c.Y = i;
-            g_Console.writeToBuffer(c, linearray[j], 0x0C);
-        }
+        g_Console.writeToBuffer(34, 13, '>', 0x0C);
+    }
+    else if (menupointer >= 1 && menupointer <= 5)
+    {
+        g_Console.writeToBuffer(34, 14 + menupointer, '>', 0x0C);
+    }
+    else if (menupointer == 6)
+    {
+        g_Console.writeToBuffer(35,22, '>', 0x0C);
     }
 }
 void renderStagecomplete()
 {
-    string line;
+    Printtxt("StageComplete.txt");
     COORD c;
-    ifstream mapfile("StageComplete.txt");
     std::ostringstream ss;
-    for (int i = 0; i < 25; i++)
-    {
-        getline(mapfile, line);
-        char linearray[200];
-        strcpy(linearray, line.c_str());
-        for (int j = 0; j < 80; j++)
-        {
-            c.X = j;
-            c.Y = i;
-            g_Console.writeToBuffer(c, linearray[j], 0x0E);
-        }
-    }
     c.X = 42;
     c.Y = 15;
     ss << PlayerChar.getscore();
-     g_Console.writeToBuffer(c, ss.str(), 0x0C);
+    g_Console.writeToBuffer(c, ss.str(), 0x0C);
+    if (menupointer == 0)
+    {
+        g_Console.writeToBuffer(36, 17, '>', 0x0C);
+    }
+    else if (menupointer == 1)
+    {
+        g_Console.writeToBuffer(34, 18 , '>', 0x0C);
+    }
+    else if (menupointer == 2)
+    {
+        g_Console.writeToBuffer(36, 19, '>', 0x0C);
+    }
 }
 void renderGame()
 {
@@ -934,23 +983,7 @@ void renderGame()
 
 void renderMap()
 {
-    //// Set up sample colours, and output shadings
-    //const WORD colors[] = {
-    //    0x1A, 0x2B, 0x3C, 0x4D, 0x5E, 0x6F,
-    //    0xA1, 0xB2, 0xC3, 0xD4, 0xE5, 0xF6,
-    //    0x1A, 0x2B, 0x3C, 0x4D, 0x5E, 0x6F,
-    //    0xA1, 0xB2, 0xC3, 0xD4, 0xE5, 0xF6
-    //};
-
     COORD c;
-    //for (int i = 0; i < 12; ++i)
-    //{
-    //    c.X = 5 * i;
-    //    c.Y = i + 1;
-    //    colour(colors[i]);
-    //    g_Console.writeToBuffer(c, " °±²Û", colors[i]);
-    //}
-
     for (int i = 0; i < 80; i++)
     {
         for (int j = 0; j < 25; j++)
@@ -970,7 +1003,7 @@ void renderMap()
                 g_Console.writeToBuffer(c, Gamemap.getchar(j, i), 0x01);
             }
             else if (Gamemap.getchar(j, i) == 'Z' || Gamemap.getchar(j, i) == 'K' 
-                || Gamemap.getchar(j,i) == '#' || Gamemap.getchar(j,i) == 'L') // add the rest of the entities here in with or statments
+                || Gamemap.getchar(j,i) == 'F' || Gamemap.getchar(j,i) == 'L') // add the rest of the entities here in with or statments
             {
                 Gamemap.setchar(' ', i, j);
                 g_Console.writeToBuffer(c, ' ', 0x0F);
@@ -987,8 +1020,8 @@ void renderMap()
             }
             else //Normal colour of black text with blue background
             {
-                g_Console.writeToBuffer(c, Gamemap.getchar(j, i), 0x0F); //Btw after the 0x the first number is the background colour and the second is the text colour
-            }//Black is 0, background blue is 1 and a kind of green is A, F is white
+                g_Console.writeToBuffer(c, Gamemap.getchar(j, i), 0x0F); 
+            }
         }
     }
 }
@@ -1214,7 +1247,7 @@ void spawnEnemy() //TODO: Set it so that when map changes, the enemies would be 
                 }
                 enemyno++;
             }
-            if (Entitylayer.getchar(j, i) == '#')
+            if (Entitylayer.getchar(j, i) == 'F')
             {
                 c.X = i;
                 c.Y = j;
@@ -1322,7 +1355,7 @@ void renderEntities()
             {
                 g_Console.writeToBuffer(c, Entitylayer.getchar(j, i), 0x0B);
             }
-            if (Entitylayer.getchar(j, i) == '#')
+            if (Entitylayer.getchar(j, i) == 'F')
             {
                 g_Console.writeToBuffer(c, Entitylayer.getchar(j, i), 0x0B);
             }
