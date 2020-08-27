@@ -111,6 +111,7 @@
     <ClInclude Include="StationaryMob.h" />
   </ItemGroup>
   <ItemGroup>
+    <Text Include="Credit.txt" />
     <Text Include="Stage1_1.txt" />
     <Text Include="Stage1_2.txt" />
     <Text Include="Stage1_3.txt" />

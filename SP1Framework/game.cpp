@@ -160,6 +160,8 @@ void keyboardHandler(const KEY_EVENT_RECORD& keyboardEvent)
         break;
     case S_STAGECOMPLETE: menuKBHandler(keyboardEvent);
         break;
+    case S_CREDIT: menuKBHandler(keyboardEvent);
+        break;
     case S_LEVEL: menuKBHandler(keyboardEvent);
         break;
     case S_GAME: gameplayKBHandler(keyboardEvent); // handle gameplay keyboard event 
@@ -199,6 +201,7 @@ void mouseHandler(const MOUSE_EVENT_RECORD& mouseEvent)
         break;
     case S_STAGECOMPLETE: gameplayMouseHandler(mouseEvent);
         break;
+    case S_CREDIT: gameplayMouseHandler(mouseEvent);
     case S_GAME: gameplayMouseHandler(mouseEvent); // handle gameplay mouse event
         break;
     }
@@ -547,6 +550,31 @@ void updateStagecomplete()
     }
 }
 
+void updateCredit()
+{
+    if (g_skKeyEvent[K_UP].keyReleased) // moves the menu cursor
+    {
+        menupointer -= 1;
+        if (menupointer < 0)
+        {
+            menupointer = 2;
+        }
+    }
+    if (g_skKeyEvent[K_DOWN].keyReleased) // moves the menu cursor
+    {
+        menupointer += 1;
+        if (menupointer > 2)
+        {
+            menupointer = 0;
+        }
+    }
+    if (g_mouseEvent.mousePosition.X >= 34 && g_mouseEvent.mousePosition.X <= 44 && g_mouseEvent.mousePosition.Y == 22 && g_mouseEvent.buttonState == FROM_LEFT_1ST_BUTTON_PRESSED || g_skKeyEvent[K_SPACE].keyReleased && menupointer == 0)
+    {
+        Reset();
+        g_eGameState = S_MAINMENU;
+    }
+}
+
 
 void Reset() {
     for (int i = 0; i < 10; i++) //reset spawned map status
@@ -886,6 +914,8 @@ void render()
         break;
     case S_STAGECOMPLETE: renderStagecomplete();
         break; 
+    case S_CREDIT: renderCredit();
+        break;
     case S_GAME:  renderGame();
         break;
     }
@@ -1004,6 +1034,14 @@ void renderStagecomplete()
     else if (menupointer == 2)
     {
         g_Console.writeToBuffer(36, 19, '>', 0x0C);
+    }
+}
+void renderCredit()
+{
+    Printtxt("Credit.txt");
+    if (menupointer == 0)
+    {
+        g_Console.writeToBuffer(22, 34, '>', 0x0c);
     }
 }
 void renderGame()
