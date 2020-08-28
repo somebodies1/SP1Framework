@@ -888,7 +888,10 @@ void processUserInput()
 {
     // Pauses the game if player hits the escape key
     if (g_skKeyEvent[K_ESCAPE].keyReleased)
+    {
+        menupointer = 0;
         g_eGameState = S_PAUSE;
+    }
 }
 
 //--------------------------------------------------------------
