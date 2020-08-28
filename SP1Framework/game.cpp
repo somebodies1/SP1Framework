@@ -314,8 +314,6 @@ void update(double dt)
         break;
     case S_STAGECOMPLETE: updateStagecomplete();
         break;
-    case S_CREDIT: updateCredit();
-        break;
     case S_GAME: updateGame(g_dElapsedTime); // gameplay logic when we are in the game
         break;
     }
