@@ -141,6 +141,10 @@ char Entity::collisioncheck(maps& gamemap)
 	{
 		return gamemap.getchar(iY, iX + 1);
 	}
+	else if (gamemap.getchar(iY, iX) != ' ' && gamemap.getchar(iY, iX) != '=' && gamemap.getchar(iY, iX) != 'H' && gamemap.getchar(iY, iX) != '1')
+	{
+		return gamemap.getchar(iY, iX);
+	}
 	else
 	{
 		return ' ';

@@ -825,6 +825,7 @@ void moveCharacter()
     }
     else if (mapaction == 'S') // S for stage change
     {
+        menupointer = 0;
         g_eGameState = S_STAGECOMPLETE;
     }
     else if (mapaction == 'C')
@@ -920,7 +921,6 @@ void render()
     case S_GAME:  renderGame();
         break;
     }
-    renderFramerate();      // renders debug information, frame rate, elapsed time, etc
     renderToScreen();       // dump the contents of the buffer to the screen, one frame worth of game
 }
 
@@ -1079,22 +1079,17 @@ void renderMap()
                 g_Console.writeToBuffer(c, Gamemap.getchar(j, i), 0x01);
             }
             else if (Gamemap.getchar(j, i) == 'Z' || Gamemap.getchar(j, i) == 'K' 
-                || Gamemap.getchar(j,i) == 'F' || Gamemap.getchar(j,i) == 'L') // add the rest of the entities here in with or statments
+                || Gamemap.getchar(j,i) == 'F' || Gamemap.getchar(j,i) == 'L' 
+                || Gamemap.getchar(j, i) == '%'|| Gamemap.getchar(j, i) == '+') // add the rest of the entities here in with or statments
             {
                 Gamemap.setchar(' ', i, j);
                 g_Console.writeToBuffer(c, ' ', 0x0F);
             }
-            else if (Gamemap.getchar(j, i) == '%')
+            else if (Gamemap.getchar(j, i) == '!')
             {
-                Gamemap.setchar(' ', i, j);
-                g_Console.writeToBuffer(c, ' ', 0x0F);
+                g_Console.writeToBuffer(c, Gamemap.getchar(j, i), 0xA7);
             }
-            else if (Gamemap.getchar(j, i) == '+')
-            {
-                Gamemap.setchar(' ', i, j);
-                g_Console.writeToBuffer(c, ' ', 0x0F);
-            }
-            else //Normal colour of black text with blue background
+            else 
             {
                 g_Console.writeToBuffer(c, Gamemap.getchar(j, i), 0x0F); 
             }
@@ -1380,6 +1375,7 @@ void spawnEnemy() //TODO: Set it so that when map changes, the enemies would be 
     }
 }
 
+/*
 void renderFramerate()
 {
     COORD c;
@@ -1403,6 +1399,7 @@ void renderFramerate()
     c.Y = 0;
     g_Console.writeToBuffer(c, ss.str(), 0x59);
 }
+*/
 
 void renderPlayerUI(player player)
 {
@@ -1468,6 +1465,7 @@ void renderEntities()
 
 
 // this is an example of how you would use the input events
+/*
 void renderInputEvents()
 {
     // keyboard events
@@ -1498,7 +1496,7 @@ void renderInputEvents()
         else
             ss << key << " not pressed";
 
-        COORD c = { startPos.X, startPos.Y + i };
+        //COORD c = { startPos.X, startPos.Y + i };
         //g_Console.writeToBuffer(c, ss.str(), 0x17);
     }
 
@@ -1541,6 +1539,6 @@ void renderInputEvents()
     //    break;
     //}
 
-}
+}*/
 
 

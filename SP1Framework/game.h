@@ -102,10 +102,9 @@ void renderPlayerUI(player player); //Displays information from player object
 void renderEntities();      // renders entites on top of the map
 void spawnEnemy();
 void bossSpawn();
-void renderFramerate();     // renders debug information, frame rate, elapsed time, etc
+//void renderFramerate();     // renders debug information, frame rate, elapsed time, etc
 void renderToScreen();      // dump the contents of the buffer to the screen, one frame worth of game
-void renderInputEvents();   // renders the status of input events
-//void Charactergravity();     // Makes the chracter fall when not standing on a platform
+//void renderInputEvents();   // renders the status of input events
 // keyboard and mouse input event managers
 void keyboardHandler(const KEY_EVENT_RECORD& keyboardEvent);  // define this function for the console to call when there are keyboard events
 void mouseHandler(const MOUSE_EVENT_RECORD& mouseEvent);      // define this function for the console to call when there are mouse events

@@ -2,7 +2,7 @@
 
 Boss::Boss()
 {
-	hp = 1;
+	hp = 30;
     sprite = 1;
     phase = 1;
     C.X = 64;
