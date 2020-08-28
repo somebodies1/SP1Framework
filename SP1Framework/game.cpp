@@ -311,6 +311,8 @@ void update(double dt)
         break;
     case S_STAGECOMPLETE: updateStagecomplete();
         break;
+    case S_CREDIT: updateCredit();
+        break;
     case S_GAME: updateGame(g_dElapsedTime); // gameplay logic when we are in the game
         break;
     }
@@ -347,13 +349,13 @@ void updateMainMenu()
         menupointer -= 1;
         if (menupointer < 0 )
         {
-            menupointer = 2;
+            menupointer = 3;
         }
     }
     if (g_skKeyEvent[K_DOWN].keyReleased) // moves the menu cursor
     {
         menupointer += 1;
-        if (menupointer > 2)
+        if (menupointer > 3)
         {
             menupointer = 0;
         }
@@ -370,6 +372,11 @@ void updateMainMenu()
     if (g_mouseEvent.mousePosition.X >= 38 && g_mouseEvent.mousePosition.X <= 41 && g_mouseEvent.mousePosition.Y == 21 && g_mouseEvent.buttonState == FROM_LEFT_1ST_BUTTON_PRESSED || menupointer == 2 && g_skKeyEvent[K_SPACE].keyReleased || g_skKeyEvent[K_ESCAPE].keyReleased)
     {
         g_bQuitGame = true;
+    }
+    if (g_mouseEvent.mousePosition.X >= 37 && g_mouseEvent.mousePosition.X <= 43 && g_mouseEvent.mousePosition.Y == 24 && g_mouseEvent.buttonState == FROM_LEFT_1ST_BUTTON_PRESSED || menupointer == 3 && g_skKeyEvent[K_SPACE].keyReleased)
+    {
+        menupointer = 0;
+        g_eGameState = S_CREDIT;
     }
 }
 
@@ -541,7 +548,7 @@ void updateStagecomplete()
         else
         {
             menupointer = 0;
-            g_eGameState = S_MAINMENU;
+            g_eGameState = S_CREDIT;
         }
     }
     if (g_mouseEvent.mousePosition.X >= 38 && g_mouseEvent.mousePosition.X <= 42 && g_mouseEvent.mousePosition.Y == 19 && g_mouseEvent.buttonState == FROM_LEFT_1ST_BUTTON_PRESSED || g_skKeyEvent[K_ESCAPE].keyDown || g_skKeyEvent[K_SPACE].keyReleased && menupointer == 2)
@@ -552,23 +559,8 @@ void updateStagecomplete()
 
 void updateCredit()
 {
-    if (g_skKeyEvent[K_UP].keyReleased) // moves the menu cursor
-    {
-        menupointer -= 1;
-        if (menupointer < 0)
-        {
-            menupointer = 2;
-        }
-    }
-    if (g_skKeyEvent[K_DOWN].keyReleased) // moves the menu cursor
-    {
-        menupointer += 1;
-        if (menupointer > 2)
-        {
-            menupointer = 0;
-        }
-    }
-    if (g_mouseEvent.mousePosition.X >= 34 && g_mouseEvent.mousePosition.X <= 44 && g_mouseEvent.mousePosition.Y == 22 && g_mouseEvent.buttonState == FROM_LEFT_1ST_BUTTON_PRESSED || g_skKeyEvent[K_SPACE].keyReleased && menupointer == 0)
+    menupointer = 0;
+    if (g_mouseEvent.mousePosition.X >= 36 && g_mouseEvent.mousePosition.X <= 45 && g_mouseEvent.mousePosition.Y == 22 && g_mouseEvent.buttonState == FROM_LEFT_1ST_BUTTON_PRESSED || g_skKeyEvent[K_SPACE].keyReleased && menupointer == 0)
     {
         Reset();
         g_eGameState = S_MAINMENU;
@@ -964,6 +956,10 @@ void renderMainMenu()  // renders the main menu
     {
         g_Console.writeToBuffer(36, 21, '>', 0x0C);
     }
+    else if (menupointer == 3)
+    {
+        g_Console.writeToBuffer(35, 24, '>', 0x0C);
+    }
 }
 
 void renderPauseMenu()  // renders the main menu
@@ -1038,10 +1034,10 @@ void renderStagecomplete()
 }
 void renderCredit()
 {
-    Printtxt("Credit.txt");
+    Printtxt("Credit.txt", 0x0A);
     if (menupointer == 0)
     {
-        g_Console.writeToBuffer(22, 34, '>', 0x0c);
+        g_Console.writeToBuffer(34, 22, '>', 0x0C);
     }
 }
 void renderGame()
