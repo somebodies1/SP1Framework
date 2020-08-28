@@ -314,8 +314,6 @@ void update(double dt)
         break;
     case S_STAGECOMPLETE: updateStagecomplete();
         break;
-    case S_CREDIT: updateCredit();
-        break;
     case S_GAME: updateGame(g_dElapsedTime); // gameplay logic when we are in the game
         break;
     }
@@ -401,14 +399,15 @@ void updatePauseMenu()
             menupointer = 0;
         }
     }
-    if (g_mouseEvent.mousePosition.X >= 36 && g_mouseEvent.mousePosition.X <= 43 && g_mouseEvent.mousePosition.Y == 18 && g_mouseEvent.buttonState == FROM_LEFT_1ST_BUTTON_PRESSED || g_skKeyEvent[K_SPACE].keyReleased && menupointer == 1)
-    {
-        Reset();
-        g_eGameState = S_MAINMENU;
-    }
     if (g_mouseEvent.mousePosition.X >= 36 && g_mouseEvent.mousePosition.X <= 44 && g_mouseEvent.mousePosition.Y == 16 && g_mouseEvent.buttonState == FROM_LEFT_1ST_BUTTON_PRESSED || g_skKeyEvent[K_SPACE].keyReleased && menupointer == 0 || g_skKeyEvent[K_ESCAPE].keyReleased)
     {
         g_eGameState = S_GAME;
+    }
+    if (g_mouseEvent.mousePosition.X >= 36 && g_mouseEvent.mousePosition.X <= 43 && g_mouseEvent.mousePosition.Y == 18 && g_mouseEvent.buttonState == FROM_LEFT_1ST_BUTTON_PRESSED || g_skKeyEvent[K_SPACE].keyReleased && menupointer == 1)
+    {
+        Reset();
+        menupointer = 0;
+        g_eGameState = S_MAINMENU;
     }
     if (g_mouseEvent.mousePosition.X >= 38 && g_mouseEvent.mousePosition.X <= 41 && g_mouseEvent.mousePosition.Y == 20 && g_mouseEvent.buttonState == FROM_LEFT_1ST_BUTTON_PRESSED || g_skKeyEvent[K_SPACE].keyReleased && menupointer == 2)
     {
@@ -434,15 +433,16 @@ void updateGameover()
             menupointer = 0;
         }
     }
-    if (g_mouseEvent.mousePosition.X >= 34 && g_mouseEvent.mousePosition.X <= 44 && g_mouseEvent.mousePosition.Y == 20 && g_mouseEvent.buttonState == FROM_LEFT_1ST_BUTTON_PRESSED || g_skKeyEvent[K_SPACE].keyReleased && menupointer == 1)
-    {
-        Reset();
-        g_eGameState = S_MAINMENU;
-    }
     if (g_mouseEvent.mousePosition.X >= 36 && g_mouseEvent.mousePosition.X <= 41 && g_mouseEvent.mousePosition.Y == 18 && g_mouseEvent.buttonState == FROM_LEFT_1ST_BUTTON_PRESSED || g_skKeyEvent[K_SPACE].keyReleased && menupointer == 0)
     {
         Reset();
         g_eGameState = S_GAME;
+    }
+    if (g_mouseEvent.mousePosition.X >= 34 && g_mouseEvent.mousePosition.X <= 44 && g_mouseEvent.mousePosition.Y == 20 && g_mouseEvent.buttonState == FROM_LEFT_1ST_BUTTON_PRESSED || g_skKeyEvent[K_SPACE].keyReleased && menupointer == 1)
+    {
+        Reset();
+        menupointer = 0;
+        g_eGameState = S_MAINMENU;
     }
     if (g_mouseEvent.mousePosition.X >= 36 && g_mouseEvent.mousePosition.X <= 40 && g_mouseEvent.mousePosition.Y == 22 && g_mouseEvent.buttonState == FROM_LEFT_1ST_BUTTON_PRESSED || g_skKeyEvent[K_SPACE].keyReleased && menupointer == 2 || g_skKeyEvent[K_ESCAPE].keyReleased)
     {
@@ -512,6 +512,7 @@ void updateLevelselect()
     }
     if (g_mouseEvent.mousePosition.X >= 37 && g_mouseEvent.mousePosition.X <= 40 && g_mouseEvent.mousePosition.Y == 22 && g_mouseEvent.buttonState == FROM_LEFT_1ST_BUTTON_PRESSED || g_skKeyEvent[K_ESCAPE].keyReleased || g_skKeyEvent[K_SPACE].keyReleased && menupointer == 6)
     {
+        menupointer = 0;
         g_eGameState = S_MAINMENU;
     }
 }
@@ -537,6 +538,7 @@ void updateStagecomplete()
     if (g_mouseEvent.mousePosition.X >= 36 && g_mouseEvent.mousePosition.X <= 46 && g_mouseEvent.mousePosition.Y == 18 && g_mouseEvent.buttonState == FROM_LEFT_1ST_BUTTON_PRESSED || g_skKeyEvent[K_SPACE].keyReleased && menupointer == 1)
     {
         Reset();
+        menupointer = 0;
         g_eGameState = S_MAINMENU;
     }
     if (g_mouseEvent.mousePosition.X >= 38 && g_mouseEvent.mousePosition.X <= 42 && g_mouseEvent.mousePosition.Y == 17 && g_mouseEvent.buttonState == FROM_LEFT_1ST_BUTTON_PRESSED || g_skKeyEvent[K_SPACE].keyReleased && menupointer == 0)
