@@ -28,7 +28,7 @@ int menupointer = 0; //initialise the menu pointer that allows the keyboard menu
 EGAMESTATES g_eGameState = S_MAINMENU; // initial state
 
 // Console object
-Console g_Console(80, 25, "SP1 Framework");
+Console g_Console(80, 25, "Mask the World");
 bool initialload = true; // The initial load of the map
 //bool spawned[5] = { false, false, false ,false, false };
 
@@ -202,6 +202,7 @@ void mouseHandler(const MOUSE_EVENT_RECORD& mouseEvent)
     case S_STAGECOMPLETE: gameplayMouseHandler(mouseEvent);
         break;
     case S_CREDIT: gameplayMouseHandler(mouseEvent);
+        break;
     case S_GAME: gameplayMouseHandler(mouseEvent); // handle gameplay mouse event
         break;
     }
@@ -306,6 +307,8 @@ void update(double dt)
     case S_PAUSE: updatePauseMenu();
         break;
     case S_GAMEOVER: updateGameover();
+        break;
+    case S_CREDIT: updateCredit();
         break;
     case S_LEVEL: updateLevelselect();
         break;
@@ -829,6 +832,10 @@ void moveCharacter()
     else if (mapaction == 'S') // S for stage change
     {
         g_eGameState = S_STAGECOMPLETE;
+    }
+    else if (mapaction == 'C')
+    {
+        g_eGameState = S_CREDIT;
     }
     if (PlayerChar.collisioncheck(Entitylayer) == 'Z' || PlayerChar.collisioncheck(Entitylayer) == 'K' 
         || PlayerChar.collisioncheck(Entitylayer) == 'F' || PlayerChar.collisioncheck(Entitylayer) == 'L') // collision work, just have to put something here
