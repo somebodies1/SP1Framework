@@ -6,8 +6,8 @@
 1                                                                              1
 1                                                                              1
 1                  The infected will spread their disease to you               1
-1                             if you are too close!                            1
-1                      Press space to throw a mask at them!                    1
+1                             if you are too close.                            1
+1                      Press space to throw a mask at them.                    1
 1                           Introducing the infected:                          1
 1                           z the normal mob (hp = 3)                          1
 1                     l the stationary mob for tutorial only                   1

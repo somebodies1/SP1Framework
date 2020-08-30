@@ -335,6 +335,7 @@ void updateGame(double g_dElapsedTime)       // gameplay logic
 
     if (PlayerChar.getHP() <= 0)
     {
+        menupointer = 0;
         g_eGameState = S_GAMEOVER;       
     }
     if (Gamemap.getstageno() == 5 && Gamemap.getmapno() == 3)
@@ -535,12 +536,6 @@ void updateStagecomplete()
             menupointer = 0;
         }
     }
-    if (g_mouseEvent.mousePosition.X >= 36 && g_mouseEvent.mousePosition.X <= 46 && g_mouseEvent.mousePosition.Y == 18 && g_mouseEvent.buttonState == FROM_LEFT_1ST_BUTTON_PRESSED || g_skKeyEvent[K_SPACE].keyReleased && menupointer == 1)
-    {
-        Reset();
-        menupointer = 0;
-        g_eGameState = S_MAINMENU;
-    }
     if (g_mouseEvent.mousePosition.X >= 38 && g_mouseEvent.mousePosition.X <= 42 && g_mouseEvent.mousePosition.Y == 17 && g_mouseEvent.buttonState == FROM_LEFT_1ST_BUTTON_PRESSED || g_skKeyEvent[K_SPACE].keyReleased && menupointer == 0)
     {
         Reset();
@@ -555,6 +550,17 @@ void updateStagecomplete()
             menupointer = 0;
             g_eGameState = S_CREDIT;
         }
+    }
+    if (g_mouseEvent.mousePosition.X >= 36 && g_mouseEvent.mousePosition.X <= 46 && g_mouseEvent.mousePosition.Y == 18 && g_mouseEvent.buttonState == FROM_LEFT_1ST_BUTTON_PRESSED || g_skKeyEvent[K_SPACE].keyReleased && menupointer == 1)
+    {
+        if (Gamemap.getstageno() < 5)
+        {
+            Gamemap.setstage(Gamemap.getstageno() + 1);
+            Entitylayer.setstage(Entitylayer.getstageno() + 1);
+        }
+        Reset();
+        menupointer = 0;
+        g_eGameState = S_MAINMENU;
     }
     if (g_mouseEvent.mousePosition.X >= 38 && g_mouseEvent.mousePosition.X <= 42 && g_mouseEvent.mousePosition.Y == 19 && g_mouseEvent.buttonState == FROM_LEFT_1ST_BUTTON_PRESSED || g_skKeyEvent[K_ESCAPE].keyDown || g_skKeyEvent[K_SPACE].keyReleased && menupointer == 2)
     {
